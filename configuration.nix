@@ -101,6 +101,15 @@
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
 
+  programs.git = {
+    enable = true;
+    package = pkgs.gitFull;
+    config.credential = {
+      helper = "manager";
+      credentialStore = "secretservice";
+    }; 
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -109,9 +118,9 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    git
     asusctl
-  ];
+    gitAndTools.git-credential-manager 
+ ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

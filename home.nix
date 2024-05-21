@@ -68,7 +68,13 @@
   #  /etc/profiles/per-user/vico/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "nvim";
+  };
+
+  programs.git = {
+    enable = true;
+    userName = "Victor Quintana";
+    userEmail = "435victorjavier@gmail.com";
   };
 
   # Let Home Manager install and manage itself.
