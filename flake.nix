@@ -7,7 +7,12 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }: let
+    inherit (self) outputs;
+  in {
+
+    packages.x86_64-linux = (import ./packages nixpkgs.legacyPackages.x86_64-linux);
+
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -21,7 +26,8 @@
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
-          }
+            home-manager.extraSpecialArgs = { inherit inputs outputs; };
+	  }
         ];
       };
     };

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ inputs, outputs, config, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -21,6 +21,9 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
+    # Custom build of zed with semi-latest commit
+
+    outputs.packages.x86_64-linux.zed
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

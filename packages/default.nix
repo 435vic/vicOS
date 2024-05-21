@@ -1,0 +1,5 @@
+{ callPackage }:
+
+{
+  zed = callPackage ./zed {};
+}
