@@ -107,6 +107,9 @@
   };
 
   programs.alacritty.enable = true;
+  programs.alacritty.settings = {
+    font.normal.family = "MesloLGS NF";
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
