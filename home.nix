@@ -109,6 +109,14 @@
   programs.alacritty.enable = true;
   programs.alacritty.settings = {
     font.normal.family = "MesloLGS NF";
+    window = {
+      padding = {
+        x = 6;
+        y = 4;
+      };
+      opacity = 0.85;
+      blur = true;
+    };
   };
 
   # Let Home Manager install and manage itself.
