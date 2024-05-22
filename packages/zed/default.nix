@@ -24,7 +24,6 @@
   makeFontsConf,
   vulkan-loader,
 }:
-
 rustPlatform.buildRustPackage rec {
   pname = "zed";
   version = "main-7b6f8c2";
@@ -51,8 +50,8 @@ rustPlatform.buildRustPackage rec {
     pkg-config
     protobuf
     rustPlatform.bindgenHook
-  ]; 
-  
+  ];
+
   buildInputs = [
     curl
     fontconfig

@@ -7,12 +7,18 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: let
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
     inherit (self) outputs;
     localpkgs = import ./packages nixpkgs.legacyPackages.x86_64-linux;
   in {
-
     packages.x86_64-linux = localpkgs;
+
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
 
     nixosConfigurations = {
       thunksquare = nixpkgs.lib.nixosSystem {
@@ -28,8 +34,8 @@
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
-            home-manager.extraSpecialArgs = { inherit inputs outputs localpkgs; };
-	  }
+            home-manager.extraSpecialArgs = {inherit inputs outputs localpkgs;};
+          }
         ];
       };
     };

@@ -1,5 +1,11 @@
-{ inputs, outputs, config, pkgs, localpkgs, ... }:
 {
+  inputs,
+  outputs,
+  config,
+  pkgs,
+  localpkgs,
+  ...
+}: {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "vico";
@@ -23,22 +29,22 @@
     # Custom build of zed with semi-latest commit
 
     pkgs.bun
-#    pkgs.rustup
+    #    pkgs.rustup
     pkgs.cargo
 
     (pkgs.buildFHSEnv {
       name = "zed";
-      targetPkgs = pkgs: [ localpkgs.zed ];
+      targetPkgs = pkgs: [localpkgs.zed];
       extraInstallCommands = ''
         mkdir -p $out/share/applications
         ln -s ${localpkgs.zed}/share/icons $out/share
         ln -s ${localpkgs.zed}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
       '';
       runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
-        export WAYLAND_DISPLAY=
-	exec zed "$@"
+               export WAYLAND_DISPLAY=
+        exec zed "$@"
       '';
-    }
+    })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
