@@ -35,7 +35,7 @@ sudo nixos-rebuild switch --flake . &>nixos-switch.log || (cat nixos-switch.log 
 
 geninfo=$(nixos-rebuild list-generations --json | jq -r '"Gen \(.[0].generation) NixOS \(.[0].nixosVersion) Kernel \(.[0].kernelVersion)"')
 
-git commit -m "$geninfo"
+git commit -am "$geninfo"
 
 popd
 
