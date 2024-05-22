@@ -128,6 +128,7 @@
     gitAndTools.git-credential-manager
     libnotify
     jq
+    meslo-lgs-nf
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
