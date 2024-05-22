@@ -95,6 +95,7 @@
     isNormalUser = true;
     description = "Victor";
     extraGroups = ["networkmanager" "wheel"];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       #  thunderbird
     ];
@@ -105,6 +106,8 @@
 
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
+
+  programs.zsh.enable = true;
 
   programs.git = {
     enable = true;
