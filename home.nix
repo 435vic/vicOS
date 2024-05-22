@@ -41,7 +41,7 @@
         ln -s ${localpkgs.zed}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
       '';
       runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
-               export WAYLAND_DISPLAY=
+        export WAYLAND_DISPLAY=
         exec zed "$@"
       '';
     })
@@ -101,6 +101,10 @@
     userEmail = "435victorjavier@gmail.com";
   };
 
+  programs.zsh = {
+    enable = true;
+    initExtra = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+  };
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }

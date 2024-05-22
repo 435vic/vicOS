@@ -31,7 +31,11 @@ git diff -U0 '*.nix'
 
 echo "reNixing now"
 
-# sudo nixos-rebuild switch --flake &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+sudo nixos-rebuild switch --flake . &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+
+geninfo=$(nixos-rebuild list-generations --json | jq -r '"Gen \(.[0].generation) NixOS \(.[0].nixosVersion) Kernel \(.[0].kernelVersion)"')
+
+git commit -m "$geninfo"
 
 popd
 
