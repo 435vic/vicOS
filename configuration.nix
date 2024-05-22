@@ -129,6 +129,7 @@
     libnotify
     jq
     meslo-lgs-nf
+    gnomeExtensions.blur-my-shell
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
