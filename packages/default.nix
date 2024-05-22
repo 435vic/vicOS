@@ -1,5 +1,4 @@
-{ callPackage }:
-
-{
-  zed = callPackage ./zed {};
+pkgs: rec {
+  zed = pkgs.callPackage ./zed {};
 }
+

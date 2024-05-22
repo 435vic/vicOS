@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, localpkgs, ... }:
 
 {
   imports =
@@ -21,7 +21,10 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelParams = ["quiet"];
 
-  networking.hostName = "nixos"; # Define your hostname.
+  # Fixes incorrect time when booting to Windows after using NixOS
+  time.hardwareClockInLocalTime = true;
+
+  networking.hostName = "thunksquare"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
