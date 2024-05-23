@@ -104,7 +104,7 @@
   programs.firefox.enable = true;
 
   programs.zsh.enable = true;
-  programs.neovim.enable = true;
+  #  programs.neovim.enable = true;
 
   programs.git = {
     enable = true;
