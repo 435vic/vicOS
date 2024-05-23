@@ -4,7 +4,6 @@
 {
   config,
   pkgs,
-  localpkgs,
   ...
 }: {
   imports = [

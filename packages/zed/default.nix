@@ -25,18 +25,16 @@
   vulkan-loader,
 }:
 rustPlatform.buildRustPackage rec {
-  pname = "zed";
-  version = "main-7b6f8c2";
+  pname = "zed-editor";
+  version = "main-3eb0418";
 
   src = fetchFromGitHub {
     owner = "zed-industries";
     repo = "zed";
-    rev = "7b6f8c279d17e6cbcf41643e6a5077971c952be1";
+    rev = "3eb0418bda8b7c7e375f0a00ae65da99b5a8c054";
     hash = "sha256-uMATTq1SV9XwdJV4G4K0QyEYcaWHkgW7J+D7cHJ5OUA=";
     fetchSubmodules = true;
   };
-
-  cargoHash = lib.fakeSha256;
 
   cargoLock = {
     lockFile = ./Cargo.lock;
@@ -94,8 +92,8 @@ rustPlatform.buildRustPackage rec {
 
   postInstall = ''
     mv $out/bin/Zed $out/bin/zed
-    install -D ${src}/crates/zed/resources/app-icon@2x.png $out/share/icons/hicolor/1024x1024@2x/apps/zed.png
-    install -D ${src}/crates/zed/resources/app-icon.png $out/share/icons/hicolor/512x512/apps/zed.png
+    install -D ${src}/crates/zed/resources/app-icon-dev@2x.png $out/share/icons/hicolor/1024x1024@2x/apps/zed.png
+    install -D ${src}/crates/zed/resources/app-icon-dev.png $out/share/icons/hicolor/512x512/apps/zed.png
     install -D ${src}/crates/zed/resources/zed.desktop $out/share/applications/dev.zed.Zed.desktop
   '';
 

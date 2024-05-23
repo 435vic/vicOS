@@ -1,3 +1,4 @@
 pkgs: rec {
-  zed = pkgs.callPackage ./zed {};
+  zed-editor = pkgs.callPackage ./zed {};
+  zed-editor-fhs = pkgs.callPackage ./zed/fhsenv.nix {};
 }

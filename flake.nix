@@ -14,11 +14,18 @@
     ...
   }: let
     inherit (self) outputs;
-    localpkgs = import ./packages nixpkgs.legacyPackages.x86_64-linux;
+    system = "x86_64-linux";
   in {
-    packages.x86_64-linux = localpkgs;
 
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+
+    packages.${system} = import ./packages nixpkgs.legacyPackages.${system};
+
+    overlays = {
+      localpkgs = final: _prev: {
+        local = import ./packages final.pkgs;
+      };
+    };
 
     nixosConfigurations = {
       thunksquare = nixpkgs.lib.nixosSystem {
@@ -30,11 +37,11 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.vico = import ./thunksquare/home.nix;
+            home-manager.users.vico = import ./home;
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
-            home-manager.extraSpecialArgs = {inherit inputs outputs localpkgs;};
+            home-manager.extraSpecialArgs = {inherit inputs outputs;};
           }
         ];
       };

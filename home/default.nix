@@ -3,10 +3,9 @@
   outputs,
   config,
   pkgs,
-  localpkgs,
   ...
 }: {
-  imports = [ ./dconf.nix ];
+  imports = [./dconf.nix];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "vico";
@@ -33,19 +32,19 @@
     #    pkgs.rustup
     pkgs.cargo
 
-    (pkgs.buildFHSEnv {
-      name = "zed";
-      targetPkgs = pkgs: [localpkgs.zed];
-      extraInstallCommands = ''
-        mkdir -p $out/share/applications
-        ln -s ${localpkgs.zed}/share/icons $out/share
-        ln -s ${localpkgs.zed}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
-      '';
-      runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
-        export WAYLAND_DISPLAY=
-        exec zed "$@"
-      '';
-    })
+#    (pkgs.buildFHSEnv {
+#      name = "zed";
+#      targetPkgs = pkgs: [pkgs.zed-editor];
+#      extraInstallCommands = ''
+#        mkdir -p $out/share/applications
+#        ln -s ${pkgs.zed-editor}/share/icons $out/share
+#        ln -s ${pkgs.zed-editor}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
+#      '';
+#      runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
+#        export WAYLAND_DISPLAY=
+#        exec zed "$@"
+#      '';
+#    })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -107,13 +106,13 @@
     plugins = [
       {
         name = "powerlevel10k-config";
-	src = ./dotfiles;
-	file = "p10k.zsh";
+        src = ./dotfiles;
+        file = "p10k.zsh";
       }
       {
         name = "powerlevel10k";
-	src = pkgs.zsh-powerlevel10k;
-	file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
       }
     ];
   };
@@ -132,5 +131,5 @@
   };
 
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;  
+  programs.home-manager.enable = true;
 }
