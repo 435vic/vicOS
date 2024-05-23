@@ -5,7 +5,10 @@
   pkgs,
   ...
 }: {
-  imports = [./dconf.nix];
+  imports = [
+    ./dconf.nix
+    inputs.nixvim.homeManagerModules.nixvim
+  ];
 
   nixpkgs = {
     overlays = [
@@ -64,7 +67,7 @@
   };
 
   home.shellAliases = {
-    vim = "nvim";
+    #vim = "nvim";
   };
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -83,13 +86,18 @@
   #  /etc/profiles/per-user/vico/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    EDITOR = "nvim";
+    #EDITOR = "nvim";
   };
 
   programs.git = {
     enable = true;
     userName = "Victor Quintana";
     userEmail = "435victorjavier@gmail.com";
+  };
+
+  programs.nixvim = {
+    enable = true;
+    defaultEditor = true;
   };
 
   programs.zsh = {
