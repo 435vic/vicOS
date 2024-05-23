@@ -1,5 +1,7 @@
 {
   lib,
+  buildFHSEnv,
+  writeShellScript,
   fetchFromGitHub,
   rustPlatform,
   copyDesktopItems,
@@ -23,8 +25,26 @@
   darwin,
   makeFontsConf,
   vulkan-loader,
-}:
-rustPlatform.buildRustPackage rec {
+}: let
+  fhs = final: buildFHSEnv {
+    name = "zed";
+    targetPkgs = pkgs: [ final ];
+    extraInstallCommands = ''
+      mkdir -p $out/share/applications
+      ln -s ${final}/share/icons $out/share
+      ln -s ${final}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
+    '';
+    #runScript = writeShellScript "zed-wrapper.sh" ''
+    #  export WAYLAND_DISPLAY=
+    #  exec ${final}/bin/zed "$@"
+    #'';
+    runScript = "${final}/bin/zed";
+  };
+in rustPlatform.buildRustPackage rec {
+  passthru = {
+    fhs = final: fhs final;
+  };
+
   pname = "zed-editor";
   version = "main-3eb0418";
 

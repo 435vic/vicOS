@@ -6,6 +6,14 @@
   ...
 }: {
   imports = [./dconf.nix];
+
+  nixpkgs = {
+    overlays = [
+      outputs.overlays.localpkgs;
+    ];
+    config.allowUnfree = true;
+  };
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "vico";
@@ -31,6 +39,7 @@
     pkgs.bun
     #    pkgs.rustup
     pkgs.cargo
+    pkgs.local.zed-editor-fhs
 
 #    (pkgs.buildFHSEnv {
 #      name = "zed";
