@@ -9,6 +9,9 @@
 
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
+
+    alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
+    alacritty-theme.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {

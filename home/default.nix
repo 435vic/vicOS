@@ -12,6 +12,7 @@
 
   nixpkgs = {
     overlays = [
+      inputs.alacritty-theme.overlays.default
       outputs.overlays.localpkgs
     ];
     config.allowUnfree = true;
@@ -138,6 +139,7 @@
 
   programs.alacritty.enable = true;
   programs.alacritty.settings = {
+    import = [pkgs.alacritty-theme.rose-pine];
     font.normal.family = "MesloLGS NF";
     window = {
       padding = {
@@ -147,6 +149,19 @@
       opacity = 0.85;
       blur = true;
     };
+    mouse.bindings = [
+      {
+        mouse = "Right";
+        action = "Paste";
+      }
+    ];
+    keyboard.bindings = [
+      {
+        key = "N";
+        mods = "Control|Shift";
+        action = "CreateNewWindow";
+      }
+    ];
   };
 
   # Let Home Manager install and manage itself.
