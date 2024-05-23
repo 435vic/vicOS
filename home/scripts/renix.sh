@@ -4,7 +4,7 @@ set -e
 pushd /etc/nixos
 
 if [ "$1" != "-b" ]; then
-	$EDITOR .
+	$EDITOR ${1:-.}
 	if [ "$?" -ne 0 ]; then
 		echo "renix was cancelled :("
 		popd

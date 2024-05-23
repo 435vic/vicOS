@@ -41,32 +41,11 @@
     pkgs.local.zed-editor-fhs
     (pkgs.writeScriptBin "renix.sh" (builtins.readFile ./scripts/renix.sh))
 
-    #    (pkgs.buildFHSEnv {
-    #      name = "zed";
-    #      targetPkgs = pkgs: [pkgs.zed-editor];
-    #      extraInstallCommands = ''
-    #        mkdir -p $out/share/applications
-    #        ln -s ${pkgs.zed-editor}/share/icons $out/share
-    #        ln -s ${pkgs.zed-editor}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
-    #      '';
-    #      runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
-    #        export WAYLAND_DISPLAY=
-    #        exec zed "$@"
-    #      '';
-    #    })
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -84,6 +63,9 @@
     # '';
   };
 
+  home.shellAliases = {
+    vim = "nvim";
+  };
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
   # shell provided by Home Manager. If you don't want to manage your shell
