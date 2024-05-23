@@ -6,7 +6,7 @@ with lib.hm.gvariant; {
       color-scheme = "prefer-dark";
       icon-theme = "Adwaita";
       show-battery-percentage = true;
-      text-scaling-factor = 1.25;
+      #      text-scaling-factor = 1.25;
     };
 
     "org/gnome/shell" = {

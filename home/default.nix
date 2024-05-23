@@ -9,7 +9,7 @@
 
   nixpkgs = {
     overlays = [
-      outputs.overlays.localpkgs;
+      outputs.overlays.localpkgs
     ];
     config.allowUnfree = true;
   };
@@ -41,19 +41,19 @@
     pkgs.cargo
     pkgs.local.zed-editor-fhs
 
-#    (pkgs.buildFHSEnv {
-#      name = "zed";
-#      targetPkgs = pkgs: [pkgs.zed-editor];
-#      extraInstallCommands = ''
-#        mkdir -p $out/share/applications
-#        ln -s ${pkgs.zed-editor}/share/icons $out/share
-#        ln -s ${pkgs.zed-editor}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
-#      '';
-#      runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
-#        export WAYLAND_DISPLAY=
-#        exec zed "$@"
-#      '';
-#    })
+    #    (pkgs.buildFHSEnv {
+    #      name = "zed";
+    #      targetPkgs = pkgs: [pkgs.zed-editor];
+    #      extraInstallCommands = ''
+    #        mkdir -p $out/share/applications
+    #        ln -s ${pkgs.zed-editor}/share/icons $out/share
+    #        ln -s ${pkgs.zed-editor}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
+    #      '';
+    #      runScript = pkgs.writeShellScript "zed-wrapper.sh" ''
+    #        export WAYLAND_DISPLAY=
+    #        exec zed "$@"
+    #      '';
+    #    })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

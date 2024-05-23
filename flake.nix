@@ -16,7 +16,6 @@
     inherit (self) outputs;
     system = "x86_64-linux";
   in {
-
     formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
 
     packages.${system} = import ./packages nixpkgs.legacyPackages.${system};
@@ -35,8 +34,6 @@
           ./nixos/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
             home-manager.users.vico = import ./home;
 
             # Optionally, use home-manager.extraSpecialArgs to pass
