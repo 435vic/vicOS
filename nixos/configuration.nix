@@ -130,6 +130,7 @@
     gitAndTools.git-credential-manager
     libnotify
     jq
+    ripgrep
     meslo-lgs-nf
     gnomeExtensions.blur-my-shell
   ];
