@@ -119,6 +119,7 @@
       maplocalleader = " ";
     };
     plugins.lightline.enable = true;
+    colorschemes.rose-pine.enable = true;
   };
 
   programs.zsh = {
