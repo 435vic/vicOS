@@ -29,7 +29,11 @@
   fhs = final:
     buildFHSEnv {
       name = "zed";
-      targetPkgs = pkgs: [final];
+      targetPkgs = pkgs: [
+        final
+        pkgs.cargo
+        pkgs.rustc
+      ];
       extraInstallCommands = ''
         mkdir -p $out/share/applications
         ln -s ${final}/share/icons $out/share
