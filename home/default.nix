@@ -40,8 +40,6 @@
     # pkgs.hello
     # Custom build of zed with semi-latest commit
 
-    pkgs.bun
-    pkgs.cargo
     pkgs.local.zed-editor-fhs
     (pkgs.writeScriptBin "renix.sh" (builtins.readFile ./scripts/renix.sh))
 
