@@ -37,9 +37,9 @@
     # Custom build of zed with semi-latest commit
 
     pkgs.bun
-    #    pkgs.rustup
     pkgs.cargo
     pkgs.local.zed-editor-fhs
+    (pkgs.writeScriptBin "renix.sh" (builtins.readFile ./scripts/renix.sh))
 
     #    (pkgs.buildFHSEnv {
     #      name = "zed";

@@ -1,10 +1,10 @@
 
 set -e
 
-pushd ~/nixos-config
+pushd /etc/nixos
 
 if [ "$1" != "-b" ]; then
-	$EDITOR ${1:-"home.nix"}
+	$EDITOR .
 	if [ "$?" -ne 0 ]; then
 		echo "renix was cancelled :("
 		popd
