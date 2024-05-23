@@ -100,17 +100,16 @@
     defaultEditor = true;
     opts = {
       number = true;
+      signcolum = "yes";
       showmode = false;
       mouse = "a";
       undofile = true;
-      signcolum = "yes";
       updatetime = 250;
       timeoutlen = 300;
       ignorecase = true;
       smartcase = true;
       splitright = true;
       splitbelow = true;
-      have_nerd_font = true;
       cursorline = true;
       inccomand = "split";
     };
