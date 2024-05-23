@@ -100,7 +100,7 @@
     defaultEditor = true;
     opts = {
       number = true;
-      signcolum = "yes";
+      signcolumn = "yes";
       showmode = false;
       mouse = "a";
       undofile = true;
