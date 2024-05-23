@@ -6,6 +6,7 @@
   localpkgs,
   ...
 }: {
+  imports = [ ./dconf.nix ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "vico";
@@ -103,7 +104,18 @@
 
   programs.zsh = {
     enable = true;
-    initExtra = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    plugins = [
+      {
+        name = "powerlevel10k-config";
+	src = ./dotfiles;
+	file = "p10k.zsh";
+      }
+      {
+        name = "powerlevel10k";
+	src = pkgs.zsh-powerlevel10k;
+	file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+    ];
   };
 
   programs.alacritty.enable = true;
@@ -120,5 +132,5 @@
   };
 
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  programs.home-manager.enable = true;  
 }

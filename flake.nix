@@ -25,12 +25,12 @@
         system = "x86_64-linux";
         #specialArgs = { inherit localpkgs; };
         modules = [
-          ./configuration.nix
+          ./nixos/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.vico = import ./home.nix;
+            home-manager.users.vico = import ./thunksquare/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
