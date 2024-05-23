@@ -111,7 +111,7 @@
       splitright = true;
       splitbelow = true;
       cursorline = true;
-      inccomand = "split";
+      inccommand = "split";
     };
     globals = {
       mapleader = " ";
