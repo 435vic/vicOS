@@ -119,6 +119,7 @@
       maplocalleader = " ";
     };
     plugins.lightline.enable = true;
+    plugins.lightline.colorscheme = "rosepine";
     colorschemes.rose-pine.enable = true;
   };
 
