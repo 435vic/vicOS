@@ -120,6 +120,7 @@
     };
     plugins.lightline.enable = true;
     plugins.lightline.colorscheme = "rosepine";
+    plugins.transparent.enable = true;
     colorschemes.rose-pine.enable = true;
   };
 
