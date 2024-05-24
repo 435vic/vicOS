@@ -85,7 +85,7 @@
   #  /etc/profiles/per-user/vico/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    #EDITOR = "nvim";
+    EDITOR = "nvim";
   };
 
   programs.git = {
