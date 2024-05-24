@@ -137,6 +137,7 @@
 
   environment.sessionVariables = {
     XCURSOR_THEME = "Adwaita";
+    EDITOR = "nvim";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
