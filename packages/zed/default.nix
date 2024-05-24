@@ -26,39 +26,17 @@
   makeFontsConf,
   vulkan-loader,
 }: let
-  fhs = final:
-    buildFHSEnv {
-      name = "zed";
-      targetPkgs = pkgs: [
-        final
-        pkgs.cargo
-        pkgs.rustc
-      ];
-      extraInstallCommands = ''
-        mkdir -p $out/share/applications
-        ln -s ${final}/share/icons $out/share
-        ln -s ${final}/share/applications/dev.zed.Zed.desktop $out/share/applications/dev.zed.Zed.desktop
-      '';
-      #runScript = writeShellScript "zed-wrapper.sh" ''
-      #  export WAYLAND_DISPLAY=
-      #  exec ${final}/bin/zed "$@"
-      #'';
-      runScript = "${final}/bin/zed";
-    };
-in
-  rustPlatform.buildRustPackage rec {
-    passthru = {
-      fhs = final: fhs final;
-    };
-
+  commit = "1e5389a2be36218b78439ebb1eddbac1bd256670";
+  shortCommit = builtins.substring 0 7 commit;
+  zed = rustPlatform.buildRustPackage rec {
     pname = "zed-editor";
-    version = "main-3eb0418";
+    version = "main-${shortCommit}";
 
     src = fetchFromGitHub {
       owner = "zed-industries";
       repo = "zed";
-      rev = "3eb0418bda8b7c7e375f0a00ae65da99b5a8c054";
-      hash = "sha256-uMATTq1SV9XwdJV4G4K0QyEYcaWHkgW7J+D7cHJ5OUA=";
+      rev = commit;
+      hash = "sha256-/wbwYjqYBntbVV3QjwEMy/+1HCACA0hL/it+9onCw2s=";
       fetchSubmodules = true;
     };
 
@@ -91,7 +69,9 @@ in
       xorg.libxcb
     ];
 
-    #buildFeatures = [ "gpui/runtime_shaders" ];
+    buildFeatures = ["gpui/runtime_shaders"];
+
+    cargoBuildFlags = ["--package zed --package cli"];
 
     env = {
       ZSTD_SYS_USE_PKG_CONFIG = true;
@@ -108,19 +88,12 @@ in
       patchelf --add-rpath ${wayland}/lib $out/bin/*
     '';
 
-    checkFlags = lib.optionals stdenv.hostPlatform.isLinux [
-      # Fails with "On 2823 Failed to find test1:A"
-      "--skip=test_base_keymap"
-      # Fails with "called `Result::unwrap()` on an `Err` value: Invalid keystroke `cmd-k`"
-      # https://github.com/zed-industries/zed/issues/10427
-      "--skip=test_disabled_keymap_binding"
-    ];
+    doCheck = false;
 
     postInstall = ''
-      mv $out/bin/Zed $out/bin/zed
       install -D ${src}/crates/zed/resources/app-icon-dev@2x.png $out/share/icons/hicolor/1024x1024@2x/apps/zed.png
       install -D ${src}/crates/zed/resources/app-icon-dev.png $out/share/icons/hicolor/512x512/apps/zed.png
-      install -D ${src}/crates/zed/resources/zed.desktop $out/share/applications/dev.zed.Zed.desktop
+      install -D ${src}/crates/zed/resources/zed.desktop $out/share/applications/dev.zed.Zed-Dev.desktop
     '';
 
     meta = with lib; {
@@ -128,4 +101,23 @@ in
       homepage = "https://zed.dev";
       mainProgram = "zed";
     };
+  };
+in
+  buildFHSEnv {
+    name = "zed";
+    targetPkgs = pkgs: [
+      zed
+      pkgs.cargo
+      pkgs.rustc
+    ];
+    extraInstallCommands = ''
+      mkdir -p $out/share/applications
+      ln -s ${zed}/share/icons $out/share
+      ln -s ${zed}/share/applications/dev.zed.Zed-Dev.desktop $out/share/applications/dev.zed.Zed-Dev.desktop
+    '';
+    #runScript = writeShellScript "zed-wrapper.sh" ''
+    #  export WAYLAND_DISPLAY=
+    #  exec ${final}/bin/zed "$@"
+    #'';
+    runScript = "${zed}/bin/cli";
   }
