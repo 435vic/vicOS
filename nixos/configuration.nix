@@ -115,6 +115,8 @@
     };
   };
 
+  programs.direnv.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -132,6 +134,10 @@
     meslo-lgs-nf
     gnomeExtensions.blur-my-shell
   ];
+
+  environment.sessionVariables = {
+    XCURSOR_THEME = "Adwaita";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
