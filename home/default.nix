@@ -86,6 +86,7 @@
   #
   home.sessionVariables = {
     EDITOR = "nvim";
+    DIRENV_LOG_FORMAT = "\033[2mdirenv: %s\033[0m";
   };
 
   programs.git = {
@@ -119,6 +120,7 @@
     plugins.lightline.enable = true;
     plugins.lightline.colorscheme = "rosepine";
     plugins.transparent.enable = true;
+    plugins.oil.enable = true;
     colorschemes.rose-pine.enable = true;
   };
 
