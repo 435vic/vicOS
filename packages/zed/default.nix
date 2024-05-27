@@ -107,8 +107,6 @@ in
     name = "zed";
     targetPkgs = pkgs: [
       zed
-      pkgs.cargo
-      pkgs.rustc
     ];
     extraInstallCommands = ''
       mkdir -p $out/share/applications
