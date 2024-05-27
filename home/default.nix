@@ -55,6 +55,11 @@
   home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+    ".config/direnv/direnv.toml".text = ''
+      [global]
+      hide_env_diff = true
+    '';
+
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
@@ -117,10 +122,13 @@
       mapleader = " ";
       maplocalleader = " ";
     };
-    plugins.lightline.enable = true;
-    plugins.lightline.colorscheme = "rosepine";
-    plugins.transparent.enable = true;
-    plugins.oil.enable = true;
+    plugins = {
+      oil.enable = true;
+      transparent.enable = true;
+      lightline.enable = true;
+      lightline.colorscheme = "rosepine";
+      telescope.enable = true;
+    };
     colorschemes.rose-pine.enable = true;
   };
 
