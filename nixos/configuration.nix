@@ -133,6 +133,7 @@
     ripgrep
     meslo-lgs-nf
     gnomeExtensions.blur-my-shell
+    haskell-language-server
   ];
 
   environment.sessionVariables = {
