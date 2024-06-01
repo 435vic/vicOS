@@ -17,6 +17,7 @@
         "rustfmt"
       ])
       targets.wasm32-wasi.latest.rust-std
+      targets.wasm32-unknown-unknown.latest.rust-std
       rust-analyzer
     ];
 in {
