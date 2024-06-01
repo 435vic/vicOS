@@ -4,8 +4,21 @@
 {
   config,
   pkgs,
+  inputs,
   ...
-}: {
+}: let
+  rust-toolchain = with inputs.fenix.packages.x86_64-linux;
+    combine [
+      (complete.withComponents [
+        "cargo"
+        "clippy"
+        "rust-src"
+        "rustc"
+        "rustfmt"
+      ])
+      targets.wasm32-wasi.latest.rust-std
+    ];
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -26,7 +39,7 @@
   time.hardwareClockInLocalTime = true;
 
   networking.hostName = "thunksquare"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -118,7 +131,9 @@
   programs.direnv.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -134,6 +149,7 @@
     meslo-lgs-nf
     gnomeExtensions.blur-my-shell
     haskell-language-server
+    rust-toolchain
   ];
 
   environment.sessionVariables = {

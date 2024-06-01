@@ -12,6 +12,9 @@
 
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
     alacritty-theme.inputs.nixpkgs.follows = "nixpkgs";
+
+    fenix.url = "github:nix-community/fenix";
+    fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -36,7 +39,7 @@
     nixosConfigurations = {
       thunksquare = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        #specialArgs = { inherit localpkgs; };
+        specialArgs = {inherit inputs;};
         modules = [
           ./nixos/configuration.nix
           home-manager.nixosModules.home-manager
