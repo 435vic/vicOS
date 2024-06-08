@@ -26,7 +26,7 @@
   makeFontsConf,
   vulkan-loader,
 }: let
-  commit = "1e5389a2be36218b78439ebb1eddbac1bd256670";
+  commit = "e829a8c3b0564bc902cc0d0a530099be7f0f036e";
   shortCommit = builtins.substring 0 7 commit;
   zed = rustPlatform.buildRustPackage rec {
     pname = "zed-editor";
@@ -36,7 +36,7 @@
       owner = "zed-industries";
       repo = "zed";
       rev = commit;
-      hash = "sha256-/wbwYjqYBntbVV3QjwEMy/+1HCACA0hL/it+9onCw2s=";
+      hash = "sha256-CKznDlcqcSCNAR1kge6rA0DfXlOKE/p7Yk9tf98Lmac=";
       fetchSubmodules = true;
     };
 
@@ -93,7 +93,7 @@
     postInstall = ''
       install -D ${src}/crates/zed/resources/app-icon-dev@2x.png $out/share/icons/hicolor/1024x1024@2x/apps/zed.png
       install -D ${src}/crates/zed/resources/app-icon-dev.png $out/share/icons/hicolor/512x512/apps/zed.png
-      install -D ${src}/crates/zed/resources/zed.desktop $out/share/applications/dev.zed.Zed-Dev.desktop
+      install -D ${src}/crates/zed/resources/zed.desktop.in $out/share/applications/dev.zed.Zed-Dev.desktop
     '';
 
     meta = with lib; {
