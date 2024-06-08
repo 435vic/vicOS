@@ -25,6 +25,7 @@
   darwin,
   makeFontsConf,
   vulkan-loader,
+  envsubst,
 }: let
   commit = "e829a8c3b0564bc902cc0d0a530099be7f0f036e";
   shortCommit = builtins.substring 0 7 commit;
@@ -52,6 +53,7 @@
       pkg-config
       protobuf
       rustPlatform.bindgenHook
+      envsubst
     ];
 
     buildInputs = [
@@ -93,7 +95,11 @@
     postInstall = ''
       install -D ${src}/crates/zed/resources/app-icon-dev@2x.png $out/share/icons/hicolor/1024x1024@2x/apps/zed.png
       install -D ${src}/crates/zed/resources/app-icon-dev.png $out/share/icons/hicolor/512x512/apps/zed.png
-      install -D ${src}/crates/zed/resources/zed.desktop.in $out/share/applications/dev.zed.Zed-Dev.desktop
+      export DO_STARTUP_NOTIFY="true"
+      export APP_ICON="zed"
+      export APP_NAME="Zed Develop"
+      mkdir -p $out/share/applications
+      envsubst < "${src}/crates/zed/resources/zed.desktop.in" > $out/share/applications/dev.zed.Zed-Dev.desktop
     '';
 
     meta = with lib; {
@@ -113,6 +119,10 @@ in
       ln -s ${zed}/share/icons $out/share
       ln -s ${zed}/share/applications/dev.zed.Zed-Dev.desktop $out/share/applications/dev.zed.Zed-Dev.desktop
     '';
+
+    passthru = {
+      zed-base = zed;
+    };
     #runScript = writeShellScript "zed-wrapper.sh" ''
     #  export WAYLAND_DISPLAY=
     #  exec ${final}/bin/zed "$@"
