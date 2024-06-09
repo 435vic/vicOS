@@ -91,7 +91,6 @@
   #
   home.sessionVariables = {
     EDITOR = "nvim";
-    DIRENV_LOG_FORMAT = "\033[2mdirenv: %s\033[0m";
   };
 
   programs.git = {
