@@ -40,7 +40,8 @@
     # pkgs.hello
     # Custom build of zed with semi-latest commit
 
-    pkgs.local.zed-editor
+    #pkgs.local.zed-editor
+    pkgs.zed-editor
     pkgs.prismlauncher
     (pkgs.writeScriptBin "renix.sh" (builtins.readFile ./scripts/renix.sh))
 
