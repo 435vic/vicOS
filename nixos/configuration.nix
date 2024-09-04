@@ -103,6 +103,7 @@ in {
 
   powerManagement.enable = true;
   hardware.nvidia.powerManagement.finegrained = true;
+  hardware.nvidia.powerManagement.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
