@@ -10,6 +10,8 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixos-hardware.url = "github:lyndeno/nixos-hardware/asus_nvidia";
+
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
     alacritty-theme.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -20,6 +22,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixos-hardware,
     home-manager,
     ...
   }: let
@@ -42,6 +45,7 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./nixos/configuration.nix
+          nixos-hardware.nixosModules.asus-zephyrus-ga503
           home-manager.nixosModules.home-manager
           {
             home-manager.users.vico = import ./home;

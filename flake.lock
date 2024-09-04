@@ -265,6 +265,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1725397915,
+        "narHash": "sha256-4Xi6cWvcGekTuy+huVrJsdXNMNydGpog11+6IWJb7+Y=",
+        "owner": "lyndeno",
+        "repo": "nixos-hardware",
+        "rev": "aa3739f4ab414b2b0b212cf235d0682f14de3d4a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lyndeno",
+        "ref": "asus_nvidia",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1725103162,
@@ -354,6 +370,7 @@
         "alacritty-theme": "alacritty-theme",
         "fenix": "fenix",
         "home-manager": "home-manager",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim"
       }

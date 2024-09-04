@@ -101,6 +101,9 @@ in {
     #media-session.enable = true;
   };
 
+  powerManagement.enable = true;
+  hardware.nvidia.powerManagement.finegrained = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
