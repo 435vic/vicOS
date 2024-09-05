@@ -3,15 +3,21 @@
   config,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware.nix
+    ../scripts
     ../common/fonts.nix
+    ../common/packages.nix
   ];
 
   # TODO: if I ever add more hosts I should probably move this to separate files
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   networking.hostName = "thunkbox";
 
@@ -21,8 +27,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 0;
   boot.plymouth.enable = true;
-  boot.supportedFilesystems = ["ntfs"];
-  boot.kernelParams = ["quiet"];
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.kernelParams = [ "quiet" ];
 
   # ASUS GA503RM keyboard backlight fix
   boot.kernelPatches = [
@@ -86,7 +92,10 @@
   users.users.vico = {
     isNormalUser = true;
     description = "Victor";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     shell = pkgs.zsh;
   };
 
@@ -99,7 +108,7 @@
     config.credential = {
       helper = "manager";
       credentialStore = "secretservice";
-    }; 
+    };
   };
 
   programs.direnv.enable = true;
@@ -120,10 +129,8 @@
     asusctl
     alejandra
     libnotify
-    jq
-    neovim
     gnomeExtensions.blur-my-shell
-  ] ++ (import ../common/packages.nix) pkgs;
+  ];
 
   # THUNKBOX specific: asusctl daemon
   services.asusd.enable = true;

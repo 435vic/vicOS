@@ -4,7 +4,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.username = "vico";
   home.homeDirectory = "/home/vico";
   home.stateVersion = "23.11";
@@ -39,7 +40,7 @@
       oil.enable = true;
       transparent.enable = true;
       lightline.enable = true;
-      lightline.colorscheme = "rosepine";
+      lightline.settings.colorscheme = "rosepine";
       telescope.enable = true;
     };
     colorschemes.rose-pine.enable = true;
@@ -60,10 +61,10 @@
       }
     ];
   };
-  
+
   programs.alacritty.enable = true;
   programs.alacritty.settings = {
-    import = [pkgs.alacritty-theme.rose-pine];
+    import = [ pkgs.alacritty-theme.rose-pine ];
     font.normal.family = "JetBrains Mono";
     window = {
       padding = {
