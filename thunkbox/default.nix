@@ -70,6 +70,9 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # temp fix for vulkan issues
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
+
   # Enable sound with pipewire.
   #sound.enable = true;
   hardware.pulseaudio.enable = false;
