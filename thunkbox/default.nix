@@ -51,6 +51,9 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  # thunkbox specific: hardware clock fix
+  time.hardwareClockInLocalTime = true;
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
