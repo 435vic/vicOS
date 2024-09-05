@@ -126,13 +126,11 @@
   };
 
   environment.systemPackages = with pkgs; [
-    wget
-    curl
     # thunkbox specific: asusctl
     asusctl
-    alejandra
     libnotify
     gnomeExtensions.blur-my-shell
+    zed-editor
   ];
 
   # THUNKBOX specific: asusctl daemon
