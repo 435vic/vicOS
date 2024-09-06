@@ -95,9 +95,10 @@
     userEmail = "435victorjavier@gmail.com";
   };
 
-  wayland.windowManager.hyprland.enable = true;
-  wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
-  wayland.windowManager.hyprland.settings = {
-    "$terminal" = "alacritty";
+  xdg.configFile = {
+    "hypr" = {
+      recursive = true;
+      source = ./dotfiles/hypr;
+    };
   };
 }

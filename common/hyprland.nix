@@ -23,7 +23,6 @@
 
   environment.systemPackages = with pkgs; [
     swaynotificationcenter
-    kitty
     grim
     brightnessctl
     hypridle
