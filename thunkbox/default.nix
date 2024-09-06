@@ -58,8 +58,13 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "tokyo-night-sddm";
+  #services.displayManager.sddm.enable = true;
+  #services.displayManager.sddm.theme = "tokyo-night-sddm";
+
+  services.greetd.enable = true;
+  #services.cage.enable = true;
+  programs.regreet.enable = true;
+
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
