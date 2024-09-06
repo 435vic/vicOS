@@ -8,8 +8,8 @@
 {
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
+    #package = inputs.hyprland.packages.${system}.hyprland;
+    #portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
   };
 
   # Enable Ozone Wayland support in Chromium and Electron based applications
@@ -25,15 +25,18 @@
     swaynotificationcenter
     grim
     brightnessctl
+    rofi-wayland
     hypridle
-    hyprlock
-    hyprpaper
-    hyprpicker
+    hyprcursor
+    waybar
     libnotify
     networkmanagerapplet
-    qt6.wayland
+    libsForQt5.qt5.qtwayland
+    kdePackages.qtwayland
     swappy
+    slurp
     wf-recorder
     kdePackages.polkit-kde-agent-1
+    xdg-desktop-portal-gtk
   ];
 }
