@@ -100,5 +100,10 @@
       recursive = true;
       source = ./dotfiles/hypr;
     };
+
+    "waybar" = {
+      recursive = true;
+      source = ./dotfiles/waybar;
+    };
   };
 }
