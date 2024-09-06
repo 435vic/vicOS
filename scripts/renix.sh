@@ -17,10 +17,12 @@ if (git status '*.nix' --porcelain | grep '^??'); then
 	exit 1
 fi
 
-if git diff --quiet; then
-	echo "No changes detected, exiting."
-	popd
-	exit 0
+if [ "$1" != "-f" ]; then
+  if git diff --quiet; then
+  	echo "No changes detected, exiting."
+  	popd
+  	exit 0
+  fi
 fi
 
 nix fmt . &>/dev/null \
