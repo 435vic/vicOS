@@ -16,6 +16,8 @@
     NIXOS_OZONE_WL = "1";
     XCURSOR_SIZE = "24";
     XCURSOR_THEME = "Adwaita";
+    GTK_THEME = "Adwaita:dark";
+    QT_STYLE_OVERRIDE = "Adwaita-Dark";
     QT_QPA_PLATFORMTHEME = "qt5ct";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
@@ -25,8 +27,7 @@
     grim
     brightnessctl
     rofi-wayland
-    hypridle
-    hyprcursor
+    hyprpaper
     waybar
     libnotify
     networkmanagerapplet
@@ -37,5 +38,7 @@
     wf-recorder
     kdePackages.polkit-kde-agent-1
     xdg-desktop-portal-gtk
+    adwaita-qt
+    adwaita-qt6
   ];
 }
