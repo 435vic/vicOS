@@ -98,6 +98,6 @@
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
   wayland.windowManager.hyprland.settings = {
-    "$terminal" = "alacritty";
+    "$terminal" = "${pkgs.alacritty}";
   };
 }
