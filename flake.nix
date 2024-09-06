@@ -7,8 +7,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
     nixvim.url = "github:nix-community/nixvim/2ef974182ef62a6a6992118f0beb54dce812ae9b";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -30,6 +28,9 @@
       alacritty-theme,
       ...
     }:
+    let
+      inherit (self) outputs;
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
@@ -48,11 +49,17 @@
           #};
         };
 
+      flake.overlays = {
+        localpkgs = final: _prev: {
+          local = import ./packages final.pkgs;
+        };
+      };
+
       flake.nixosConfigurations = {
         thunkbox = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs;
+            inherit inputs outputs;
             system = "x86_64-linux";
           };
           modules = [

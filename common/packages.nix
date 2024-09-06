@@ -1,6 +1,10 @@
-# once again taken from the wonderful sioodmy and their dotfiles
-{ pkgs, ... }:
+# once again inspired from the wonderful sioodmy and their dotfiles
+{ pkgs, outputs, ... }:
 {
+  nixpkgs.overlays = [
+    outputs.overlays.localpkgs
+  ];
+
   environment.systemPackages = with pkgs; [
     ripgrep
     git
@@ -14,5 +18,6 @@
     neovim
     dconf
     unzip
+    local.tokyo-night-sddm
   ];
 }

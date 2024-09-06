@@ -11,7 +11,6 @@
     #package = inputs.hyprland.packages.${system}.hyprland;
     #portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
   };
-
   # Enable Ozone Wayland support in Chromium and Electron based applications
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
