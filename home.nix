@@ -52,7 +52,7 @@
       {
         name = "powerlevel10k-config";
         src = ./dotfiles;
-        file = ".p10k.zsh";
+        file = "p10k-config.zsh";
       }
       {
         name = "powerlevel10k";
@@ -93,5 +93,10 @@
     enable = true;
     userName = "Victor Quintana";
     userEmail = "435victorjavier@gmail.com";
+  };
+
+  wayland.windowManager.hyprland.enable = true;
+  wayland.windowManager.hyprland.settings = {
+    "$terminal" = "alacritty";
   };
 }

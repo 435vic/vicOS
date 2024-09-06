@@ -7,6 +7,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
     nixvim.url = "github:nix-community/nixvim/2ef974182ef62a6a6992118f0beb54dce812ae9b";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -51,6 +53,7 @@
           system = "x86_64-linux";
           specialArgs = {
             inherit inputs;
+            system = "x86_64-linux";
           };
           modules = [
             nixos-hardware.nixosModules.asus-zephyrus-ga503
