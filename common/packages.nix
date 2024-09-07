@@ -18,6 +18,7 @@
     neovim
     dconf
     unzip
-    local.tokyo-night-sddm
+    greetd.tuigreet
+    #local.tokyo-night-sddm
   ];
 }

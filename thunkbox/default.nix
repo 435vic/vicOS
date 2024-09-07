@@ -58,11 +58,19 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "catppuccin-mocha";
-  services.displayManager.sddm.package = pkgs.kdePackages.sddm;
+  #services.displayManager.sddm.enable = true;
+  #services.displayManager.sddm.theme = "catppuccin-mocha";
+  #services.displayManager.sddm.package = pkgs.kdePackages.sddm;
 
-  #services.greetd.enable = true;
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd hyprland";
+        user = "vico";
+      };
+    };
+  };
   #services.cage.enable = true;
   #programs.regreet.enable = true;
 
@@ -150,11 +158,11 @@
     libnotify
     gnomeExtensions.blur-my-shell
     zed-editor
-    (pkgs.catppuccin-sddm.override {
-      flavor = "mocha";
-      background = "${/home/vico/wallpapers/ukbangbang.png}";
-      loginBackground = true;
-    })
+    #(pkgs.catppuccin-sddm.override {
+    #  flavor = "mocha";
+    #  background = "${/home/vico/wallpapers/ukbangbang.png}";
+    #  loginBackground = true;
+    #})
   ];
 
   # THUNKBOX specific: asusctl daemon

@@ -6,11 +6,16 @@
   ...
 }:
 {
+  imports = [
+    ../scripts/hyprland
+  ];
+
   programs.hyprland = {
     enable = true;
     #package = inputs.hyprland.packages.${system}.hyprland;
     #portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
   };
+
   # Enable Ozone Wayland support in Chromium and Electron based applications
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
@@ -42,5 +47,25 @@
     xdg-desktop-portal-gtk # file picker dialog
     adwaita-qt # qt5 dark theme
     adwaita-qt6 # qt6 dark theme
+    btop # process/computer monitor
   ];
+
+  security.polkit.enable = true;
+
+  # Autostart gnome polkit auth agent
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
 }
