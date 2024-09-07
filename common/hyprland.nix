@@ -23,22 +23,24 @@
   };
 
   environment.systemPackages = with pkgs; [
-    swaynotificationcenter
-    grim
-    brightnessctl
-    rofi-wayland
-    hyprpaper
-    waybar
-    libnotify
-    networkmanagerapplet
-    libsForQt5.qt5.qtwayland
-    kdePackages.qtwayland
-    swappy
-    slurp
-    wf-recorder
-    kdePackages.polkit-kde-agent-1
-    xdg-desktop-portal-gtk
-    adwaita-qt
-    adwaita-qt6
+    swaynotificationcenter # notifs
+    grimblast # screenshots
+    brightnessctl # keyboard and monitor brightness
+    rofi-wayland # app launcher
+    hyprpaper # wallpaper
+    waybar # status bar
+    libnotify # notify-send
+    networkmanagerapplet # configure networks from swaybar
+    libsForQt5.qt5.qtwayland # qt5 support
+    kdePackages.qtwayland # qt6 support
+    swappy # screenshot editor
+    wf-recorder # wayland screen recorder
+    polkit_gnome # authentication/keychain
+    playerctl # play/pause
+    pamixer # audio config
+    xdotool # window management for steam
+    xdg-desktop-portal-gtk # file picker dialog
+    adwaita-qt # qt5 dark theme
+    adwaita-qt6 # qt6 dark theme
   ];
 }
