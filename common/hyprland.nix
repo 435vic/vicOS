@@ -48,6 +48,8 @@
     adwaita-qt # qt5 dark theme
     adwaita-qt6 # qt6 dark theme
     btop # process/computer monitor
+    papirus-icon-theme # icon theme
+    pavucontrol # graphical audio interface config
   ];
 
   security.polkit.enable = true;
