@@ -67,10 +67,21 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd hyprland";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet -r --time --cmd hyprland";
         user = "vico";
       };
     };
+  };
+
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOutput = "tty";
+    StandardError = "journal"; # Without this errors will spam on screen
+    # Without these bootlogs will spam on screen
+    TTYReset = true;
+    TTYVHangup = true;
+    TTYVTDisallocate = true;
   };
   #services.cage.enable = true;
   #programs.regreet.enable = true;
@@ -116,9 +127,9 @@
   };
 
   # thunkbox specific: NVIDIA power management
-  powerManagement.enable = true;
-  hardware.nvidia.powerManagement.finegrained = true;
-  hardware.nvidia.powerManagement.enable = true;
+  #powerManagement.enable = true;
+  #hardware.nvidia.powerManagement.finegrained = true;
+  #hardware.nvidia.powerManagement.enable = true;
 
   users.users.vico = {
     isNormalUser = true;
