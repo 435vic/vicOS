@@ -11,6 +11,7 @@
     ../common/fonts.nix
     ../common/packages.nix
     ../common/hyprland.nix
+    ../common/steam.nix
   ];
 
   # TODO: if I ever add more hosts I should probably move this to separate files
@@ -158,6 +159,7 @@
     libnotify
     gnomeExtensions.blur-my-shell
     zed-editor
+    prismlauncher
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
