@@ -5,11 +5,14 @@
     "exclusive": true,
     "gtk-layer-shell": true,
     "spacing": 4,
-    "modules-left": ["hyprland/workspaces"],
+    "modules-left": ["hyprland/workspaces", "mpris"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["mpris", "idle_inhibitor", "custom/power_profile", "network", "wireplumber", "clock", "battery", "tray"],
+    "modules-right": ["idle_inhibitor", "custom/power_profile", "network", "wireplumber", "clock", "battery", "tray"],
     "hyprland/window": {
-        "format": "{}"
+        "format": "{}",
+        "rewrite": {
+          "(.*) - Mozilla Firefox": "🌎 $1"
+        }
     },
 
     "custom/power_profile": {
@@ -43,7 +46,6 @@
     },
 
     "mpris": {
-      "player": "Feishin",
       "format": " {status_icon} {dynamic}",
       "interval": 1,
       "dynamic-len": 60,

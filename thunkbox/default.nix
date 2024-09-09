@@ -160,6 +160,9 @@
     gnomeExtensions.blur-my-shell
     zed-editor
     prismlauncher
+    webcord
+    spotify
+    spicetify-cli
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
