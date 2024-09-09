@@ -11,7 +11,7 @@
     "hyprland/window": {
         "format": "{}",
         "rewrite": {
-          "(.*) - Mozilla Firefox": "🌎 $1"
+          "(.*) — Mozilla Firefox": "🌎 $1"
         }
     },
 
@@ -55,7 +55,7 @@
         "stopped": ""
       },
       "dynamic-order": ["title", "artist"],
-      //"ignored-players": ["firefox"]
+      "ignored-players": ["firefox"]
     },
 
     "idle_inhibitor": {
@@ -84,7 +84,7 @@
         "format-alt": "{icon} {time}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": [" ", " ", " ", " ", " "]
     },
 
     "wireplumber": {
