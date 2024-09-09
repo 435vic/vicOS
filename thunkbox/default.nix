@@ -2,6 +2,7 @@
   pkgs,
   config,
   inputs,
+  lib,
   ...
 }:
 {
@@ -58,7 +59,10 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  services.xserver.videoDrivers = [
+    "amdgpu"
+    "nvidia"
+  ];
 
   #services.displayManager.sddm.enable = true;
   #services.displayManager.sddm.theme = "catppuccin-mocha";
@@ -132,6 +136,7 @@
   hardware.nvidia.powerManagement.finegrained = true;
   hardware.nvidia.powerManagement.enable = true;
   hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.open = lib.mkForce false;
 
   users.users.vico = {
     isNormalUser = true;
