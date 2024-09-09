@@ -8,7 +8,12 @@
       noto-fonts
       noto-fonts-emoji
       jetbrains-mono
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      (nerdfonts.override {
+        fonts = [
+          "JetBrainsMono"
+          "SpaceMono"
+        ];
+      })
     ];
 
     enableDefaultPackages = false;

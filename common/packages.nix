@@ -19,6 +19,7 @@
     dconf
     unzip
     greetd.tuigreet
+    killall
     #local.tokyo-night-sddm
   ];
 }

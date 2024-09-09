@@ -5,9 +5,9 @@
     "exclusive": true,
     "gtk-layer-shell": true,
     "spacing": 4,
-    "modules-left": ["hyprland/workspaces", "network"],
+    "modules-left": ["hyprland/workspaces"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["mpris", "idle_inhibitor", "wireplumber", "clock", "battery", "tray"],
+    "modules-right": ["mpris", "idle_inhibitor", "custom/power_profile", "network", "wireplumber", "clock", "battery", "tray"],
     "hyprland/window": {
         "format": "{}"
     },
@@ -59,8 +59,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
+            "activated": " ",
+            "deactivated": " "
         }
     },
 
@@ -89,8 +89,8 @@
         "scroll-step": 5, // %, can be a float
         "format": "{icon} {volume}%",
         "format-bluetooth": "{icon} {volume}% ",
-        "format-bluetooth-muted": "󰆪 {icon}",
-        "format-muted": "󰆪",
+        "format-bluetooth-muted": " {icon}",
+        "format-muted": " ",
         "format-icons": {
             "headphone": "",
             "hands-free": "󰂑",
@@ -98,11 +98,11 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", "", ""]
+            "default": ["", "", " "]
         },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "on-click-right": "pavucontrol"
-    }
+    },
 
     "temperature": {
         "thermal-zone": 0,
@@ -113,12 +113,12 @@
 
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": " ",
-        "format-ethernet": "󰈀",
-        "tooltip-format": "{essid} - {ifname} via {gwaddr}",
+        "format-wifi": "󰖩",
+        "format-ethernet": "󰈁",
+        "tooltip-format": "{ifname} via {gwaddr}",
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "󱛅",
-        "format-alt": "{ifname}:{essid} {ipaddr}/{cidr}"
+        "format-alt": "{ipaddr}/{cidr}"
     },
 
     "bluetooth": {
