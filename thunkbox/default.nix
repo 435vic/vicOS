@@ -91,7 +91,7 @@
   #services.cage.enable = true;
   #programs.regreet.enable = true;
 
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
 
   services.blueman.enable = true;
 
@@ -136,7 +136,6 @@
   hardware.nvidia.powerManagement.finegrained = true;
   hardware.nvidia.powerManagement.enable = true;
   hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.open = lib.mkForce false;
 
   users.users.vico = {
     isNormalUser = true;
@@ -175,7 +174,7 @@
     # thunkbox specific: asusctl
     asusctl
     libnotify
-    gnomeExtensions.blur-my-shell
+    #gnomeExtensions.blur-my-shell
     zed-editor
     prismlauncher
     webcord

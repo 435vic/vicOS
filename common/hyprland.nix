@@ -50,6 +50,7 @@
     btop # process/computer monitor
     papirus-icon-theme # icon theme
     pavucontrol # graphical audio interface config
+    nemo # file manager
   ];
 
   security.polkit.enable = true;
