@@ -55,6 +55,13 @@
         };
       };
 
+      flake.templates = {
+        rust = {
+          path = ./templates/rust;
+          description = "A basic flake for rust development using direnv and fenix";
+        };
+      };
+
       flake.nixosConfigurations = {
         thunkbox = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
