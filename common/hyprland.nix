@@ -27,6 +27,9 @@
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
 
+  programs.nm-applet.enable = true;
+  networking.networkmanager.enable = true;
+
   environment.systemPackages = with pkgs; [
     swaynotificationcenter # notifs
     grimblast # screenshots
@@ -35,7 +38,6 @@
     hyprpaper # wallpaper
     waybar # status bar
     libnotify # notify-send
-    networkmanagerapplet # configure networks from swaybar
     libsForQt5.qt5.qtwayland # qt5 support
     kdePackages.qtwayland # qt6 support
     swappy # screenshot editor
