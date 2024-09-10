@@ -10,22 +10,29 @@
   };
 
   outputs =
-    { nixpkgs, flake-utils, fenix, ... }:
+    {
+      nixpkgs,
+      flake-utils,
+      fenix,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         rust-min = fenix.packages.${system}.minimal.toolchain;
-        rust-develop = with fenix.packages.${system}; combine [
-          (complete.withComponents [
-            "cargo"
-            "clippy"
-            "rust-src"
-            "rustc"
-            "rustfmt"
-          ])
-          rust-analyzer
-        ];
+        rust-develop =
+          with fenix.packages.${system};
+          combine [
+            (complete.withComponents [
+              "cargo"
+              "clippy"
+              "rust-src"
+              "rustc"
+              "rustfmt"
+            ])
+            rust-analyzer
+          ];
       in
       {
         devShells.default = pkgs.mkShell {
