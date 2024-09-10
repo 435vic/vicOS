@@ -53,6 +53,7 @@
     papirus-icon-theme # icon theme
     pavucontrol # graphical audio interface config
     nemo # file manager
+    gnome-themes-extra # Adwaita theme
   ];
 
   security.polkit.enable = true;
