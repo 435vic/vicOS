@@ -188,12 +188,6 @@
     #})
   ];
 
-  # 1TB SSD
-  fileSystems."/mnt/memes" = {
-    device = "/dev/disk/by-uuid/ce75bf24-f055-4fbf-a994-4a9e978aff2f";
-    fsType = "ext4";
-  };
-
   # THUNKBOX specific: asusctl daemon
   services.asusd.enable = true;
 
