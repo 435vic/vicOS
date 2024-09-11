@@ -54,11 +54,13 @@
     pavucontrol # graphical audio interface config
     nemo # file manager
     gnome-themes-extra # Adwaita theme
+    networkmanagerapplet # nm-applet
   ];
 
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.hyprland.enableGnomeKeyring = true;
+  security.pam.services.login.enableGnomeKeyring = true;
 
   # Autostart gnome polkit auth agent
   systemd = {
