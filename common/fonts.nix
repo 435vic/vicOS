@@ -27,12 +27,14 @@
 
         sansSerif = [
           "Lexend"
-          "Noto Color Emoji"
+          "Noto Sans"
         ];
+
         serif = [
           "Noto Serif"
           "Noto Color Emoji"
         ];
+
         emoji = [ "Noto Color Emoji" ];
       };
     };
