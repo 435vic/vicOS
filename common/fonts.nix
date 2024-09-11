@@ -6,6 +6,8 @@
       lexend
       lato
       noto-fonts
+      noto-fonts-extra
+      noto-fonts-cjk-sans
       noto-fonts-emoji
       jetbrains-mono
       (nerdfonts.override {
@@ -26,8 +28,8 @@
         ];
 
         sansSerif = [
-          "Noto Sans"
           "Lexend"
+          "Noto Sans"
         ];
 
         serif = [
