@@ -34,12 +34,12 @@
   boot.kernelParams = [ "quiet" ];
 
   # ASUS GA503RM keyboard backlight fix
-  #boot.kernelPatches = [
-  #  {
-  #    name = "asus-g14-kernel-hid-backlight";
-  #    patch = ./patches/v2-0001-hid-asus-use-hid-for-brightness-control-on-keyboa.patch;
-  #  }
-  #];
+  boot.kernelPatches = [
+    {
+      name = "asus-fedora-kernel";
+      patch = "${inputs.fedora-kernel}/asus-patch-series.patch";
+    }
+  ];
 
   i18n.defaultLocale = "en_GB.UTF-8";
   i18n.extraLocaleSettings = {

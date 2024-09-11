@@ -16,6 +16,9 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    fedora-kernel.url = "gitlab:asus-linux/fedora-kernel/rog-6.10";
+    fedora-kernel.flake = false;
   };
 
   outputs =

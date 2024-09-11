@@ -59,6 +59,23 @@
         "type": "github"
       }
     },
+    "fedora-kernel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725949641,
+        "narHash": "sha256-YN7tDi6bwUv71ANSGzCai7InNoGpR6PmAyhfCTuwItc=",
+        "owner": "asus-linux",
+        "repo": "fedora-kernel",
+        "rev": "1c055cbccf7bb81d7fac06b7d1f42ef26cfdaf43",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "asus-linux",
+        "ref": "rog-6.10",
+        "repo": "fedora-kernel",
+        "type": "gitlab"
+      }
+    },
     "flake-compat": {
       "locked": {
         "lastModified": 1696426674,
@@ -378,6 +395,7 @@
     "root": {
       "inputs": {
         "alacritty-theme": "alacritty-theme",
+        "fedora-kernel": "fedora-kernel",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
