@@ -26,8 +26,8 @@
         ];
 
         sansSerif = [
-          "Lexend"
           "Noto Sans"
+          "Lexend"
         ];
 
         serif = [
