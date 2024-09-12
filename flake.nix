@@ -17,8 +17,8 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    fedora-kernel.url = "gitlab:asus-linux/fedora-kernel/rog-6.10";
-    fedora-kernel.flake = false;
+    g14-kernel.url = "gitlab:dragonn/linux-g14/6.10";
+    g14-kernel.flake = false;
   };
 
   outputs =

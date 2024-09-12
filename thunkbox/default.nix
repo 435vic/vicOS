@@ -36,8 +36,8 @@
   # ASUS GA503RM keyboard backlight fix
   boot.kernelPatches = [
     {
-      name = "asus-fedora-kernel";
-      patch = "${inputs.fedora-kernel}/asus-patch-series.patch";
+      name = "asus-hid-keyboard-backlight-fix";
+      patch = "${inputs.g14-kernel}/v2-0001-hid-asus-use-hid-for-brightness-control-on-keyboa.patch";
     }
   ];
 
