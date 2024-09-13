@@ -33,6 +33,16 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelParams = [ "quiet" ];
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+
+    extraPackages = with pkgs; [
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+
   # ASUS GA503RM keyboard backlight fix
   boot.kernelPatches = [
     {
@@ -181,7 +191,6 @@
     webcord
     spotify
     spicetify-cli
-    shotcut
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
