@@ -9,5 +9,6 @@
       fi
     '')
     (writeScriptBin "screenshot.sh" (builtins.readFile ./screenshot.sh))
+    (writeScriptBin "rofilaunch.sh" (builtins.readFile ./rofilaunch.sh))
   ];
 }

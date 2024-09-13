@@ -31,7 +31,7 @@
   networking.networkmanager.enable = true;
 
   environment.systemPackages = with pkgs; [
-    swaynotificationcenter # notifs
+    dunst # notifs
     grimblast # screenshot utility
     grim # screenshots
     slurp # area screenshots
