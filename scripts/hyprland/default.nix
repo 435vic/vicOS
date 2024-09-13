@@ -8,5 +8,6 @@
           hyprctl dispatch killactive ""
       fi
     '')
+    (writeScriptBin "screenshot.sh" (builtins.readFile ./screenshot.sh))
   ];
 }

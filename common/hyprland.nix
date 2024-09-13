@@ -32,7 +32,10 @@
 
   environment.systemPackages = with pkgs; [
     swaynotificationcenter # notifs
-    grimblast # screenshots
+    grimblast # screenshot utility
+    grim # screenshots
+    slurp # area screenshots
+    wl-clipboard # copy images to clipboard
     brightnessctl # keyboard and monitor brightness
     rofi-wayland # app launcher
     hyprpaper # wallpaper
