@@ -20,6 +20,7 @@
     unzip
     greetd.tuigreet
     killall
+    imagemagick
     #local.tokyo-night-sddm
   ];
 }
