@@ -181,6 +181,7 @@
     webcord
     spotify
     spicetify-cli
+    shotcut
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";

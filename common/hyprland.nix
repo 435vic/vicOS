@@ -30,6 +30,8 @@
   programs.nm-applet.enable = true;
   networking.networkmanager.enable = true;
 
+  services.udisks2.enable = true;
+
   environment.systemPackages = with pkgs; [
     dunst # notifs
     grimblast # screenshot utility
@@ -58,6 +60,7 @@
     nemo # file manager
     gnome-themes-extra # Adwaita theme
     networkmanagerapplet # nm-applet
+    udiskie # removable media manager
   ];
 
   security.polkit.enable = true;
