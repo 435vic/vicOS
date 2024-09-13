@@ -55,7 +55,3 @@ m) # print focused monitor
 esac
 
 rm "$temp_screenshot"
-
-if [ -f "${save_dir}/${save_file}" ]; then
-	notify-send -a "t1" -i "${save_dir}/${save_file}" "saved in ${save_dir}"
-fi
