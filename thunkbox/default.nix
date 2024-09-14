@@ -191,6 +191,7 @@
     webcord
     spotify
     spicetify-cli
+    davinci-resolve
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
