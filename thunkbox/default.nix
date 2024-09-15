@@ -13,6 +13,7 @@
     ../common/packages.nix
     ../common/hyprland.nix
     ../common/steam.nix
+    ../common/cloudflare-warp.nix
   ];
 
   # TODO: if I ever add more hosts I should probably move this to separate files
@@ -192,7 +193,6 @@
     spotify
     spicetify-cli
     davinci-resolve
-    cloudflare-warp
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
