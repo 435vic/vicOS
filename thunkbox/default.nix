@@ -192,6 +192,7 @@
     spotify
     spicetify-cli
     davinci-resolve
+    cloudflare-warp
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
