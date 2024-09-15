@@ -44,6 +44,15 @@
     ];
   };
 
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      80
+      443
+      8081
+    ];
+  };
+
   # ASUS GA503RM keyboard backlight fix
   boot.kernelPatches = [
     {
