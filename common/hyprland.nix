@@ -41,6 +41,7 @@
     brightnessctl # keyboard and monitor brightness
     rofi-wayland # app launcher
     hyprpaper # wallpaper
+    hyprlock # lock screen duh
     waybar # status bar
     libnotify # notify-send
     libsForQt5.qt5.qtwayland # qt5 support
