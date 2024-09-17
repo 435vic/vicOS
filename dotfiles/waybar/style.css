@@ -89,6 +89,8 @@ window#waybar.empty #window {
     padding: 0;
 }
 
+
+
 /*
 window#waybar.empty {
     background-color: transparent;
@@ -231,6 +233,16 @@ button:hover {
 #mpris.playing {
     background-color: @yellow;
     color: @fglight;
+}
+
+#pulseaudio.microphone {
+    padding: 0px;
+    background-color: transparent;
+}
+
+#pulseaudio.microphone.muted {
+    padding: 0 6px;
+    background-color: @red;
 }
 
 #tray menu {
