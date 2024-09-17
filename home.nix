@@ -106,6 +106,11 @@
       source = ./dotfiles/waybar;
     };
 
+    "dunst" = {
+      recursive = true;
+      source = ./dotfiles/dunst;
+    };
+
     "swappy/config".text = ''
       [Default]
       save_dir=$HOME/Pictures/Screenshots
