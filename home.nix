@@ -117,5 +117,11 @@
       save_filename_format=screenshot_%Y%m%d-%H%M%S.png
       early_exit=true
     '';
+
+    "nixpkgs/config.nix".text = ''
+      {
+        allowUnfree = true;
+      }
+    '';
   };
 }
