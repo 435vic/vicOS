@@ -202,6 +202,7 @@
     spotify
     spicetify-cli
     davinci-resolve
+    ciscoPacketTracer8 # makes me want to cry
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
