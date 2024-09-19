@@ -11,5 +11,10 @@
   environment.systemPackages = with pkgs; [
     bottles
     protonup
+    mangohud
   ];
+
+  environment.sessionVariables = {
+    GAMEMODERUNEXEC = "nvidia-offload";
+  };
 }
