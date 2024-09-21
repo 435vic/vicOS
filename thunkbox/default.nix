@@ -34,6 +34,8 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelParams = [ "quiet" ];
 
+  services.logind.lidSwitch = "ignore";
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
