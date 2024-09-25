@@ -14,6 +14,7 @@
     ../common/hyprland.nix
     ../common/steam.nix
     ../common/cloudflare-warp.nix
+    ../common/virtualisation.nix
   ];
 
   # TODO: if I ever add more hosts I should probably move this to separate files

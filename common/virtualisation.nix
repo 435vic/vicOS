@@ -4,12 +4,12 @@
   ...
 }:
 {
-  vitualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
   services.supergfxd.enable = true;
 
-  environment.SystemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     supergfxctl
   ];
 }
