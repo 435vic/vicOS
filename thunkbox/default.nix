@@ -206,6 +206,7 @@
     spicetify-cli
     davinci-resolve
     ciscoPacketTracer8 # makes me want to cry
+    deluge
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
