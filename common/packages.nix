@@ -21,6 +21,7 @@
     greetd.tuigreet
     killall
     imagemagick
+    p7zip
     #local.tokyo-night-sddm
   ];
 }
