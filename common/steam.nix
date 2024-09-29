@@ -12,6 +12,7 @@
     bottles
     protonup
     mangohud
+    r2modman
   ];
 
   environment.sessionVariables = {
