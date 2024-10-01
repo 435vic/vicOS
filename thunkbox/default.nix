@@ -58,9 +58,13 @@
 
   # ASUS GA503RM keyboard backlight fix
   boot.kernelPatches = [
+    # {
+    #   name = "asus-hid-keyboard-backlight-fix";
+    #   patch = "${inputs.g14-kernel}/v2-0001-hid-asus-use-hid-for-brightness-control-on-keyboa.patch";
+    # }
     {
-      name = "asus-hid-keyboard-backlight-fix";
-      patch = "${inputs.g14-kernel}/v2-0001-hid-asus-use-hid-for-brightness-control-on-keyboa.patch";
+      name = "asus-patch-series";
+      patch = "${inputs.g14-kernel}/asus-patch-series.patch";
     }
   ];
 
