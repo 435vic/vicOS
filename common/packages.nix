@@ -22,6 +22,7 @@
     killall
     imagemagick
     p7zip
+    nixd
     #local.tokyo-night-sddm
   ];
 }
