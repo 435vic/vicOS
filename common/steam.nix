@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  outputs,
   libs,
   ...
 }:
@@ -14,7 +15,7 @@
     (_: prev: {
       steam = prev.steam.override {
         extraProfile = "export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${
-          inputs.nix-gaming.packages.${pkgs.system}.northstar-proton
+          outputs.packages.${pkgs.system}.northstar-proton
         }'";
       };
     })
@@ -25,6 +26,7 @@
     protonup
     mangohud
     r2modman
+    local.viper
   ];
 
   environment.sessionVariables = {
