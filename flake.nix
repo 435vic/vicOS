@@ -17,6 +17,8 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    nix-gaming.url = "github:fufexan/nix-gaming";
+
     g14-kernel.url = "gitlab:asus-linux/fedora-kernel/rog-6.11";
     g14-kernel.flake = false;
   };
