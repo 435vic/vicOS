@@ -12,7 +12,7 @@
     ../common/fonts.nix
     ../common/packages.nix
     ../common/hyprland.nix
-    ../common/steam.nix
+    ../common/games.nix
     ../common/cloudflare-warp.nix
     ../common/virtualisation.nix
   ];

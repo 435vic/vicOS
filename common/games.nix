@@ -26,7 +26,8 @@
     protonup
     mangohud
     r2modman
-    local.viper
+    local.viper # tf2 northstar/mod manager
+    lutris
   ];
 
   environment.sessionVariables = {
