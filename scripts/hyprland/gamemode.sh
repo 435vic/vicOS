@@ -9,6 +9,13 @@
 
 GAMEMODEFILE="/tmp/hyprgamemode"
 
+# if the script is called with -r, reset gamemode
+
+if [ "$1" == "-r" ]; then
+    echo "off" > "$GAMEMODEFILE"
+    exit
+fi
+
 if [ ! -f "$GAMEMODEFILE" ]; then
     echo "off" > "$GAMEMODEFILE"
 fi
@@ -32,10 +39,12 @@ if [ "$GAMEMODE" == "off" ]; then
     else
         notify-send -t 2500 "No external monitor detected. Built-in display remains active."
     fi
+    killall hypridle
     notify-send -t 2500 "Game mode enabled"
     exit
 else
     hyprctl reload
+    pgrep hypridle || hyprctl dispatch exec hypridle
     echo "off" > "$GAMEMODEFILE"
     notify-send -t 2500 "Game mode disabled"
     exit
