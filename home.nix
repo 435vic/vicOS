@@ -111,6 +111,11 @@
       source = ./dotfiles/dunst;
     };
 
+    "i3" = {
+      recursive = true;
+      source = ./dotfiles/i3;
+    };
+
     "swappy/config".text = ''
       [Default]
       save_dir=$HOME/Pictures/Screenshots
@@ -134,13 +139,5 @@
           dbus-update-activation-environment DISPLAY XAUTHORITY
       fi
     '';
-
-    "i3/config".text = ''
-      set $mod Mod4
-
-      bindsym $mod+t exec --no-startup-id alacritty
-      bindsym $mod+a exec --no-startup-id rofi -show drun
-    '';
-
   };
 }
