@@ -123,5 +123,24 @@
         allowUnfree = true;
       }
     '';
+
+    ".xinitrc".text = ''
+      if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+          eval $(dbus-launch --exit-with-session --sh-syntax)
+      fi
+      systemctl --user import-environment DISPLAY XAUTHORITY
+
+      if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+          dbus-update-activation-environment DISPLAY XAUTHORITY
+      fi
+    '';
+
+    ".i3/config".text = ''
+      set $mod Mod4
+
+      bindsym $mod+t exec --no-startup-id alacritty
+      bindsym $mod+a exec --no-startup-id rofi -show drun
+    '';
+
   };
 }
