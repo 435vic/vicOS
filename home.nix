@@ -135,7 +135,7 @@
       fi
     '';
 
-    ".i3/config".text = ''
+    "i3/config".text = ''
       set $mod Mod4
 
       bindsym $mod+t exec --no-startup-id alacritty
