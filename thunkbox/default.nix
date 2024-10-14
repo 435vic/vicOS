@@ -53,7 +53,12 @@
     allowedTCPPorts = [
       80
       443
-      8081
+    ];
+    allowedTCPPortRanges = [
+      {
+        from = 8000;
+        to = 9000;
+      }
     ];
   };
 
