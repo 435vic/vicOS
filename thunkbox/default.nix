@@ -213,6 +213,7 @@
     davinci-resolve
     ciscoPacketTracer8 # makes me want to cry
     deluge
+    vlc
     #(pkgs.catppuccin-sddm.override {
     #  flavor = "mocha";
     #  background = "${/home/vico/wallpapers/ukbangbang.png}";
