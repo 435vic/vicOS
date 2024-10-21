@@ -16,6 +16,7 @@
     ../common/cloudflare-warp.nix
     ../common/virtualisation.nix
     ../common/i3-x11.nix
+    ../cachix.nix
   ];
 
   # TODO: if I ever add more hosts I should probably move this to separate files
