@@ -66,7 +66,7 @@
           description = "A basic flake for rust development using direnv and fenix";
         };
 
-        node_22 = {
+        nodejs_22 = {
           path = ./templates/node;
           description = "Node.js development with pnpm";
         };

@@ -19,12 +19,12 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
-        rust-min = fenix.packages.${system}.minimal.toolchain;
+        pkgs = nixpkgs.legacyPackages.${system};c
+        rust-stable = fenix.packages.${system}.minimal.toolchain;
         rust-develop =
           with fenix.packages.${system};
           combine [
-            (complete.withComponents [
+            (stable.withComponents [
               "cargo"
               "clippy"
               "rust-src"
