@@ -7,11 +7,13 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixvim.url = "github:nix-community/nixvim/2ef974182ef62a6a6992118f0beb54dce812ae9b";
+    nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
     alacritty-theme.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland.url = "github:hyprwm/Hyprland";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -41,16 +43,6 @@
         { pkgs, system, ... }:
         {
           formatter = pkgs.nixfmt-rfc-style;
-          # Configure the global instance of pkgs
-          #_module.args.pkgs = import nixpkgs {
-          #  inherit system;
-          #  # Overlays would go here (or an import)
-          #  overlays = [
-          #    alacritty-theme.overlays.default
-          #  ];
-          #  config.allowUnfree = true;
-          #};
-
           packages = import ./packages pkgs;
         };
 
@@ -69,6 +61,11 @@
         nodejs_22 = {
           path = ./templates/node;
           description = "Node.js development with pnpm";
+        };
+
+        c-cpp = {
+          path = ./templates/c-cpp;
+          description = "C/C++ development";
         };
       };
 

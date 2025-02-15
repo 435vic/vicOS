@@ -17,10 +17,10 @@
 
     "custom/power_profile": {
         //shows the current power profile and switches to next on click
-        "exec": "asusctl profile -p | sed s:'Active profile is'::",
+        "exec": "asusctl profile -p | sed -n 's/^.*Active profile is //p'",
         "interval": 30,
-        "format": "󰈐{}",
-        "on-click": "asusctl profile -n; pkill -SIGRTMIN+8 waybar",
+        "format": "󰈐 {}",
+        "on-click": "asusctl profile -n; pkill -SIGRTMIN+8 .waybar-wrapped",
         "signal": 8
     },
 

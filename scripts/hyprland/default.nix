@@ -11,5 +11,6 @@
     (writeScriptBin "screenshot.sh" (builtins.readFile ./screenshot.sh))
     (writeScriptBin "rofilaunch.sh" (builtins.readFile ./rofilaunch.sh))
     (writeScriptBin "gamemode.sh" (builtins.readFile ./gamemode.sh))
+    (writeScriptBin "touchpad.sh" (builtins.readFile ./touchpad.sh))
   ];
 }

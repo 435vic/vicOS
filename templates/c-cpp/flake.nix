@@ -6,30 +6,32 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
-    nixpkgs,
-    flake-utils,
-    ...
-  }:
-  flake-utils.lib.eachDefaultSystem (system:
-  let
-    pkgs = nixpkgs.legacyPackages.${system};
-  in
-  {
-    devShells.default = pkgs.mkShell {
-      buildInputs = with pkgs; [
-        clang-tools
-        cmake
-        codespell
-        conan
-        cppcheck
-        doxygen
-        gtest
-        lcov
-        vcpkg
-        vcpkg-tool
-      ];
-    };
-  }
-  );
+  outputs =
+    {
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            clang-tools
+            cmake
+            codespell
+            conan
+            cppcheck
+            doxygen
+            gtest
+            lcov
+            vcpkg
+            vcpkg-tool
+          ];
+        };
+      }
+    );
 }

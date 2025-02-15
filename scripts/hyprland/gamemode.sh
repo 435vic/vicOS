@@ -30,6 +30,7 @@ if [ "$GAMEMODE" == "off" ]; then
         keyword general:gaps_in 2;\
         keyword general:gaps_out 2;\
         keyword general:border_size 1;\
+        keyword windowrule opacity 1 override 1 override 1 override, ^(.*)$;\
         keyword decoration:rounding 0"
     echo "on" > "$GAMEMODEFILE"
     # Check if an external monitor is connected

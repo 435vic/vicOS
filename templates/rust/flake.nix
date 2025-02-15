@@ -19,7 +19,7 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};c
+        pkgs = nixpkgs.legacyPackages.${system};
         rust-stable = fenix.packages.${system}.minimal.toolchain;
         rust-develop =
           with fenix.packages.${system};

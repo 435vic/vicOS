@@ -16,6 +16,7 @@
     ../common/cloudflare-warp.nix
     ../common/virtualisation.nix
     ../common/i3-x11.nix
+    ../common/unity.nix
     ../cachix.nix
   ];
 
@@ -25,6 +26,9 @@
     "nix-command"
     "flakes"
   ];
+
+  # pin nixpkgs registry entry to local version for faster evals
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   networking.hostName = "thunkbox";
 
@@ -55,6 +59,12 @@
       80
       443
     ];
+
+    allowedUDPPorts = [
+      4950 # warframe
+      4955 # warframe
+    ];
+
     allowedTCPPortRanges = [
       {
         from = 8000;
@@ -102,7 +112,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet -r --time --cmd hyprland";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet -r --time --cmd Hyprland";
         user = "vico";
       };
     };
@@ -136,14 +146,17 @@
   services.printing.enable = true;
 
   # temp fix for vulkan issues
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    version = "555.58.02";
-    sha256_64bit = "sha256-xctt4TPRlOJ6r5S54h5W6PT6/3Zy2R4ASNFPu8TSHKM=";
-    sha256_aarch64 = "sha256-wb20isMrRg8PeQBU96lWJzBMkjfySAUaqt4EgZnhyF8=";
-    openSha256 = "sha256-8hyRiGB+m2hL3c9MDA/Pon+Xl6E788MZ50WrrAGUVuY=";
-    settingsSha256 = "sha256-ZpuVZybW6CFN/gz9rx+UJvQ715FZnAOYfHn5jt5Z2C8=";
-    persistencedSha256 = "sha256-a1D7ZZmcKFWfPjjH1REqPM5j/YLWKnbkP9qfRyIyxAw=";
-  };
+  # hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+  #   version = "555.58.02";
+  #   sha256_64bit = "sha256-xctt4TPRlOJ6r5S54h5W6PT6/3Zy2R4ASNFPu8TSHKM=";
+  #   sha256_aarch64 = "sha256-wb20isMrRg8PeQBU96lWJzBMkjfySAUaqt4EgZnhyF8=";
+  #   openSha256 = "sha256-8hyRiGB+m2hL3c9MDA/Pon+Xl6E788MZ50WrrAGUVuY=";
+  #   settingsSha256 = "sha256-ZpuVZybW6CFN/gz9rx+UJvQ715FZnAOYfHn5jt5Z2C8=";
+  #   persistencedSha256 = "sha256-a1D7ZZmcKFWfPjjH1REqPM5j/YLWKnbkP9qfRyIyxAw=";
+  # };
+
+  # nvidia drivers 565.57.01 fix vulkan issues
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
 
   # Enable sound with pipewire.
   #sound.enable = true;
@@ -174,6 +187,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "dialout"
     ];
     shell = pkgs.zsh;
   };
@@ -184,6 +198,7 @@
   programs.git = {
     enable = true;
     package = pkgs.gitFull;
+    lfs.enable = true;
     config.credential = {
       helper = "manager";
       credentialStore = "secretservice";
@@ -202,24 +217,19 @@
   };
 
   environment.systemPackages = with pkgs; [
-    # thunkbox specific: asusctl
     asusctl
     libnotify
-    #gnomeExtensions.blur-my-shell
     zed-editor.fhs
     prismlauncher
     webcord
     spotify
     spicetify-cli
     davinci-resolve
-    ciscoPacketTracer8 # makes me want to cry
+    #ciscoPacketTracer8 # makes me want to cry
     deluge
     vlc
-    #(pkgs.catppuccin-sddm.override {
-    #  flavor = "mocha";
-    #  background = "${/home/vico/wallpapers/ukbangbang.png}";
-    #  loginBackground = true;
-    #})
+    libvlc
+    arduino-ide
   ];
 
   # THUNKBOX specific: asusctl daemon

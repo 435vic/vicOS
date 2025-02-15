@@ -12,8 +12,8 @@
 
   programs.hyprland = {
     enable = true;
-    #package = inputs.hyprland.packages.${system}.hyprland;
-    #portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
+    package = inputs.hyprland.packages.${system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
   };
 
   # Enable Ozone Wayland support in Chromium and Electron based applications
@@ -67,8 +67,7 @@
 
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
-  security.pam.services.hyprland.enableGnomeKeyring = true;
-  security.pam.services.login.enableGnomeKeyring = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   # Autostart gnome polkit auth agent
   systemd = {

@@ -64,7 +64,7 @@
 
   programs.alacritty.enable = true;
   programs.alacritty.settings = {
-    import = [ pkgs.alacritty-theme.rose-pine ];
+    general.import = [ pkgs.alacritty-theme.rose-pine ];
     font.normal.family = "JetBrains Mono";
     window = {
       padding = {
