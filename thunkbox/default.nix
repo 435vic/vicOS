@@ -225,6 +225,7 @@
     spotify
     spicetify-cli
     davinci-resolve
+    jetbrains.idea-community
     #ciscoPacketTracer8 # makes me want to cry
     deluge
     vlc
