@@ -28,6 +28,12 @@
     r2modman
     local.viper # tf2 northstar/mod manager
     lutris
+    # tetr.io desktop with gamemode
+    (tetrio-desktop.overrideAttrs (previousAttrs: {
+      installPhase =
+        builtins.replaceStrings [ "Exec=$out/bin/tetrio" ] [ "Exec=gamemoderun $out/bin/tetrio" ]
+          previousAttrs.installPhase;
+    }))
   ];
 
   environment.sessionVariables = {

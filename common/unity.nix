@@ -50,6 +50,11 @@ in
     })
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "dotnet-sdk-6.0.428"
+    "dotnet-runtime-6.0.36"
+  ];
+
   home-manager.users.vico.home.file = {
     ".local/share/applications/jetbrains-rider.desktop".source =
       let

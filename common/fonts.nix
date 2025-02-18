@@ -10,12 +10,14 @@
       noto-fonts-cjk-sans
       noto-fonts-emoji
       jetbrains-mono
-      (nerdfonts.override {
-        fonts = [
-          "JetBrainsMono"
-          "SpaceMono"
-        ];
-      })
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.space-mono
+      # (nerdfonts.override {
+      #   fonts = [
+      #     "JetBrainsMono"
+      #     "SpaceMono"
+      #   ];
+      # })
     ];
 
     enableDefaultPackages = false;
