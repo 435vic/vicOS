@@ -22,7 +22,7 @@
     killall
     imagemagick
     p7zip
-    nixd
+    nil # nix language server
     #local.tokyo-night-sddm
   ];
 }
