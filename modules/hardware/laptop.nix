@@ -6,21 +6,20 @@
 }:
 with lib;
 let
-  hardware = config.vicos.hardware;
+  cfg = config.vicos.hardware.laptop;
 in {
   options = {
-    config.hardware.isLaptop = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether the system is a laptop";
-    };
-
-    config.vicos.hardware.laptop = {
+    vicos.hardware.laptop = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether the system is a laptop";
+      };
       quietBoot = mkEnableOption "Quiet Boot";
     };
   };
 
-  config = mkMerge [
+  config = mkIf cfg.enable (mkMerge [
     {
       environment.systemPackages = with pkgs; [
         brightnessctl
@@ -29,14 +28,16 @@ in {
 
       boot.plymouth.enable = true;
     }
-    (mkIf hardware.laptop.quietBoot {
-      kernelParams = [
-        "quiet"
-        "splash"
-        "udev.log_level=3"
-      ];
-      consoleLogLevel = 0;
-      initrd.verbose = false;
+    (mkIf cfg.quietBoot {
+      boot = {
+        kernelParams = [
+          "quiet"
+          "splash"
+          "udev.log_level=3"
+        ];
+        consoleLogLevel = 0;
+        initrd.verbose = false;
+      };
     })
-  ];
+  ]);
 }

@@ -1,18 +1,31 @@
-# This file imports all modules on this folder.
-{ lib, config, options, ... }:
+/*
+  *
+  * default.nix - module entry point
+  * this module provides some options provided by the flake,
+  * as well as defining some sensible defaults for any system.
+  *
+*/
+{ lib, config, options, pkgs, ... }:
 with lib;
 let
-  inherit (config.vicos.flake.lib) mapModules;
+  inherit (config.vicos) flake;
   cfg = config.vicos;
   readOnly = types.unique { message = "This option is read-only."; };
 in
 {
-  imports = mapModules import ./.;
 
-  options.vicos.user = mkOption {
-    type = types.attrs;
-    description = "The main user account.";
-    default = { name = ""; };
+
+  options.vicos = {
+    user = mkOption {
+      type = with types; attrsOf unspecified;
+      description = "The main user account.";
+    };
+
+    username = mkOption {
+      type = types.str;
+      default = "vico";
+      description = "The username for the main user account.";
+    };
   };
 
   options.vicos.flake = {
@@ -29,6 +42,12 @@ in
       description = "modules provided by vicOS flake inputs";
     };
 
+    inputs = mkOption {
+      type = with types; readOnly (attrsOf unspecified);
+      default = {};
+      description = "vicOS flake inputs";
+    };
+
     lib = mkOption {
       type = with types; readOnly (attrsOf unspecified);
       default = {};
@@ -36,34 +55,70 @@ in
     };
 
     system = mkOption {
-      type = with types; readOnly str;
+      type = with types; uniq (readOnly str);
       description = "The host's current system.";
     };
   };
 
-  assertions = [
-    {
-      assertion = isPathDirectory cfg.path;
-      message = "${cfg.path} must be a directory.";
-    }
-    {
-      assertion = pathExists (cfg.path + "/flake.nix");
-      message = "${cfg.path}/flake.nix is not a flake. Are you sure you're using the correct path?";
-    }
-    {
-      assertion = cfg.user.name != "";
-      message = "User name must be set.";
-    }
-  ];
-
   config = {
+    assertions = [
+      {
+        assertion = pathIsDirectory cfg.flake.path;
+        message = "${cfg.flake.path} must be a directory.";
+      }
+      {
+        assertion = pathExists (cfg.flake.path + "/flake.nix");
+        message = "${cfg.flake.path}/flake.nix is not a flake. Are you sure you're using the correct path?";
+      }
+    ];
+
     vicos.user = {
       description = mkDefault "The primary user account";
       extraGroups = [ "wheel" ];
       isNormalUser = true;
-      home = "/home/${cfg.user.name}";
+      home = "/home/${cfg.username}";
+      name = cfg.username;
       group = "users";
       uid = 1000;
+    };
+    users.users.${cfg.username} = mkAliasDefinitions options.vicos.user;
+
+    nix = {
+      extraOptions = ''
+        warn-dirty = false
+        experimental-features = nix-command flakes ca-derivations
+      '';
+
+      nixPath = [
+        "nixpkgs=${flake.inputs.nixpkgs}"
+        "dotfiles=${flake.path}"
+      ];
+
+      registry.nixpkgs.flake = flake.inputs.nixpkgs;
+
+      settings = {
+        substituters = [
+          "https://nix-community.cachix.org"
+          "https://hyprland.cachix.org"
+        ];
+        trusted-public-keys = [
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        ];
+
+        auto-optimise-store = true;
+        trusted-users = [ "root" cfg.user.name ];
+        allowed-users = [ "root" cfg.user.name ];
+      };
+    };
+
+    boot = {
+      # Prefer the latest kernel
+      kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_6_13;
+      loader = {
+        efi.canTouchEfiVariables = mkDefault true;
+        systemd-boot.configurationLimit = mkDefault 10;
+      };
     };
 
     system.stateVersion = "23.11";
@@ -73,6 +128,5 @@ in
       NIXPKGS_ALLOW_UNFREE = mkDefault "1"; # sorry I don't care :p
     };
 
-    users.users.${cfg.user.name} = mkAliasDefinitions options.vicos.user;
   };
 }

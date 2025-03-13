@@ -8,12 +8,8 @@
 with lib;
 let
   cfg = config.vicos.home;
-  flake-modules = config.vicos.flake.modules;
+  flake-modules = config.vicos.flake;
 in {
-  imports = [
-    flake-modules.home-manager.home-manager
-  ];
-
   options.home = {
     configFile = mkOption {
       type = types.attrs;
@@ -35,18 +31,19 @@ in {
     # and not a store path, allowing quick edits without rebuilding
     lib.vicos.fileFromFlake = path: config.lib.file.mkOutOfStoreSymlink "${config.vicos.flake.path}/${path}";
     lib.vicos.fileFromConfig = path: config.lib.file.mkOutOfStoreSymlink "${config.vicos.flake.path}/config/${path}";
+    lib.vicos.dirFromConfig = path: pkgs.symlinkJoin (baseNameOf path) [ "${config.vicos.flake.path}/config/${path}" ];
 
-    home-manager = {
-      useUserPackages = true;
+    # home-manager = {
+    #   useUserPackages = true;
 
-      users.${config.vicos.user.name} = {
-        home.stateVersion = config.system.stateVersion;
+    #   users.${config.vicos.user.name} = {
+    #     home.stateVersion = config.system.stateVersion;
 
-        xdg = {
-          configFile = mkAliasDefinitions options.home.configFile;
-          dataFile = mkAliasDefinitions options.home.dataFile;
-        };
-      };
-    };
+    #     xdg = {
+    #       configFile = mkAliasDefinitions options.home.configFile;
+    #       dataFile = mkAliasDefinitions options.home.dataFile;
+    #     };
+    #   };
+    # };
   };
 }

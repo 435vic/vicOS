@@ -8,7 +8,7 @@ with lib;
 let
   cfg = config.vicos.desktop.hyprland;
 in {
-  options.vicos.display.hyprland = {
+  options.vicos.desktop.hyprland = {
     enable = lib.mkEnableOption "Hyprland";
   };
 
@@ -43,5 +43,12 @@ in {
       mako          # notification daemon
       pamixer       # volume control
     ];
+
+    home.configFile = {
+      hypr = {
+        source = config.lib.vicos.dirFromConfig "hypr";
+        recursive = true;
+      };
+    };
   };
 }
