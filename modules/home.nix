@@ -33,8 +33,8 @@ in {
 
     # these functions allow symlinking to the actual flake path
     # and not a store path, allowing quick edits without rebuilding
-    lib.vicos.fromFlake = path: config.lib.file.mkOutOfStoreSymlink "${config.vicos.flake.path}/${path}";
-    lib.vicos.fromConfig = path: config.lib.file.mkOutOfStoreSymlink "${config.vicos.flake.path}/config/${path}";
+    lib.vicos.fileFromFlake = path: config.lib.file.mkOutOfStoreSymlink "${config.vicos.flake.path}/${path}";
+    lib.vicos.fileFromConfig = path: config.lib.file.mkOutOfStoreSymlink "${config.vicos.flake.path}/config/${path}";
 
     home-manager = {
       useUserPackages = true;

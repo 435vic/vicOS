@@ -70,7 +70,7 @@ in
 
     environment.sessionVariables = mkOrder 10 {
       DOTFILES_HOME = cfg.flake.path;
-      NIXPKGS_ALLOW_UNFREE = "1"; # sorry I don't care :p
+      NIXPKGS_ALLOW_UNFREE = mkDefault "1"; # sorry I don't care :p
     };
 
     users.users.${cfg.user.name} = mkAliasDefinitions options.vicos.user;
