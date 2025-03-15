@@ -5,8 +5,10 @@
     nixpkgs.url = "nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs = {
@@ -50,8 +52,10 @@
       # why specify the name of the host both as the dir/filename and in the config
       # when you can spend more time writing a function to do it for you?
       mkNamedHost = name: config: hostLib.mkHost (config // { inherit name; });
+      # hosts are provided the vicOS object with inputs, context, etc.
+      callHost = name: host: mkNamedHost name (host vicos);
     in
-      mapAttrs mkNamedHost (vicos.lib.getHosts ./hosts);
+      mapAttrs callHost (vicos.lib.getHosts ./hosts);
 
     lib = vicos.lib;
   };

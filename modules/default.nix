@@ -23,7 +23,7 @@ in
 
     username = mkOption {
       type = types.str;
-      default = "vico";
+      example = "vico";
       description = "The username for the main user account.";
     };
   };
@@ -72,6 +72,8 @@ in
       }
     ];
 
+    i18n.defaultLocale = mkDefault "en_US.UTF-8";
+
     vicos.user = {
       description = mkDefault "The primary user account";
       extraGroups = [ "wheel" ];
@@ -112,11 +114,17 @@ in
       };
     };
 
+    virtualisation.vmVariant.virtualisation = {
+      memorySize = 2048;  # default: 1024
+      cores = 2;          # default: 1
+    };
+
     boot = {
       # Prefer the latest kernel
-      kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_6_13;
+      kernelPackages = mkDefault pkgs.linuxPackages_latest;
       loader = {
         efi.canTouchEfiVariables = mkDefault true;
+        systemd-boot.enable = mkDefault true;
         systemd-boot.configurationLimit = mkDefault 10;
       };
     };
@@ -127,6 +135,5 @@ in
       DOTFILES_HOME = cfg.flake.path;
       NIXPKGS_ALLOW_UNFREE = mkDefault "1"; # sorry I don't care :p
     };
-
   };
 }
