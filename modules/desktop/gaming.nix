@@ -12,7 +12,7 @@ in
   options.vicos.desktop.gaming = {
       enable = mkEnableOption "Gaming";
       packages = mkOption {
-        type = listOf package;
+        type = with types; listOf package;
         default = [];
         description = "List of packages to install for gaming";
       };
@@ -21,12 +21,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    vicos.desktop.gaming.packages = mkDefault [
+    vicos.desktop.gaming.packages = with pkgs; mkDefault [
       bottles
       protonup
       mangohud
       r2modman
       lutris
+      (mkIf cfg.tetrio.enable (pkgs.tetrio-desktop.overrideAttrs (previousAttrs: {
+        installPhase =
+          builtins.replaceStrings [ "Exec=$out/bin/tetrio" ] [ "Exec=gamemoderun $out/bin/tetrio" ] previousAttrs.installPhase;
+      })))
     ];
 
     programs.steam.enable = true;
@@ -38,12 +42,6 @@ in
       GAMEMODERUNEXEC = "nvidia-offload";
     };
 
-    environment.systemPackages = mkMerge [
-      cfg.packages
-      mkIf cfg.tetrio.enable (tetrio-desktop.overrideAttrs (previousAttrs: {
-        installPhase =
-          builtins.replaceStrings [ "Exec=$out/bin/tetrio" ] [ "Exec=gamemoderun $out/bin/tetrio" ] previousAttrs.installPhase;
-      }))
-    ];
+    environment.systemPackages = cfg.packages;
   };
 }

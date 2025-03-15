@@ -47,6 +47,7 @@ in
 
     # the newer versions of hyprland require recent mesa drivers
     hardware.graphics = {
+      enable = true;
       package = pkgs.unstable.mesa.drivers;
       package32 = pkgs.unstable.pkgsi686Linux.mesa.drivers;
     };

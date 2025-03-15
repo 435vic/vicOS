@@ -1,0 +1,144 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mode": "dock",
+    "exclusive": true,
+    "gtk-layer-shell": true,
+    "spacing": 4,
+    "modules-left": ["hyprland/workspaces", "mpris"],
+    "modules-center": ["hyprland/window"],
+    "modules-right": ["pulseaudio#microphone", "idle_inhibitor", "custom/power_profile", "network", "wireplumber", "clock", "battery", "tray"],
+    "hyprland/window": {
+        "format": "{}",
+        "rewrite": {
+          "(.*) — Mozilla Firefox": "🌎 $1"
+        }
+    },
+
+    "custom/power_profile": {
+        //shows the current power profile and switches to next on click
+        "exec": "asusctl profile -p | sed -n 's/^.*Active profile is //p'",
+        "interval": 30,
+        "format": "󰈐 {}",
+        "on-click": "asusctl profile -n; pkill -SIGRTMIN+8 .waybar-wrapped",
+        "signal": 8
+    },
+
+   // "custom/weather" : {
+   //      //shows the current weather and forecast
+   //      "tooltip" : true,
+   //      "format" : "{}",
+   //      "interval" : 30,
+   //      "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
+   //      "return-type" : "json"
+   //  },
+
+    "tray": {
+        "icon-size": 14,
+        "spacing": 10
+    },
+
+    "clock": {
+        // "timezone": "America/New_York",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": " {:%H:%M}",
+        "format-alt": " {:%a %F}"
+    },
+
+    "mpris": {
+      "format": "{status_icon} {dynamic}",
+      "interval": 1,
+      "dynamic-len": 60,
+      "status-icons": {
+        "playing": "",
+        "paused": "",
+        "stopped": ""
+      },
+      "dynamic-order": ["title", "artist"],
+      "ignored-players": ["firefox"]
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": " ",
+            "deactivated": " "
+        }
+    },
+
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-full": "{icon} {capacity}%",
+        "format-charging": "󰃨 {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon} {time}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": [" ", " ", " ", " ", " "]
+    },
+
+    "wireplumber": {
+        "scroll-step": 5, // %, can be a float
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}% ",
+        "format-bluetooth-muted": " {icon}",
+        "format-muted": " ",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "󰂑",
+            "headset": "󰂑",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", " "]
+        },
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-click-right": "pavucontrol"
+    },
+
+    "temperature": {
+        "thermal-zone": 0,
+        "format": "{temperatureC}°C ",
+        "critical-threshold": 80,
+        "format-critical": "{temperatureC}°C "
+    },
+
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "󰖩",
+        "format-ethernet": "󰈁",
+        "tooltip-format": "{ifname} via {gwaddr}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "󱛅",
+        "format-alt": "{ipaddr}/{cidr}"
+    },
+
+    "bluetooth": {
+	    "format": " {status}",
+	    "format-disabled": "", // an empty format will hide the module
+	    "format-connected": " {num_connections}",
+	    "tooltip-format": "{device_alias}",
+	    "tooltip-format-connected": " {device_enumerate}",
+	    "tooltip-format-enumerate-connected": "{device_alias}"
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "",
+        "format-source-muted": " ",
+        "on-click": "pamixer --default-source -t",
+        "on-scroll-up": "",
+        "on-scroll-down": "",
+        "scroll-step": 0
+    }
+}

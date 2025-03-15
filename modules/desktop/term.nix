@@ -16,13 +16,13 @@ in
   };
 
   config = {
-    vicos.desktop.hyprland.defaultTerm = if cfg.ghostty.enable then "ghostty" else "alacritty";
+    vicos.desktop.hyprland.defaultTerminal = if cfg.ghostty.enable then "ghostty" else "alacritty";
 
     environment.systemPackages = [
       (if cfg.ghostty.enable then pkgs.unstable.ghostty else pkgs.unstable.alacritty)
     ];
 
-    home.file = mkMerge [
+    home.configFile = mkMerge [
       (mkIf cfg.ghostty.enable {
         "ghostty/config".source = config.lib.vicos.fileFromConfig "ghostty/config";
       })
