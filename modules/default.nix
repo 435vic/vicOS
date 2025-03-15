@@ -72,6 +72,14 @@ in
       }
     ];
 
+    lib.flake.getInput = input: output: element: let
+      inputs = cfg.flake.inputs;
+      system = cfg.flake.system;
+    in {
+      overlays = inputs.${input}.overlays.${element};
+      packages = inputs.${input}.packages.${system}.${element};
+    }.${output};
+
     i18n.defaultLocale = mkDefault "en_US.UTF-8";
 
     vicos.user = {
@@ -97,11 +105,18 @@ in
       ];
 
       registry.nixpkgs.flake = flake.inputs.nixpkgs;
+      registry.vicos = {
+        from.id = "vicOS";
+        from.type = "indirect";
+        to.path = "${cfg.flake.path}";
+        to.type = "path";
+      };
 
       settings = {
         substituters = [
           "https://nix-community.cachix.org"
           "https://hyprland.cachix.org"
+          "https://cache.nixos.org"
         ];
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

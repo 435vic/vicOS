@@ -49,6 +49,10 @@ in {
         source = config.lib.vicos.dirFromConfig "hypr";
         recursive = true;
       };
+
+      "hypr/hyprland.pre.conf".text = ''
+
+      '';
     };
   };
 }

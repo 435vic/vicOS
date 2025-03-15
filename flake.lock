@@ -71,7 +71,28 @@
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "zen-browser": "zen-browser"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1742016023,
+        "narHash": "sha256-B/V6iAgx8N5EGA2FtYjCHzLelOhNNAr/wIcIcFR1MGk=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "d5de27c48b1aab6f6280430b89d9e3174c39fe57",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "type": "github"
       }
     }
   },

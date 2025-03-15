@@ -1,7 +1,7 @@
 { inputs, ... }: {
   system = "x86_64-linux";
 
-  configuration = { config, lib, ... }: {
+  configuration = { config, lib, pkgs, ... }: {
     imports = [
       inputs.nixos-hardware.nixosModules.asus-zephyrus-ga503
       ./filesystems.nix
@@ -18,6 +18,11 @@
       desktop = {
         enable = true;
         hyprland.enable = true;
+
+        browser = {
+          enable = true;
+          zen.enable = true;
+        };
       };
 
       shell = {
@@ -28,6 +33,10 @@
         };
       };
     };
+
+    environment.systemPackages = with pkgs; [
+      alacritty # should be defined in a module
+    ];
 
     services.asusd = {
       enable = true;
