@@ -7,7 +7,8 @@
 with lib;
 let
   cfg = config.vicos.desktop.browser;
-in {
+in
+{
   options.vicos.desktop.browser = {
     enable = mkEnableOption "web browser";
     zen = {

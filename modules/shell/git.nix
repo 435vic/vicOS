@@ -7,7 +7,8 @@
 with lib;
 let
   cfg = config.vicos.shell.git;
-in {
+in
+{
   options.vicos.shell.git = {
     name = mkOption {
       type = types.str;

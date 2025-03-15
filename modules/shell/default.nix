@@ -7,7 +7,8 @@
 with lib;
 let
   cfg = config.vicos.shell;
-in {
+in
+{
   imports = [
     ./git.nix
   ];

@@ -7,9 +7,33 @@
 with lib;
 let
   cfg = config.vicos.desktop.hyprland;
-in {
+in
+{
   options.vicos.desktop.hyprland = {
     enable = lib.mkEnableOption "Hyprland";
+    extraConfig = mkOption {
+      type = types.str;
+      default = "";
+      description = "Extra configuration to add to the Hyprland configuration file.";
+    };
+
+    defaultEditor = mkOption {
+      type = types.str;
+      default = "zeditor";
+      description = "Default editor to launch when inputting editor keybind.";
+    };
+
+    defaultBrowser = mkOption {
+      type = types.str;
+      default = if config.vicos.desktop.browser.zen.enable then "zen" else "firefox";
+      description = "Default browser to launch when inputting browser keybind.";
+    };
+
+    defaultTerminal = mkOption {
+      type = types.str;
+      default = "alacritty";
+      description = "Default terminal to launch when inputting terminal keybind.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -35,14 +59,24 @@ in {
     };
 
     environment.systemPackages = with pkgs.unstable; [
-      hyprlock      # lock screem
-      hyprpaper     # wallpaper manager
-      hyprpicker    # color picker
-      hyprshot      # screenshot tool
+      hyprlock # lock screem
+      hyprpaper # wallpaper manager
+      hyprpicker # color picker
+      hyprshot # screenshot tool
 
-      mako          # notification daemon
-      pamixer       # volume control
+      mako # notification daemon
+      pamixer # volume control
     ];
+
+    systemd.user.targets.hyprland-session = {
+      unitConfig = {
+        Description = "Hyprland compositor session";
+        Documentation = [ "man:systemd.special(7)" ];
+        BindsTo = [ "graphical-session.target" ];
+        Wants = [ "graphical-session-pre.target" ];
+        After = [ "graphical-session-pre.target" ];
+      };
+    };
 
     home.configFile = {
       hypr = {
@@ -51,8 +85,12 @@ in {
       };
 
       "hypr/hyprland.pre.conf".text = ''
-
+        $term = ${cfg.defaultTerminal}
+        $browser = ${cfg.defaultBrowser}
+        $editor = ${cfg.defaultEditor}
       '';
+
+      "hypr/hyprland.post.conf".text = cfg.extraConfig;
     };
   };
 }

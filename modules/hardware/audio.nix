@@ -7,7 +7,8 @@
 with lib;
 let
   cfg = config.vicos.hardware.audio;
-in {
+in
+{
   options.vicos.hardware.audio.enable = mkEnableOption "audio";
 
   config = mkIf cfg.enable {

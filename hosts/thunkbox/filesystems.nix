@@ -1,8 +1,8 @@
 {
   fileSystems."/" = {
-      device = "/dev/disk/by-uuid/be1d33dc-19a9-41b3-be32-0d6f6f66901d";
-      fsType = "ext4";
-    };
+    device = "/dev/disk/by-uuid/be1d33dc-19a9-41b3-be32-0d6f6f66901d";
+    fsType = "ext4";
+  };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/D95D-975A";

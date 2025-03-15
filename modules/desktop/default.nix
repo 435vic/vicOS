@@ -12,6 +12,8 @@ in
   imports = [
     ./browser.nix
     ./hyprland.nix
+    ./term.nix
+    ./gaming.nix
   ];
 
   options.vicos.desktop = {

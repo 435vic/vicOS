@@ -5,7 +5,13 @@
   * as well as defining some sensible defaults for any system.
   *
 */
-{ lib, config, options, pkgs, ... }:
+{
+  lib,
+  config,
+  options,
+  pkgs,
+  ...
+}:
 with lib;
 let
   inherit (config.vicos) flake;
@@ -13,7 +19,6 @@ let
   readOnly = types.unique { message = "This option is read-only."; };
 in
 {
-
 
   options.vicos = {
     user = mkOption {
@@ -38,19 +43,19 @@ in
 
     modules = mkOption {
       type = with types; readOnly (attrsOf unspecified);
-      default = {};
+      default = { };
       description = "modules provided by vicOS flake inputs";
     };
 
     inputs = mkOption {
       type = with types; readOnly (attrsOf unspecified);
-      default = {};
+      default = { };
       description = "vicOS flake inputs";
     };
 
     lib = mkOption {
       type = with types; readOnly (attrsOf unspecified);
-      default = {};
+      default = { };
       description = "vicOS library functions accessible to modules";
     };
 
@@ -72,13 +77,17 @@ in
       }
     ];
 
-    lib.flake.getInput = input: output: element: let
-      inputs = cfg.flake.inputs;
-      system = cfg.flake.system;
-    in {
-      overlays = inputs.${input}.overlays.${element};
-      packages = inputs.${input}.packages.${system}.${element};
-    }.${output};
+    lib.flake.getInput =
+      input: output: element:
+      let
+        inputs = cfg.flake.inputs;
+        system = cfg.flake.system;
+      in
+      {
+        overlays = inputs.${input}.overlays.${element};
+        packages = inputs.${input}.packages.${system}.${element};
+      }
+      .${output};
 
     i18n.defaultLocale = mkDefault "en_US.UTF-8";
 
@@ -124,14 +133,20 @@ in
         ];
 
         auto-optimise-store = true;
-        trusted-users = [ "root" cfg.user.name ];
-        allowed-users = [ "root" cfg.user.name ];
+        trusted-users = [
+          "root"
+          cfg.user.name
+        ];
+        allowed-users = [
+          "root"
+          cfg.user.name
+        ];
       };
     };
 
     virtualisation.vmVariant.virtualisation = {
-      memorySize = 2048;  # default: 1024
-      cores = 2;          # default: 1
+      memorySize = 2048; # default: 1024
+      cores = 2; # default: 1
     };
 
     # change later!
