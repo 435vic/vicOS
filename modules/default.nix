@@ -84,6 +84,7 @@ in
 
     vicos.user = {
       description = mkDefault "The primary user account";
+      password = mkDefault "password";
       extraGroups = [ "wheel" ];
       isNormalUser = true;
       home = "/home/${cfg.username}";

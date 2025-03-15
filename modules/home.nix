@@ -31,7 +31,37 @@ with lib;
     # and not a store path, allowing quick edits without rebuilding
     lib.vicos.fileFromFlake = path: mkOutOfStoreSymlink (checkPath "${config.vicos.flake.path}/${path}");
     lib.vicos.fileFromConfig = path: mkOutOfStoreSymlink (checkPath "${config.vicos.flake.path}/config/${path}");
-    lib.vicos.dirFromConfig = path: pkgs.symlinkJoin { name = baseNameOf path; paths = [ (checkPath "${config.vicos.flake.path}/config/${path}") ]; };
+    # Symlink Join can't be used here as it cannot access /home during derivations
+    # we need to pass the tree structure manually
+    lib.vicos.dirFromConfig = path: let
+      # returns a list of paths in a folder with names relative to said folder
+      walkDir = base: dir: let
+        filterOutSymlinks = filterAttrs (_: type: type == "directory" || type == "regular");
+        fullPath = if dir == "" then base else "${base}/${dir}";
+      in pipe fullPath [
+        builtins.readDir
+        filterOutSymlinks
+        (mapAttrsToList (name: type:
+          let
+            relPath = if dir == "" then name else "${dir}/${name}";
+          in
+            if type == "directory"
+            then walkDir base relPath
+            else relPath
+        ))
+        flatten
+      ];
+
+      commandArgs = {
+        paths = walkDir "${config.vicos.flake.path}/config/${path}" "";
+        passAsFile = [ "paths" ];
+      };
+    in pkgs.runCommandLocal (baseNameOf path) commandArgs ''
+      mkdir -p $out
+      for path in $(cat $pathsPath); do
+        ln -s ${config.vicos.flake.path}/config/${path}/$path $out/$path
+      done
+    '';
 
     home-manager = {
       useUserPackages = true;
