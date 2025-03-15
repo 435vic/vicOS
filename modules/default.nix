@@ -84,7 +84,6 @@ in
 
     vicos.user = {
       description = mkDefault "The primary user account";
-      password = mkDefault "password";
       extraGroups = [ "wheel" ];
       isNormalUser = true;
       home = "/home/${cfg.username}";
@@ -134,6 +133,10 @@ in
       memorySize = 2048;  # default: 1024
       cores = 2;          # default: 1
     };
+
+    # change later!
+    vicos.user.initialPassword = "nixos";
+    users.users.root.initialPassword = "nixos";
 
     boot = {
       # Prefer the latest kernel
