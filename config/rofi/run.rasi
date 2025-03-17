@@ -27,7 +27,7 @@ window {
     spacing: 0em;
     padding: 0em;
     width: 28em;
-    height: 20em;
+    height: 22em;
 }
 
 mainbox {
@@ -53,13 +53,14 @@ message {
   background-color: #7aa2f75e;
   border-color: @main-br;
   border: 2px dash;
-  padding: 0.4em 0.6em;
+  padding: 0.4em 0.6em 0.6em 0.6em;
   margin: 0.25em 0.5em;
 }
 
 textbox {
   color: @main-fg;
-  font: "JetBrainsMono Nerd Font 10";
+  font: "JetBrainsMono Nerd Font 9";
+  vertical-align: 0.5;
 }
 
 entry {
