@@ -42,7 +42,7 @@
         (import ../modules)
         {
           # We inject all flake related thingamabobs through the module system.
-          # I reluctantly agreed due to https://jade.fyi/blog/flakes-arent-real/
+          # https://jade.fyi/blog/flakes-arent-real/
           vicos.flake = {
             inherit (vicos) lib path inputs;
             inherit system;

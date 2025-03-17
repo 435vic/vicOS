@@ -11,17 +11,13 @@ in
 {
   options.vicos.desktop.gaming = {
       enable = mkEnableOption "Gaming";
-      packages = mkOption {
-        type = with types; listOf package;
-        default = [];
-        description = "List of packages to install for gaming";
-      };
+      enableExtraPackages = mkEnableOption "Enable extra packages";
 
       tetrio.enable = mkEnableOption "Tetr.io";
   };
 
   config = mkIf cfg.enable {
-    vicos.desktop.gaming.packages = with pkgs; mkDefault [
+    environment.systemPackages = mkIf cfg.enableExtraPackages [
       bottles
       protonup
       mangohud

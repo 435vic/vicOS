@@ -17,7 +17,6 @@
       ];
 
       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
-      # hardware.nvidia.open = false;
 
       vicos = {
         username = "vico";
@@ -33,7 +32,12 @@
           rofi.enable = true;
           hyprland.enable = true;
 
+          apps {
+            discord.enable = true;
+          };
+
           gaming.enable = true;
+          gaming.enableExtraPackages = true;
           gaming.tetrio.enable = true;
 
           term.ghostty.enable = true;
@@ -58,18 +62,9 @@
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        alacritty # FIXME: should be defined in a module
-        networkmanagerapplet # FIXME: move to services or hyprland module
-      ];
-
       services.asusd = {
         enable = true;
         enableUserService = true;
-      };
-
-      services.xserver = {
-        videoDrivers = [ "amdgpu" "nvidia" ];
       };
 
       networking.useDHCP = lib.mkDefault true;
@@ -85,8 +80,10 @@
         "sdhci_pci"
       ];
       boot.initrd.kernelModules = [ "amdgpu" ];
-
-      # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
+      # defined by hardware
+      services.xserver = {
+        videoDrivers = [ "amdgpu" "nvidia" ];
+      };
 
       # TODO: Move to a emulation module
       boot.kernelModules = [ "kvm-amd" ];
