@@ -48,15 +48,16 @@ in
     # the newer versions of hyprland require recent mesa drivers
     hardware.graphics = {
       enable = true;
-      package = pkgs.unstable.mesa.drivers;
-      package32 = pkgs.unstable.pkgsi686Linux.mesa.drivers;
+      enable32Bit = true; 
+      #package = pkgs.unstable.mesa.drivers;
+      #package32 = pkgs.unstable.pkgsi686Linux.mesa.drivers;
     };
 
     programs.hyprland = {
       enable = true;
       xwayland.enable = true;
-      package = pkgs.unstable.hyprland;
-      portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
+      #package = pkgs.unstable.hyprland;
+      #portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
     };
 
     environment.systemPackages = with pkgs.unstable; [
@@ -76,6 +77,14 @@ in
         BindsTo = [ "graphical-session.target" ];
         Wants = [ "graphical-session-pre.target" ];
         After = [ "graphical-session-pre.target" ];
+      };
+    };
+
+    services.greetd = {
+      enable = true;
+      settings.default_session = {
+        command = "Hyprland";
+        user = config.vicos.username;
       };
     };
 

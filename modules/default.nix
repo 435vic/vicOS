@@ -102,6 +102,10 @@ in
     };
     users.users.${cfg.username} = mkAliasDefinitions options.vicos.user;
 
+    # allows us to use nixpkgs-unstable on nix path and registry
+    nixpkgs.flake.setNixPath = false;
+    nixpkgs.flake.setFlakeRegistry = false;
+
     nix = {
       extraOptions = ''
         warn-dirty = false
@@ -109,11 +113,14 @@ in
       '';
 
       nixPath = [
-        "nixpkgs=${flake.inputs.nixpkgs}"
+        "nixpkgs=${flake.inputs.nixpkgs-unstable}"
         "dotfiles=${flake.path}"
       ];
 
-      registry.nixpkgs.flake = flake.inputs.nixpkgs;
+      # SIX FEET UNDER PLEASE
+      channel.enable = false;
+
+      registry.nixpkgs.flake = flake.inputs.nixpkgs-unstable;
       registry.vicos = {
         from.id = "vicOS";
         from.type = "indirect";
@@ -153,9 +160,11 @@ in
     vicos.user.initialPassword = "nixos";
     users.users.root.initialPassword = "nixos";
 
+    hardware.enableRedistributableFirmware = true;
+
     boot = {
       # Prefer the latest kernel
-      kernelPackages = mkDefault pkgs.linuxPackages_latest;
+      kernelPackages = mkDefault pkgs.unstable.linuxPackages_latest;
       loader = {
         efi.canTouchEfiVariables = mkDefault true;
         systemd-boot.enable = mkDefault true;

@@ -11,6 +11,7 @@
       jetbrains-mono
       nerd-fonts.jetbrains-mono
       nerd-fonts.space-mono
+      nerd-fonts.symbols-only
       # (nerdfonts.override {
       #   fonts = [
       #     "JetBrainsMono"

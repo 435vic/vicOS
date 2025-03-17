@@ -56,6 +56,8 @@
     {
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
+      packages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
+
       nixosConfigurations =
         let
           # why specify the name of the host both as the dir/filename and in the config

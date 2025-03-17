@@ -37,8 +37,8 @@ with lib;
         path: mkOutOfStoreSymlink (checkPath "${config.vicos.flake.path}/${path}");
       lib.vicos.fileFromConfig =
         path: mkOutOfStoreSymlink (checkPath "${config.vicos.flake.path}/config/${path}");
-      # Symlink Join can't be used here as it cannot access /home during derivations
-      # we need to pass the tree structure manually
+      # This function will recursively generate symlinks for a folder in config/
+      # Works like home.file.<filename>.recursive but the symlinks point outside the store path
       lib.vicos.dirFromConfig =
         path:
         let
@@ -70,6 +70,7 @@ with lib;
         pkgs.runCommandLocal (baseNameOf path) commandArgs ''
           mkdir -p $out
           for path in $(cat $pathsPath); do
+            mkdir -p $out/$(dirname $path)
             ln -s ${config.vicos.flake.path}/config/${path}/$path $out/$path
           done
         '';

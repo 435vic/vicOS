@@ -16,8 +16,8 @@
         ./REFACTORME_fonts.nix # for the love of god refactor this to the theme modules
       ];
 
-      hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
-      hardware.nvidia.open = false;
+      hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+      # hardware.nvidia.open = false;
 
       vicos = {
         username = "vico";
@@ -30,6 +30,7 @@
 
         desktop = {
           enable = true;
+          rofi.enable = true;
           hyprland.enable = true;
 
           gaming.enable = true;
@@ -67,9 +68,11 @@
         enableUserService = true;
       };
 
-      networking.useDHCP = lib.mkDefault true;
+      services.xserver = {
+        videoDrivers = [ "amdgpu" "nvidia" ];
+      };
 
-      hardware.cpu.amd.updateMicrocode = true;
+      networking.useDHCP = lib.mkDefault true;
 
       # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
       # TODO: move to hardware modules (perhaps with a profile system?)
@@ -83,7 +86,7 @@
       ];
       boot.initrd.kernelModules = [ "amdgpu" ];
 
-      boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
+      # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
 
       # TODO: Move to a emulation module
       boot.kernelModules = [ "kvm-amd" ];

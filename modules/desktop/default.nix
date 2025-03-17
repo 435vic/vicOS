@@ -14,6 +14,7 @@ in
     ./hyprland.nix
     ./term.nix
     ./gaming.nix
+    ./rofi.nix
   ];
 
   options.vicos.desktop = {
@@ -27,6 +28,8 @@ in
       environment.systemPackages = with pkgs; [
         libnotify
         xdg-utils
+        playerctl
+        zed-editor.fhs #FIXME: move somewhere else maybe?
       ];
     }
 
