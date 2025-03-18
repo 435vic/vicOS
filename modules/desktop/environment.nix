@@ -9,14 +9,6 @@ let
   cfg = config.vicos.desktop;
 in
 {
-  imports = [
-    ./browser.nix
-    ./hyprland.nix
-    ./term.nix
-    ./gaming.nix
-    ./rofi.nix
-  ];
-
   options.vicos.desktop = {
     enable = mkEnableOption "Desktop environment";
     wayland.enable = mkEnableOption "Wayland";

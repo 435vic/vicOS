@@ -20,7 +20,6 @@
 
       vicos = {
         username = "vico";
-
         hardware = {
           laptop.enable = true;
           laptop.quietBoot = true;
@@ -32,7 +31,7 @@
           rofi.enable = true;
           hyprland.enable = true;
 
-          apps {
+          apps = {
             discord.enable = true;
           };
 

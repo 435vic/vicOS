@@ -1,10 +1,11 @@
-{ lib }:
+{ lib, ... }:
 let
   inherit (lib)
     pipe
     mapAttrsToList
     filterAttrs
     hasSuffix
+    hasPrefix
     flatten
     nameValuePair
     removeSuffix
@@ -27,6 +28,7 @@ rec {
       readDir
       (filterAttrs (name: type: type == "directory" || type == "regular")) # ignore symlinks and other funky things
       (filterAttrs (name: type: type == "directory" || hasSuffix ".nix" name)) # ignore non-nix files
+      # (filterAttrs (name: type: type == "directory" || hasPrefix "_" name)) # ignore files starting with underscore
       (filterAttrs (name: _: name != "default.nix" && name != "flake.nix"))
       (mapAttrsToList (
         name: type:

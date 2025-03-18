@@ -17,8 +17,10 @@ let
   inherit (config.vicos) flake;
   cfg = config.vicos;
   readOnly = types.unique { message = "This option is read-only."; };
+  walkModules = (import ../lib { inherit lib; }).walkModules;
 in
 {
+  imports = walkModules ./.;
 
   options.vicos = {
     user = mkOption {
@@ -31,37 +33,31 @@ in
       example = "vico";
       description = "The username for the main user account.";
     };
-  };
 
-  options.vicos.flake = {
-    path = mkOption {
-      type = types.str;
-      default = "/home/vico/vicOS";
-      description = "Path to the vicOS flake.";
-      example = "/home/user/.config/vicOS";
-    };
+    flake = {
+      path = mkOption {
+        type = types.str;
+        default = "/home/vico/vicOS";
+        description = "Path to the vicOS flake.";
+        example = "/home/user/.config/vicOS";
+      };
 
-    modules = mkOption {
-      type = with types; readOnly (attrsOf unspecified);
-      default = { };
-      description = "modules provided by vicOS flake inputs";
-    };
+      inputs = mkOption {
+        type = with types; readOnly (attrsOf unspecified);
+        default = { };
+        description = "vicOS flake inputs";
+      };
 
-    inputs = mkOption {
-      type = with types; readOnly (attrsOf unspecified);
-      default = { };
-      description = "vicOS flake inputs";
-    };
+      lib = mkOption {
+        type = with types; readOnly (attrsOf unspecified);
+        default = { };
+        description = "vicOS library functions accessible to modules";
+      };
 
-    lib = mkOption {
-      type = with types; readOnly (attrsOf unspecified);
-      default = { };
-      description = "vicOS library functions accessible to modules";
-    };
-
-    system = mkOption {
-      type = with types; uniq (readOnly str);
-      description = "The host's current system.";
+      rev = mkOption {
+        type = with types; readOnly str;
+        description = "vicOS configuration revision";
+      };
     };
   };
 
@@ -80,8 +76,8 @@ in
     lib.flake.getInput =
       input: output: element:
       let
+        inherit (config.nixpkgs.hostPlatform) system;
         inputs = cfg.flake.inputs;
-        system = cfg.flake.system;
       in
       {
         overlays = inputs.${input}.overlays.${element};

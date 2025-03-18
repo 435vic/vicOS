@@ -17,7 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = mkIf cfg.enableExtraPackages [
+    environment.systemPackages = mkIf cfg.enableExtraPackages (with pkgs.unstable; [
       bottles
       protonup
       mangohud
@@ -27,7 +27,7 @@ in
         installPhase =
           builtins.replaceStrings [ "Exec=$out/bin/tetrio" ] [ "Exec=gamemoderun $out/bin/tetrio" ] previousAttrs.installPhase;
       })))
-    ];
+    ]);
 
     programs.steam.enable = true;
     programs.steam.gamescopeSession.enable = true;
@@ -37,7 +37,5 @@ in
     environment.sessionVariables = {
       GAMEMODERUNEXEC = "nvidia-offload";
     };
-
-    environment.systemPackages = cfg.packages;
   };
 }

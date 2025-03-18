@@ -12,15 +12,17 @@
     zen-browser.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    spiceify-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    spicetify-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs =
     {
+      self,
       nixpkgs,
       nixpkgs-unstable,
+      home-manager,
       ...
     }@inputs:
     let
@@ -40,12 +42,13 @@
 
       vicos =
         let
-          pathEnv = getEnv "VICOS_PATH";
-          vicosPath = (if pathEnv == "" then abort "VICOS_PATH must be set!" else pathEnv);
+          pathEnv = getEnv "DOTFILES_HOME";
+          vicosPath = if pathEnv == "" then abort "DOTFILES_HOME must be set!" else pathEnv;
+          rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
         in
         {
-          inherit inputs;
-          lib = import ./lib/module { inherit (nixpkgs) lib; };
+          inherit rev inputs;
+          lib = import ./lib { inherit (nixpkgs) lib; };
           path = vicosPath;
         };
 
@@ -54,23 +57,50 @@
         config.permittedInsecurePackages = [ ];
       };
 
-      hostLib = import ./lib/hosts.nix { inherit pkgsDefaults vicos; };
+      mkHost = {
+        name,
+        system,
+        configuration
+      }:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            (final: prev: {
+              unstable = import nixpkgs-unstable { inherit system; } // pkgsDefaults;
+            })
+          ];
+        } // pkgsDefaults;
+      in
+      nixpkgs.lib.nixosSystem {
+        modules = [
+          nixpkgs.nixosModules.readOnlyPkgs
+          home-manager.nixosModules.home-manager
+          ./modules
+          {
+            nixpkgs.pkgs = pkgs;
+            networking.hostName = name;
+            vicos.flake = vicos;
+          }
+          configuration
+        ];
+      };
     in
     {
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
-      packages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
+      legacyPackages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
 
       nixosConfigurations =
         let
           # why specify the name of the host both as the dir/filename and in the config
           # when you can spend more time writing a function to do it for you?
-          mkNamedHost = name: config: hostLib.mkHost (config // { inherit name; });
+          mkNamedHost = name: config: mkHost (config // { inherit name; });
           # hosts are provided the vicOS object with inputs, context, etc.
           callHost = name: host: mkNamedHost name (host vicos);
         in
         mapAttrs callHost (vicos.lib.getHosts ./hosts);
 
-      lib = vicos.lib;
+      lib = import ./lib { inherit (nixpkgs) lib; };
     };
 }
