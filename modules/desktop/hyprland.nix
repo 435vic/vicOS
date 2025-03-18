@@ -48,7 +48,7 @@ in
     # the newer versions of hyprland require recent mesa drivers
     hardware.graphics = {
       enable = true;
-      enable32Bit = true; 
+      enable32Bit = true;
       #package = pkgs.unstable.mesa.drivers;
       #package32 = pkgs.unstable.pkgsi686Linux.mesa.drivers;
     };
@@ -80,6 +80,9 @@ in
       };
     };
 
+    security.pam.services.swaylock = {};
+    security.pam.services.hyprlock = {};
+
     services.greetd = {
       enable = true;
       settings.default_session = {
@@ -98,6 +101,8 @@ in
         $term = ${cfg.defaultTerminal}
         $browser = ${cfg.defaultBrowser}
         $editor = ${cfg.defaultEditor}
+
+        exec-once = hyprlock --immediate
       '';
 
       "hypr/hyprland.post.conf".text = cfg.extraConfig;

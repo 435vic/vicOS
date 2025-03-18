@@ -14,6 +14,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.unstable.legcord ];
+    # cant use unstable bc of libgm
+    # TODO: switch to unstable version once mesa >= 24.3 is in nixos stable
+    environment.systemPackages = [ pkgs.legcord ];
   };
 }

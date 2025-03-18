@@ -23,7 +23,7 @@ in
       mangohud
       r2modman
       lutris
-      (mkIf cfg.tetrio.enable (pkgs.tetrio-desktop.overrideAttrs (previousAttrs: {
+      (mkIf cfg.tetrio.enable (tetrio-desktop.overrideAttrs (previousAttrs: {
         installPhase =
           builtins.replaceStrings [ "Exec=$out/bin/tetrio" ] [ "Exec=gamemoderun $out/bin/tetrio" ] previousAttrs.installPhase;
       })))

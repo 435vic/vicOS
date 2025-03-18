@@ -117,6 +117,7 @@ in
       channel.enable = false;
 
       registry.nixpkgs.flake = flake.inputs.nixpkgs-unstable;
+      registry.nixpkgs-stable.flake = flake.inputs.nixpkgs;
       registry.vicos = {
         from.id = "vicOS";
         from.type = "indirect";
