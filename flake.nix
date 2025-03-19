@@ -16,6 +16,8 @@
 
     agenix.url = "github:ryantm/agenix";
 
+    secrets.url = "git+file:.secrets";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
@@ -81,7 +83,6 @@
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
           ./modules
-          ./.secrets/modules
           {
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
