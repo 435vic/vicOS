@@ -68,7 +68,6 @@
       };
 
       networking.wireless.interfaces = [ "wlp4s0" ];
-      # networking.useDHCP = lib.mkDefault true;
 
       # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
       # TODO: move to hardware modules (perhaps with a profile system?)

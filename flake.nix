@@ -14,6 +14,8 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
+    agenix.url = "github:ryantm/agenix";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
@@ -23,6 +25,7 @@
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
+      agenix,
       ...
     }@inputs:
     let
@@ -76,7 +79,9 @@
         modules = [
           nixpkgs.nixosModules.readOnlyPkgs
           home-manager.nixosModules.home-manager
+          agenix.nixosModules.default
           ./modules
+          ./.secrets/modules
           {
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
