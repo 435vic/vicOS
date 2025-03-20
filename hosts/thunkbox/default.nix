@@ -3,8 +3,6 @@
 
   configuration = {
     config,
-    lib,
-    pkgs,
     ...
   }: {
     imports = [

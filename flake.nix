@@ -16,6 +16,8 @@
 
     agenix.url = "github:ryantm/agenix";
 
+    nixCats.url = "github:BirdeeHub/nixCats-nvim";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
@@ -25,21 +27,13 @@
     nixpkgs-unstable,
     home-manager,
     agenix,
+    nixCats,
     ...
   } @ inputs: let
     inherit (nixpkgs.lib) genAttrs mapAttrs;
     inherit (builtins) getEnv;
 
-    allLinuxSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-    ];
-    allDarwinSystems = [
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ];
-    allSystems = allLinuxSystems ++ allDarwinSystems;
-    forAllSystems = genAttrs allSystems;
+    forEachSystem = nixCats.utils.eachSystem ["x86_64-linux" "aarch64-linux"];
 
     vicos = let
       pathEnv = getEnv "DOTFILES_HOME";
@@ -57,6 +51,13 @@
     pkgsDefaults = {
       config.allowUnfree = true;
       config.permittedInsecurePackages = [];
+    };
+
+    vicosCats = import ./nixcats.nix inputs.nixCats;
+    nixCatsModule = nixCats.utils.mkNixosModules {
+      inherit (vicosCats) luaPath categoryDefinitions packageDefinitions;
+      nixpgks = nixpkgs-unstable;
+      defaultPackageName = vicosCats.default;
     };
 
     mkHost = {
@@ -80,21 +81,27 @@
           nixpkgs.nixosModules.readOnlyPkgs
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
+          nixCatsModule
           ./modules
           ./.secrets/modules
           {
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
-            vicos.flake = vicos;
+            vicos.flake = vicos // {
+              packages = self.packages.${system};
+            };
           }
           configuration
         ];
       };
+  in forEachSystem (system: let
+    pkgs = nixpkgs.legacyPackages.${system};
+    defaultNixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
   in {
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-
-    legacyPackages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
-
+    formatter = pkgs.alejandra;
+    legacyPackages = import ./packages pkgs;
+    packages = nixCats.utils.mkAllPackages defaultNixCat;
+  }) // {
     nixosConfigurations = let
       # why specify the name of the host both as the dir/filename and in the config
       # when you can spend more time writing a function to do it for you?

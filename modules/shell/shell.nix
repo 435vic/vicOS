@@ -7,10 +7,6 @@
 with lib; let
   cfg = config.vicos.shell;
 in {
-  imports = [
-    ./git.nix
-  ];
-
   options = {
     vicos.shell = {
       fish = {
@@ -45,6 +41,10 @@ in {
         # fish 4.0
         package = pkgs.unstable.fish;
       };
+
+      # makes rebuilding a lot faster
+      # why fish, why????????
+      documentation.man.generateCaches = false;
 
       # the lifeblood of development in NixOS
       programs.direnv.enable = mkDefault true;

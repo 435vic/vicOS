@@ -46,6 +46,12 @@ in {
         description = "vicOS flake inputs";
       };
 
+      packages = mkOption {
+        type = with types; readOnly (attrsOf package);
+        default = {};
+        description = "vicOS packages";
+      };
+
       lib = mkOption {
         type = with types; readOnly (attrsOf unspecified);
         default = {};
