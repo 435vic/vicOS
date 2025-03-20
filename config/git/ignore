@@ -1,0 +1,12 @@
+# OS stuff
+.DS_Store?
+.DS_Store
+.CFUserTextEncoding
+.Trash
+.Xauthority
+thumbs.db
+Thumbs.db
+Icon?
+
+# Direnv cache
+.direnv/
