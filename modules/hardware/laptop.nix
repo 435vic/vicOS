@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.hardware.laptop;
-in
-{
+in {
   options = {
     vicos.hardware.laptop = {
       enable = mkOption {

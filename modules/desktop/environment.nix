@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.desktop;
-in
-{
+in {
   options.vicos.desktop = {
     enable = mkEnableOption "Desktop environment";
     wayland.enable = mkEnableOption "Wayland";

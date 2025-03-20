@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.hardware.audio;
-in
-{
+in {
   options.vicos.hardware.audio.enable = mkEnableOption "audio";
 
   config = mkIf cfg.enable {
@@ -20,7 +18,7 @@ in
     };
 
     security.rtkit.enable = true;
-    vicos.user.extraGroups = [ "audio" ];
+    vicos.user.extraGroups = ["audio"];
 
     vicos.user.packages = with pkgs; [
       alsa-utils

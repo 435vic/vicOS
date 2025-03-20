@@ -4,12 +4,10 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.hardware.wifi;
   interfaces = config.networking.wireless.interfaces;
-in
-{
+in {
   options.vicos.hardware.wifi.enable = mkEnableOption "wifi";
 
   config = mkIf cfg.enable {
@@ -19,24 +17,24 @@ in
       useDHCP = false;
       useNetworkd = true;
       supplicant = listToAttrs (map (
-        iface:
-          nameValuePair iface {
-            userControlled = {
-              enable = true;
-              group = "users";
-            };
-
-            configFile = {
-              path = "/etc/wpa_supplicant.d/${iface}.conf";
-              writable = true;
-            };
-            extraConf = ''
-              ap_scan=1
-              p2p_disabled=1
-              okc=1
-            '';
-          }
-      ) interfaces);
+          iface:
+            nameValuePair iface {
+              userControlled = {
+                enable = true;
+                group = "users";
+              };
+              configFile = {
+                path = "/etc/wpa_supplicant.d/${iface}.conf";
+                writable = true;
+              };
+              extraConf = ''
+                ap_scan=1
+                p2p_disabled=1
+                okc=1
+              '';
+            }
+        )
+        interfaces);
     };
 
     systemd = {
@@ -56,7 +54,7 @@ in
             networkConfig.DHCP = "yes";
             networkConfig.IPv6PrivacyExtensions = "kernel";
             linkConfig.RequiredForOnline = "no"; # don't hang at boot (if dc'ed)
-            dhcpV4Config.RouteMetric = 2048;     # prefer wired
+            dhcpV4Config.RouteMetric = 2048; # prefer wired
           };
         };
 
@@ -64,9 +62,8 @@ in
       };
 
       tmpfiles.rules =
-          [ "d /etc/wpa_supplicant.d 700 root root - -" ] ++
-          (map (iface: "f /etc/wpa_supplicant.d/${iface}.conf 700 root root - -") interfaces);
+        ["d /etc/wpa_supplicant.d 700 root root - -"]
+        ++ (map (iface: "f /etc/wpa_supplicant.d/${iface}.conf 700 root root - -") interfaces);
     };
-
   };
 }

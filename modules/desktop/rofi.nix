@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.desktop.rofi;
-in
-{
+in {
   options.vicos.desktop.rofi.enable = mkEnableOption "rofi";
 
   config = mkIf cfg.enable {
@@ -19,7 +17,7 @@ in
 
     vicos.user.packages = with pkgs.unstable; [
       rofi-wayland-unwrapped
-      (rofimoji.override { rofi = rofi-wayland-unwrapped; })
+      (rofimoji.override {rofi = rofi-wayland-unwrapped;})
       (mkIf config.hardware.bluetooth.enable {
         user.packages = [
           (mkLauncherEntry "  manage bluetooth" {

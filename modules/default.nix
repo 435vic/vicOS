@@ -1,9 +1,9 @@
 /*
-  *
-  * default.nix - module entry point
-  * this module provides some options provided by the flake,
-  * as well as defining some sensible defaults for any system.
-  *
+*
+* default.nix - module entry point
+* this module provides some options provided by the flake,
+* as well as defining some sensible defaults for any system.
+*
 */
 {
   lib,
@@ -12,14 +12,12 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   inherit (config.vicos) flake;
   cfg = config.vicos;
-  readOnly = types.unique { message = "This option is read-only."; };
-  walkModules = (import ../lib { inherit lib; }).walkModules;
-in
-{
+  readOnly = types.unique {message = "This option is read-only.";};
+  walkModules = (import ../lib {inherit lib;}).walkModules;
+in {
   imports = walkModules ./.;
 
   options.vicos = {
@@ -44,13 +42,13 @@ in
 
       inputs = mkOption {
         type = with types; readOnly (attrsOf unspecified);
-        default = { };
+        default = {};
         description = "vicOS flake inputs";
       };
 
       lib = mkOption {
         type = with types; readOnly (attrsOf unspecified);
-        default = { };
+        default = {};
         description = "vicOS library functions accessible to modules";
       };
 
@@ -73,12 +71,10 @@ in
       }
     ];
 
-    lib.flake.getInput =
-      input: output: element:
-      let
-        inherit (config.nixpkgs.hostPlatform) system;
-        inputs = cfg.flake.inputs;
-      in
+    lib.flake.getInput = input: output: element: let
+      inherit (config.nixpkgs.hostPlatform) system;
+      inputs = cfg.flake.inputs;
+    in
       {
         overlays = inputs.${input}.overlays.${element};
         packages = inputs.${input}.packages.${system}.${element};
@@ -89,7 +85,7 @@ in
 
     vicos.user = {
       description = mkDefault "The primary user account";
-      extraGroups = [ "wheel" ];
+      extraGroups = ["wheel"];
       isNormalUser = true;
       home = "/home/${cfg.username}";
       name = cfg.username;

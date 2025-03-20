@@ -16,73 +16,72 @@
 
     agenix.url = "github:ryantm/agenix";
 
-    secrets.url = "git+file:.secrets";
-
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      nixpkgs-unstable,
-      home-manager,
-      agenix,
-      ...
-    }@inputs:
-    let
-      inherit (nixpkgs.lib) genAttrs mapAttrs;
-      inherit (builtins) getEnv;
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    home-manager,
+    agenix,
+    ...
+  } @ inputs: let
+    inherit (nixpkgs.lib) genAttrs mapAttrs;
+    inherit (builtins) getEnv;
 
-      allLinuxSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-      allDarwinSystems = [
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      allSystems = allLinuxSystems ++ allDarwinSystems;
-      forAllSystems = genAttrs allSystems;
+    allLinuxSystems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
+    allDarwinSystems = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
+    allSystems = allLinuxSystems ++ allDarwinSystems;
+    forAllSystems = genAttrs allSystems;
 
-      vicos =
-        let
-          pathEnv = getEnv "DOTFILES_HOME";
-          vicosPath = if pathEnv == "" then abort "DOTFILES_HOME must be set!" else pathEnv;
-          rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
-        in
-        {
-          inherit rev inputs;
-          lib = import ./lib { inherit (nixpkgs) lib; };
-          path = vicosPath;
-        };
+    vicos = let
+      pathEnv = getEnv "DOTFILES_HOME";
+      vicosPath =
+        if pathEnv == ""
+        then abort "DOTFILES_HOME must be set!"
+        else pathEnv;
+      rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
+    in {
+      inherit rev inputs;
+      lib = import ./lib {inherit (nixpkgs) lib;};
+      path = vicosPath;
+    };
 
-      pkgsDefaults = {
-        config.allowUnfree = true;
-        config.permittedInsecurePackages = [ ];
-      };
+    pkgsDefaults = {
+      config.allowUnfree = true;
+      config.permittedInsecurePackages = [];
+    };
 
-      mkHost = {
-        name,
-        system,
-        configuration
-      }:
-      let
-        pkgs = import nixpkgs {
+    mkHost = {
+      name,
+      system,
+      configuration,
+    }: let
+      pkgs =
+        import nixpkgs {
           inherit system;
           overlays = [
             (final: prev: {
-              unstable = import nixpkgs-unstable { inherit system; } // pkgsDefaults;
+              unstable = import nixpkgs-unstable {inherit system;} // pkgsDefaults;
             })
           ];
-        } // pkgsDefaults;
-      in
+        }
+        // pkgsDefaults;
+    in
       nixpkgs.lib.nixosSystem {
         modules = [
           nixpkgs.nixosModules.readOnlyPkgs
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
           ./modules
+          ./.secrets/modules
           {
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
@@ -91,22 +90,20 @@
           configuration
         ];
       };
+  in {
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+
+    legacyPackages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
+
+    nixosConfigurations = let
+      # why specify the name of the host both as the dir/filename and in the config
+      # when you can spend more time writing a function to do it for you?
+      mkNamedHost = name: config: mkHost (config // {inherit name;});
+      # hosts are provided the vicOS object with inputs, context, etc.
+      callHost = name: host: mkNamedHost name (host vicos);
     in
-    {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      mapAttrs callHost (vicos.lib.getHosts ./hosts);
 
-      legacyPackages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
-
-      nixosConfigurations =
-        let
-          # why specify the name of the host both as the dir/filename and in the config
-          # when you can spend more time writing a function to do it for you?
-          mkNamedHost = name: config: mkHost (config // { inherit name; });
-          # hosts are provided the vicOS object with inputs, context, etc.
-          callHost = name: host: mkNamedHost name (host vicos);
-        in
-        mapAttrs callHost (vicos.lib.getHosts ./hosts);
-
-      lib = import ./lib { inherit (nixpkgs) lib; };
-    };
+    lib = import ./lib {inherit (nixpkgs) lib;};
+  };
 }

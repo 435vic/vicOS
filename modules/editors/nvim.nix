@@ -4,8 +4,7 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.editors.nvim;
 in {
   options.vicos.editors.nvim = {

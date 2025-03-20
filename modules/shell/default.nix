@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.shell;
-in
-{
+in {
   imports = [
     ./git.nix
   ];
@@ -74,7 +72,8 @@ in
           end
         '';
         aliases = mapAttrsToList mkAlias cfg.fish.aliases;
-      in concatStringsSep "\n" ([ pregenWarning ] ++ aliases);
+      in
+        concatStringsSep "\n" ([pregenWarning] ++ aliases);
 
       home.configFile."fish/config.post.fish".text = concatStringsSep "\n" [
         cfg.fish.extraConfig

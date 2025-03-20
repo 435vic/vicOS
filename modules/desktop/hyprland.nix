@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.desktop.hyprland;
-in
-{
+in {
   options.vicos.desktop.hyprland = {
     enable = lib.mkEnableOption "Hyprland";
     extraConfig = mkOption {
@@ -25,7 +23,10 @@ in
 
     defaultBrowser = mkOption {
       type = types.str;
-      default = if config.vicos.desktop.browser.zen.enable then "zen" else "firefox";
+      default =
+        if config.vicos.desktop.browser.zen.enable
+        then "zen"
+        else "firefox";
       description = "Default browser to launch when inputting browser keybind.";
     };
 
@@ -73,10 +74,10 @@ in
     systemd.user.targets.hyprland-session = {
       unitConfig = {
         Description = "Hyprland compositor session";
-        Documentation = [ "man:systemd.special(7)" ];
-        BindsTo = [ "graphical-session.target" ];
-        Wants = [ "graphical-session-pre.target" ];
-        After = [ "graphical-session-pre.target" ];
+        Documentation = ["man:systemd.special(7)"];
+        BindsTo = ["graphical-session.target"];
+        Wants = ["graphical-session-pre.target"];
+        After = ["graphical-session-pre.target"];
       };
     };
 

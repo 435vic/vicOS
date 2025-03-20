@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.desktop.term;
-in
-{
+in {
   options.vicos.desktop.term = {
     ghostty = {
       enable = mkEnableOption "ghostty";
@@ -16,10 +14,17 @@ in
   };
 
   config = {
-    vicos.desktop.hyprland.defaultTerminal = if cfg.ghostty.enable then "ghostty" else "alacritty";
+    vicos.desktop.hyprland.defaultTerminal =
+      if cfg.ghostty.enable
+      then "ghostty"
+      else "alacritty";
 
     environment.systemPackages = [
-      (if cfg.ghostty.enable then pkgs.unstable.ghostty else pkgs.unstable.alacritty)
+      (
+        if cfg.ghostty.enable
+        then pkgs.unstable.ghostty
+        else pkgs.unstable.alacritty
+      )
     ];
 
     home.configFile = mkMerge [

@@ -4,11 +4,9 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.vicos.services.waybar;
-in
-{
+in {
   options.vicos.services.waybar = {
     enable = mkEnableOption "waybar";
     package = mkOption {
