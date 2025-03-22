@@ -53,12 +53,7 @@
       config.permittedInsecurePackages = [];
     };
 
-    vicosCats = import ./nixcats.nix inputs.nixCats;
-    nixCatsModule = nixCats.utils.mkNixosModules {
-      inherit (vicosCats) luaPath categoryDefinitions packageDefinitions;
-      nixpgks = nixpkgs-unstable;
-      defaultPackageName = vicosCats.default;
-    };
+    vicosCats = import ./nixcats-nvim inputs.nixCats;
 
     mkHost = {
       name,
@@ -81,14 +76,13 @@
           nixpkgs.nixosModules.readOnlyPkgs
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
-          nixCatsModule
           ./modules
           ./.secrets/modules
           {
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
             vicos.flake = vicos // {
-              packages = self.packages.${system};
+              packages = self.packages.${system} // self.legacyPackages.${system};
             };
           }
           configuration
@@ -96,11 +90,13 @@
       };
   in forEachSystem (system: let
     pkgs = nixpkgs.legacyPackages.${system};
-    defaultNixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
+    nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
   in {
     formatter = pkgs.alejandra;
+    # helps avoiding unnecessary evaluation time on nix flake check/show
     legacyPackages = import ./packages pkgs;
-    packages = nixCats.utils.mkAllPackages defaultNixCat;
+    # these will be checked and parsed on nix flake commands
+    packages = nixCats.utils.mkAllPackages nixCat;
   }) // {
     nixosConfigurations = let
       # why specify the name of the host both as the dir/filename and in the config

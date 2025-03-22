@@ -47,6 +47,9 @@
         waybar.enable = true;
       };
 
+      # a lot easier while I figure out vim
+      dev.nvim.pure = false;
+
       shell = {
         fish.runByDefault = true;
         starship.enable = true;
