@@ -89,14 +89,21 @@
         ];
       };
   in forEachSystem (system: let
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = nixpkgs-unstable.legacyPackages.${system};
     nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
+    dude = pkgs.callPackage ./dude/package.nix;
   in {
     formatter = pkgs.alejandra;
     # helps avoiding unnecessary evaluation time on nix flake check/show
     legacyPackages = import ./packages pkgs;
     # these will be checked and parsed on nix flake commands
-    packages = nixCats.utils.mkAllPackages nixCat;
+    packages = {
+      dude = dude {};
+    } // nixCats.utils.mkAllPackages nixCat;
+
+    devShells = {
+      dude-dev = dude { returnShellEnv = true; };
+    };
   }) // {
     nixosConfigurations = let
       # why specify the name of the host both as the dir/filename and in the config
