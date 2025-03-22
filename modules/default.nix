@@ -171,7 +171,10 @@ in {
       };
     };
 
-    system.stateVersion = "23.11";
+    system = {
+      stateVersion = "23.11";
+      configurationRevision = cfg.flake.rev;
+    };
 
     environment.sessionVariables = mkOrder 10 {
       DOTFILES_HOME = cfg.flake.path;
