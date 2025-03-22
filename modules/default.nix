@@ -120,11 +120,17 @@ in {
 
       registry.nixpkgs.flake = flake.inputs.nixpkgs-unstable;
       registry.nixpkgs-stable.flake = flake.inputs.nixpkgs;
+      # for convenience, add this flake to the flake registry
+      # makes it easier to write scripts and run commands as you need to enable
+      # submodules for the secrets repo to be enabled
       registry.vicos = {
         from.id = "vicOS";
         from.type = "indirect";
-        to.path = "${cfg.flake.path}";
-        to.type = "path";
+        to = {
+          submodules = true;
+          type = "git";
+          url = "file://${cfg.flake.path}";
+        };
       };
 
       settings = {
