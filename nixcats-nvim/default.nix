@@ -27,8 +27,10 @@ nixCats@{utils, ...}: let
     startupPlugins = {
       # TODO: add theme support
       general = with pkgs.vimPlugins; [
-        lze
-        oil-nvim
+        lze # lazy loader
+        oil-nvim # file explorer
+        vim-sleuth # autodetect tab width, etc
+        vim-fugitive # git integration
       ];
 
       themer = mainTheme;
