@@ -6,8 +6,6 @@ end
 return {
   {
     "nvim-lspconfig",
-    -- TODO: enable on LSP/extra/full category
-    -- enable = nixCats("CATEGORY_NAME")
     on_require = { "lspconfig" },
     lsp = function(plugin)
       require("lspconfig")[plugin.name].setup(vim.tbl_extend("force", {
