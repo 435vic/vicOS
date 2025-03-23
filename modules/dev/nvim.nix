@@ -28,7 +28,7 @@ in {
       nvim
     ];
 
-    home.configFile.nvim = mkIf (not cfg.pure) {
+    home.configFile.nvim = mkIf (!cfg.pure) {
       # symlink the whole directory, as nix configuration
       # can be directly referenced in Lua thanks to nixcats
       source = config.lib.vicos.fileFromConfig "nvim";
