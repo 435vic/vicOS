@@ -6,6 +6,13 @@ return {
     enable = nixCats('ide.lsp'),
     lsp = {
       filetypes = { 'lua' },
+      config = {
+        Lua = {
+          workspace = {
+            ignoreDir = { ".direnv", ".git" },
+          },
+        },
+      },
     },
   },
   {

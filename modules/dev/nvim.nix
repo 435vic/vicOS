@@ -6,7 +6,8 @@
 }:
 with lib; let
   cfg = config.vicos.dev.nvim;
-  vvimVersion = if cfg.pure then "vvim" else "vvimpure";
+  flakePkgs = config.vicos.flake.packages;
+  nvim = if cfg.pure then flakePkgs.vvim else flakePkgs.vvim.impure;
 in {
   options.vicos.dev.nvim = {
     enable = mkOption {
@@ -24,10 +25,10 @@ in {
 
   config = mkIf cfg.enable {
     environment.systemPackages = [
-      config.vicos.flake.packages.${vvimVersion}
+      nvim
     ];
 
-    home.configFile.nvim = {
+    home.configFile.nvim = mkIf (not cfg.pure) {
       # symlink the whole directory, as nix configuration
       # can be directly referenced in Lua thanks to nixcats
       source = config.lib.vicos.fileFromConfig "nvim";

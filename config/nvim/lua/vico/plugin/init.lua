@@ -13,9 +13,11 @@ if nixCats("extraThemes") then
   require("lze").load("vico.plugin.colorschemes")
 end
 
--- todo: cool ascii title
--- oil
-
+--  ▄▄▄  ▄ █ 
+-- █   █ ▄ █ 
+-- ▀▄▄▄▀ █ █ 
+--       █ █ 
+--
 -- disable netrw loading
 vim.g.loaded_netRwPlugin = 1
 require("oil").setup {
@@ -27,12 +29,24 @@ require("oil").setup {
 vim.keymap.set("n", "-", "<cmd>Oil<CR>", { noremap = true, })
 vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { noremap = true,})
 
--- fugitive
+-- ▗▞▀▀▘█  ▐▌  ▄    ■  ▄ ▄   ▄ ▗▞▀▚▖
+-- ▐▌   ▀▄▄▞▘  ▄ ▗▄▟▙▄▖▄ █   █ ▐▛▀▀▘
+-- ▐▛▀▘        █   ▐▌  █  ▀▄▀  ▝▚▄▄▖
+-- ▐▌       ▗▄▖█   ▐▌  █            
+--         ▐▌ ▐▌   ▐▌               
+--          ▝▀▜▌                    
+--         ▐▙▄▞▘                    
+
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
--- TODO: cool ascii title
--- LSP
+
+-- █  ▄▄▄ ▄▄▄▄  
+-- █ ▀▄▄  █   █ 
+-- █ ▄▄▄▀ █▄▄▄▀ 
+-- █      █     
+--        ▀     
 require("lze").load("vico.plugin.lsp")
+
 
 -- ▗▞▀▚▖   ■  ▗▞▀▘▗▞▀▚▖   ■  ▗▞▀▚▖ ▄▄▄ ▗▞▀▜▌
 -- ▐▛▀▀▘▗▄▟▙▄▖▝▚▄▖▐▛▀▀▘▗▄▟▙▄▖▐▛▀▀▘█    ▝▚▄▟▌
@@ -56,6 +70,24 @@ require("lze").load {
         },
 
         fuzzy = { implementation = "prefer_rust_with_warning" }
+      })
+    end
+  },
+  {
+    "lualine.nvim",
+    enabled = nixCats('ide.extra'),
+    event = 'DeferredUIEnter',
+    after = function(_)
+      require('lualine').setup({
+        options = {
+          theme = colorscheme,
+        },
+        tabline = {
+          lualine_a = { 'buffers' },
+          -- if you use lualine-lsp-progress, I have mine here instead of fidget
+          -- lualine_b = { 'lsp_progress', },
+          lualine_z = { 'tabs' }
+        },
       })
     end
   },

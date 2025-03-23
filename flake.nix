@@ -92,6 +92,16 @@
     pkgs = nixpkgs-unstable.legacyPackages.${system};
     nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
     dude = pkgs.callPackage ./dude/package.nix;
+    nvimPackages = let
+      inherit (nixCat.utils) mergeCatDefs;
+      impureOverride = {...}: { settings.wrapRc = false; };
+      mkCat = name: def: (nixCat.override { inherit name; }) // {
+        impure = nixCat.override {
+          inherit name;
+          packageDefinitions.${name} = mergeCatDefs nixCat.packageDefinitions.${name} impureOverride;  
+        };
+      };
+    in pkgs.lib.mapAttrs mkCat nixCat.packageDefinitions;
   in {
     formatter = pkgs.alejandra;
     # helps avoiding unnecessary evaluation time on nix flake check/show
@@ -99,7 +109,7 @@
     # these will be checked and parsed on nix flake commands
     packages = {
       dude = dude {};
-    } // nixCats.utils.mkAllPackages nixCat;
+    } // nvimPackages;
 
     devShells = {
       dude-dev = dude { returnShellEnv = true; };

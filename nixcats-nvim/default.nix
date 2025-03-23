@@ -64,6 +64,10 @@ nixCats@{utils, ...}: let
           nvim-lspconfig
           lazydev-nvim
         ];
+
+        extra = with pkgs.vimPlugins; [
+          lualine-nvim
+        ];
       };
 
       extraThemes = otherThemes;
@@ -71,15 +75,18 @@ nixCats@{utils, ...}: let
   };
 
   packageDefinitions = let
-    categoriesFull = pkgs: {
+    baseCategories = {
       general = true;
-      ide = true;
-      extraThemes = true;
       themer = true;
       colorscheme = "rose-pine";
-
-      themeIndex = (theming pkgs).index;
     };
+
+    fullCategories = baseCategories // {
+      ide = true;
+      extraThemes = true;
+    };
+
+    themeData = pkgs: { themeIndex = (theming pkgs).index; };
   in {
     # vico's vim :o
     vvim = {pkgs, ...}: {
@@ -87,17 +94,7 @@ nixCats@{utils, ...}: let
       	aliases = [ "vim" "nvim" ];
         wrapRc = true;
       };
-
-      categories = categoriesFull pkgs;
-    };
-
-    vvimpure = {pkgs, ...}: {
-      settings = {
-        aliases = [ "vim" "nvim" ];
-        wrapRc = false;
-      };
-
-      categories = categoriesFull pkgs;
+      categories = fullCategories // themeData pkgs;
     };
   };
 in {
