@@ -17,17 +17,21 @@ nixCats@{utils, ...}: let
         fd
       ];
 
-      nixdev = with pkgs; [
-        nix-doc
-        nixd
-        nil
-      ];
+      ide = {
+        lsp = with pkgs; [
+          lua-language-server
+          nixd
+          nil
+          nix-doc
+        ];
+      };
     };
 
     startupPlugins = {
       # TODO: add theme support
       general = with pkgs.vimPlugins; [
         lze # lazy loader
+        lzextras # lazy load lsp configs
         oil-nvim # file explorer
         vim-sleuth # autodetect tab width, etc
         vim-fugitive # git integration
@@ -49,6 +53,18 @@ nixCats@{utils, ...}: let
         ];
       };
 
+      ide = {
+        cmp = with pkgs.vimPlugins; [
+          blink-cmp
+          luasnip
+        ];
+
+        lsp = with pkgs.vimPlugins; [
+          nvim-lspconfig
+          lazydev-nvim
+        ];
+      };
+
       extraThemes = otherThemes;
     };
   };
@@ -56,7 +72,7 @@ nixCats@{utils, ...}: let
   packageDefinitions = let
     categoriesFull = pkgs: {
       general = true;
-      nixdev = true;
+      ide = true;
       extraThemes = true;
       themer = true;
       colorscheme = "rose-pine";
