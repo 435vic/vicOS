@@ -5,7 +5,25 @@ return {
     "lua_ls",
     enable = nixCats('ide.lsp'),
     lsp = {
-      filetypes = { 'lua' }, 
+      filetypes = { 'lua' },
+    },
+  },
+  {
+    "nil_ls",
+    lsp = {
+      filetypes = { "nix" },
+    },
+  },
+  {
+    "nixd",
+    lsp = {
+      filetypes = { "nix" },
+    },
+  },
+  {
+    "hls",
+    lsp = {
+      filetypes = { "haskell" },
     },
   },
 }

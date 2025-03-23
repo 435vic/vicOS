@@ -35,6 +35,7 @@ nixCats@{utils, ...}: let
         oil-nvim # file explorer
         vim-sleuth # autodetect tab width, etc
         vim-fugitive # git integration
+        direnv-vim # direnv integration
       ];
 
       themer = mainTheme;
