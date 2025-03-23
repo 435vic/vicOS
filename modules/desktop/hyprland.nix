@@ -57,6 +57,7 @@ in {
     programs.hyprland = {
       enable = true;
       xwayland.enable = true;
+      withUWSM = true;
       #package = pkgs.unstable.hyprland;
       #portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
     };
@@ -71,23 +72,18 @@ in {
       pamixer # volume control
     ];
 
-    systemd.user.targets.hyprland-session = {
-      unitConfig = {
-        Description = "Hyprland compositor session";
-        Documentation = ["man:systemd.special(7)"];
-        BindsTo = ["graphical-session.target"];
-        Wants = ["graphical-session-pre.target"];
-        After = ["graphical-session-pre.target"];
-      };
-    };
-
     security.pam.services.swaylock = {};
     security.pam.services.hyprlock = {};
 
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command = "Hyprland";
+        #command = pkgs.writeShellScript "hyprland-start" ''
+        #  if uwsm check may-start && uwsm select; then
+        #    exec uwsm start default
+        #  fi
+        #'';
+        command = "uwsm start hyprland-uwsm.desktop";
         user = config.vicos.username;
       };
     };
