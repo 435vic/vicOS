@@ -45,8 +45,9 @@ vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 -- █ ▄▄▄▀ █▄▄▄▀ 
 -- █      █     
 --        ▀     
-require("lze").load("vico.plugin.lsp")
-
+if nixCats("ide.lsp") then
+  require("lze").load("vico.plugin.lsp")
+end
 
 -- ▗▞▀▚▖   ■  ▗▞▀▘▗▞▀▚▖   ■  ▗▞▀▚▖ ▄▄▄ ▗▞▀▜▌
 -- ▐▛▀▀▘▗▄▟▙▄▖▝▚▄▖▐▛▀▀▘▗▄▟▙▄▖▐▛▀▀▘█    ▝▚▄▟▌
@@ -91,4 +92,17 @@ require("lze").load {
       })
     end
   },
+  {
+    "which-key.nvim",
+    enabled = nixCats('training'),
+    event = 'DeferredUIEnter',
+    keys = {
+      { "<leader>?", function() require('which-key').show({ global = false }) end, desc = "Buffer Local Keymaps (which-key)", }
+    },
+  },
+  {
+    "vim-be-good",
+    enabled = nixCats('training'),
+    cmd = { "VimBeGood" },
+  }
 }

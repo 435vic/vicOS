@@ -9,6 +9,7 @@ nixCats@{utils, ...}: let
       (pkgs.lib.mapAttrsToList (_: def: def.package))
       (pkgs.lib.filter (pkg: pkg.pname != mainTheme.pname))
     ];
+    localPkgs = pkgs.callPackage ./packages.nix {};
   in {
     lspsAndRuntimeDeps = {
       general = with pkgs; [
@@ -54,6 +55,11 @@ nixCats@{utils, ...}: let
         ];
       };
 
+      training = with pkgs.vimPlugins; [
+        localPkgs.vim-be-good
+        which-key-nvim
+      ];
+
       ide = {
         cmp = with pkgs.vimPlugins; [
           blink-cmp
@@ -83,6 +89,7 @@ nixCats@{utils, ...}: let
 
     fullCategories = baseCategories // {
       ide = true;
+      training = true;
       extraThemes = true;
     };
 
