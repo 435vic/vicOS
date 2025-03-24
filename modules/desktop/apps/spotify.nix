@@ -9,17 +9,15 @@ with lib; let
   spicetify = config.vicos.flake.inputs.spicetify-nix;
   spicePkgs = spicetify.legacyPackages.${pkgs.stdenv.system};
 in {
-  imports = [
-    spicetify.nixosModules.default
-  ];
-
-  options.enable = mkEnableOption "spotify with spicetify";
+  options.vicos.desktop.apps.spotify = {
+    enable = mkEnableOption "spotify with spicetify";
+  };
 
   config = mkIf cfg.enable {
     programs.spicetify = {
       enable = true;
       theme = spicePkgs.themes.dribbblish;
-      colorSheme = "rosepine";
+      colorScheme = "rosepine";
     };
   };
 }

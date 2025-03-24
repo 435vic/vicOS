@@ -29,6 +29,7 @@
 
         apps = {
           discord.enable = true;
+          spotify.enable = true;
         };
 
         gaming.enable = true;

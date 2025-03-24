@@ -1,6 +1,14 @@
 
-local function lsp_on_attach()
+local function lsp_on_attach(_, bufid)
+  local nmap = function(keys, func, desc)
+    vim.keymap.set('n', keys, func, { buffer = bufid, desc = desc })
+  end
 
+  nmap('gd', '<CMD>Telescope lsp_definitions<CR>', 'Goto Definition')
+  nmap('gD', '<CMD>Telescope lsp_declarations<CR>', 'Goto Declaration')
+  nmap('gi', '<CMD>Telescope lsp_implementations<CR>', 'Goto implementation')
+  nmap('gr', '<CMD>Telescope lsp_references<CR>', 'Goto Reference(s)')
+  nmap('<F2>', vim.lsp.buf.rename, 'Rename Symbol')
 end
 
 return {

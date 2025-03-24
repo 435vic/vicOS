@@ -27,6 +27,7 @@
     nixpkgs-unstable,
     home-manager,
     agenix,
+    spicetify-nix,
     nixCats,
     ...
   } @ inputs: let
@@ -76,6 +77,7 @@
           nixpkgs.nixosModules.readOnlyPkgs
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
+          spicetify-nix.nixosModules.default
           ./modules
           ./.secrets/modules
           {
