@@ -17,7 +17,7 @@ in {
 
     vicos.user.packages = with pkgs.unstable; [
       rofi-wayland-unwrapped
-      (rofimoji.override {rofi = rofi-wayland-unwrapped;})
+      #(rofimoji.override {rofi = rofi-wayland-unwrapped;})
       (mkIf config.hardware.bluetooth.enable {
         user.packages = [
           (mkLauncherEntry "  manage bluetooth" {
