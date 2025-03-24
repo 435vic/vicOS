@@ -26,8 +26,8 @@ require("oil").setup {
     show_hidden = true,
   }
 }
-vim.keymap.set("n", "-", "<cmd>Oil<CR>", { noremap = true, })
-vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { noremap = true,})
+vim.keymap.set("n", "-", "<cmd>Oil<CR>", { noremap = true, desc = "Explore parent folder (Oil)" })
+vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { noremap = true, desc = "Explore root folder (Oil)" })
 
 -- ▗▞▀▀▘█  ▐▌  ▄    ■  ▄ ▄   ▄ ▗▞▀▚▖
 -- ▐▌   ▀▄▄▞▘  ▄ ▗▄▟▙▄▖▄ █   █ ▐▛▀▀▘
@@ -37,7 +37,7 @@ vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { noremap = true,})
 --          ▝▀▜▌                    
 --         ▐▙▄▞▘                    
 
-vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "Git Status (fugitive)", })
 
 
 -- █  ▄▄▄ ▄▄▄▄  
@@ -57,7 +57,15 @@ end
 
 require("lze").load {
   { import = "vico.plugin.treesitter" },
-  { import = "vico.plugin.telescope" },
+  {
+    "telescope.nvim",
+    cmd = { "Telescope" },
+    keys = {
+      { "<leader>pf", "<cmd>Telescope find_files<CR>", mode = {"n"}, desc = "Find files in project" },
+      { "<C-p>", "<cmd>Telescope git_files<CR>", mode = {"n"}, desc = "Find git files in project" },
+      { "<leader>ps", "<cmd>Telescope live_grep<CR>", mode = {"n"}, desc = "Grep for string in project" },
+    },
+  },
   {
     "blink.cmp",
     enable = nixCats('ide.cmp'),
