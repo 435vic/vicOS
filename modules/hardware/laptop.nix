@@ -34,6 +34,7 @@ in {
           "splash"
           "udev.log_level=3"
         ];
+        loader.timeout = 0; # you can hold down space to open menu
         consoleLogLevel = 0;
         initrd.verbose = false;
       };

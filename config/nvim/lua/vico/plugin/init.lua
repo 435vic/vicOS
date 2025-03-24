@@ -104,5 +104,17 @@ require("lze").load {
     "vim-be-good",
     enabled = nixCats('training'),
     cmd = { "VimBeGood" },
-  }
+  },
+  {
+    "presence.nvim",
+    enabled = false,
+    event = 'DeferredUIEnter',
+    after = function()
+      require("presence").setup({
+        neovim_image_text = "i use neovim btw",
+        main_image = "file",
+        log_level = "debug",
+      })
+    end,
+  },
 }

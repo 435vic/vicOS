@@ -76,6 +76,11 @@ nixCats@{utils, ...}: let
         ];
       };
 
+      misc = with pkgs.vimPlugins; [
+        obsidian-nvim
+        presence-nvim
+      ];
+
       extraThemes = otherThemes;
     };
   };
@@ -91,6 +96,7 @@ nixCats@{utils, ...}: let
       ide = true;
       training = true;
       extraThemes = true;
+      misc = true;
     };
 
     themeData = pkgs: { themeIndex = (theming pkgs).index; };
