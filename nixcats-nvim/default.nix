@@ -69,6 +69,7 @@ nixCats@{utils, ...}: let
         lsp = with pkgs.vimPlugins; [
           nvim-lspconfig
           lazydev-nvim
+          typescript-tools-nvim
         ];
 
         extra = with pkgs.vimPlugins; [

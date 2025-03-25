@@ -16,11 +16,21 @@ return {
     "nvim-lspconfig",
     on_require = { "lspconfig" },
     lsp = function(plugin)
+      if (plugin.name == "ts_ls") then
+        -- Typescript-tools is better, but is not in lspconfig
+        require("typescript-tools").setup({})
+        return
+      end
+
       require("lspconfig")[plugin.name].setup(vim.tbl_extend("force", {
         capabilities = require('blink.cmp').get_lsp_capabilities(),
         on_attach = lsp_on_attach,
       }, plugin.lsp or {}))
     end,
+  },
+  {
+    "typescript-tools.nvim",
+    on_require = { "typescript-tools" }
   },
   {
     "lazydev.nvim",

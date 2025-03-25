@@ -21,6 +21,10 @@ return {
     },
   },
   {
+    "ts_ls",
+    lsp = {},
+  },
+  {
     "nixd",
     lsp = {
       filetypes = { "nix" },
