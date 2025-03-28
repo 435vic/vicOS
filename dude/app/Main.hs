@@ -1,4 +1,12 @@
 module Main where
 
+import Options.Applicative
+import CLIOptions
+import Sync
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = execParser rootParser >>= handler
+
+handler :: RootCommand -> IO ()
+handler (Sync opts) = sync opts 
+  
