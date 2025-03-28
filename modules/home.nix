@@ -100,7 +100,7 @@ in {
 
     home-manager = {
       useUserPackages = true;
-
+      backupFileExtension = ".hm-backup";
       users.${config.vicos.username} = {
         home.stateVersion = config.system.stateVersion;
 

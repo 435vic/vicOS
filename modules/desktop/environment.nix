@@ -21,6 +21,8 @@ in {
         playerctl
         zed-editor.fhs #FIXME: move somewhere else maybe?
       ];
+
+      services.udisks2.enable = true;
     }
 
     (mkIf cfg.wayland.enable {

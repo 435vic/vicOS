@@ -6,6 +6,7 @@
 }:
 with lib; let
   cfg = config.vicos.desktop.gaming;
+  flake = config.vicos.flake;
 in {
   options.vicos.desktop.gaming = {
     enable = mkEnableOption "Gaming";
@@ -25,6 +26,8 @@ in {
         installPhase =
           builtins.replaceStrings ["Exec=$out/bin/tetrio"] ["Exec=gamemoderun $out/bin/tetrio"] previousAttrs.installPhase;
       })))
+      # allows proton games to set rich presence in discord
+      flake.packages.rpc-bridge
     ]);
 
     programs.steam.enable = true;

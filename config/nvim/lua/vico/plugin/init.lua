@@ -22,6 +22,7 @@ end
 vim.g.loaded_netRwPlugin = 1
 require("oil").setup {
   default_file_explorer = true,
+  skip_confirm_for_simple_edits = true,
   view_options = {
     show_hidden = true,
   }
@@ -61,9 +62,10 @@ require("lze").load {
     "telescope.nvim",
     cmd = { "Telescope" },
     keys = {
-      { "<leader>pf", "<cmd>Telescope find_files<CR>", mode = {"n"}, desc = "Find files in project" },
-      { "<C-p>", "<cmd>Telescope git_files<CR>", mode = {"n"}, desc = "Find git files in project" },
-      { "<leader>ps", "<cmd>Telescope live_grep<CR>", mode = {"n"}, desc = "Grep for string in project" },
+      { "<leader>pf", "<cmd>Telescope find_files<CR>", mode = {"n"}, desc = "Find files in project (Telescope)" },
+      { "<C-p>", "<cmd>Telescope git_files<CR>", mode = {"n"}, desc = "Find git files in project (Telescope)" },
+      { "<leader>ps", "<cmd>Telescope live_grep<CR>", mode = {"n"}, desc = "Grep for string in project (Telescope)" },
+      { "<leader>b", "<cmd>Telescope buffers<CR>", mode = {"n"}, desc = "Find buffer (Telescope)" },
     },
   },
   {
@@ -115,13 +117,13 @@ require("lze").load {
   },
   {
     "presence.nvim",
-    enabled = false,
+    enabled = nixCats('misc'),
     event = 'DeferredUIEnter',
     after = function()
       require("presence").setup({
         neovim_image_text = "i use neovim btw",
         main_image = "file",
-        log_level = "debug",
+        --log_level = "debug",
       })
     end,
   },

@@ -19,6 +19,10 @@ in {
       systemPackages = [pkgs.xdg-user-dirs];
 
       sessionVariables.__GL_SHADER_DISK_CACHE_PATH = "/tmp/nv";
+
+      etc."xdg/user-dirs.conf".text = ''
+        enabled=False
+      '';
     };
 
     home.configFile."user-dirs.dirs".text = ''

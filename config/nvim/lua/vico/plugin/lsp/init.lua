@@ -9,6 +9,7 @@ local function lsp_on_attach(_, bufid)
   nmap('gi', '<CMD>Telescope lsp_implementations<CR>', 'Goto implementation')
   nmap('gr', '<CMD>Telescope lsp_references<CR>', 'Goto Reference(s)')
   nmap('<F2>', vim.lsp.buf.rename, 'Rename Symbol')
+  nmap('<leader>ff', vim.lsp.buf.format, 'Format Document')
 end
 
 return {
