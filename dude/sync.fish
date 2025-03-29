@@ -63,7 +63,7 @@ if not sudo nixos-rebuild-ng switch --impure --flake git+file:$_flag_dir?submodu
     exit 1
 end
 
-set generations (nixos-rebuild-ng --list-generations --json)
+set generations (nixos-rebuild-ng list-generations --json)
 set gen_number (echo $generations | jq -r '.[0].generations')
 set gen_description (echo $generations | jq -r '"Gen \(.[0].generation) NixOS \(.[0].nixosVersion) Kernel \(.[0].kernelVersion)"')
 git tag -a "$(hostname)-gen-$gen_number" -m $gen_description
