@@ -93,7 +93,6 @@
   in forEachSystem (system: let
     pkgs = nixpkgs-unstable.legacyPackages.${system};
     nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
-    dude = pkgs.callPackage ./dude/package.nix;
     nvimPackages = let
       inherit (nixCat.utils) mergeCatDefs;
       impureOverride = {...}: { settings.wrapRc = false; };
@@ -109,13 +108,8 @@
     # helps avoiding unnecessary evaluation time on nix flake check/show
     legacyPackages = import ./packages pkgs;
     # these will be checked and parsed on nix flake commands
-    packages = {
-      dude = dude {};
-    } // nvimPackages;
+    packages = nvimPackages;
 
-    devShells = {
-      dude-dev = dude { returnShellEnv = true; };
-    };
   }) // {
     nixosConfigurations = let
       # why specify the name of the host both as the dir/filename and in the config

@@ -12,11 +12,10 @@ function invalid_args
     exit 1
 end
 
-argparse 'e/edit' 'f/force' 'd-dir=?!test -d "$_flag_value"' -- $argv
+argparse 'e/edit' 'f/fast' 'd-dir=?!test -d "$_flag_value"' -- $argv
 or invalid_args
 
 set -q _flag_dir; or set -l _flag_dir "$DOTFILES_HOME"
-echo "$_flag_dir"
 
 if not test -d "$_flag_dir/.git"
     echo "ERROR: $_flag_dir is not a git repository."
@@ -39,16 +38,35 @@ if test -n "$git_untracked"
     end
     echo "You can add them all from this script."
     echo "To selectively add files, add them manually with git and rerun the script."
-    echo "Do you want to add all untracked files to the commit? [y/N] "
-    read -n 1 add_untracked
+    read -P "Do you want to add all untracked files to the commit? [y/N] " -n 1 add_untracked
     if test "$add_untracked" = "y"
-        #TODO: do this for real
-        echo git add .
+        git add .
     end
 end
-if test -n git_status
 
+if test -n "$git_status"
+    if set -q _flag_fast
+        git commit -am "[dude] $(hostname) sync from version $(nixos-version --configuration-revision)"
+        set -g _dude_commit 1
+    else
+        git commit -a
+    end
 end
+
+set -x DOTFILES_HOME $_flag_dir
+if not sudo nixos-rebuild-ng switch --impure --flake git+file:$_flag_dir?submodules=1
+    notify-send -t 4000 "dude sync" "Error while syncing!"
+    if set -gq _dude_commit
+        echo "Reverting auto commit..."
+        git reset --soft HEAD^1
+    end
+    exit 1
+end
+
+set generations (nixos-rebuild-ng --list-generations --json)
+set gen_number (echo $generations | jq -r '.[0].generations')
+set gen_description (echo $generations | jq -r '"Gen \(.[0].generation) NixOS \(.[0].nixosVersion) Kernel \(.[0].kernelVersion)"')
+git tag -a "$(hostname)-gen-$gen_number" -m $gen_description
 
 echo "donezo"
 
