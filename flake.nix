@@ -84,7 +84,7 @@
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
             vicos.flake = vicos // {
-              packages = self.packages.${system} // self.legacyPackages.${system};
+              packages = self.legacyPackages.${system};
             };
           }
           configuration
@@ -106,9 +106,7 @@
   in {
     formatter = pkgs.alejandra;
     # helps avoiding unnecessary evaluation time on nix flake check/show
-    legacyPackages = import ./packages pkgs;
-    # these will be checked and parsed on nix flake commands
-    packages = nvimPackages;
+    legacyPackages = (import ./packages pkgs) // nvimPackages; 
 
   }) // {
     nixosConfigurations = let

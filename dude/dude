@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 function dude_help
-    argparse '/header' -- $argv
+    argparse 'header' -- $argv
     if set -q _flag_header
         echo "dude - declarative utilities for deployment of environment"
         echo ""
@@ -17,6 +17,11 @@ set dude_dir (status dirname)
 
 argparse -s 'h/help' -- $argv
 or dude_help
+
+if set -q _flag_help
+    dude_help --header
+    return 0
+end
 
 if test -z $argv[1]
     echo "Please supply a subcommand or a valid argument."

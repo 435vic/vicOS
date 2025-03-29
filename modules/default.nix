@@ -184,7 +184,12 @@ in {
 
     # nixos-rebuild-ng is an objectively better version of nixos-rebuild
     # TODO: remove once it is made default on NixOS 25.05
-    environment.systemPackages = [ pkgs.unstable.nixos-rebuild-ng ];
+    environment.systemPackages = [
+      pkgs.unstable.nixos-rebuild-ng
+      (pkgs.writeShellScriptBin "dude" ''
+        ${cfg.flake.path}/dude/dude "$@"
+      '')
+    ];
 
     environment.sessionVariables = mkOrder 10 {
       DOTFILES_HOME = cfg.flake.path;
