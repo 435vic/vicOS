@@ -36,4 +36,10 @@ return {
       filetypes = { "haskell" },
     },
   },
+  {
+    "jdtls",
+    lsp = {
+      filetypes = { "java" },
+    },
+  },
 }
