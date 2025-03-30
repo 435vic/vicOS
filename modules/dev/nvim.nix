@@ -28,6 +28,8 @@ in {
       nvim
     ];
 
+    environment.variables.EDITOR = "nvim";
+
     home.configFile.nvim = mkIf (!cfg.pure) {
       # symlink the whole directory, as nix configuration
       # can be directly referenced in Lua thanks to nixcats
