@@ -46,11 +46,16 @@ end
 
 if test -n "$git_status"
     if set -q _flag_fast
-        git commit -am "[dude] $(hostname) sync from version $(nixos-version --configuration-revision)"
         set -g _dude_commit 1
+        git commit -am "[dude] $(hostname) sync from version $(nixos-version --configuration-revision)"
     else
         git commit -a
     end
+end
+
+if test $status -ne 0 
+    echo "commit cancelled, exiting"
+    exit 1
 end
 
 set -x DOTFILES_HOME $_flag_dir

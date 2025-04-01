@@ -54,6 +54,7 @@
       shell = {
         fish.runByDefault = true;
         starship.enable = true;
+        tmux.enable = true;
         git = {
           name = "Victor Quintana";
           email = "435victorjavier@gmail.com";
