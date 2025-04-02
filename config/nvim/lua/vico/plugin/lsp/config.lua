@@ -28,6 +28,18 @@ return {
     "nixd",
     lsp = {
       filetypes = { "nix" },
+      settings = {
+        nixd = {
+          nixpkgs = {
+            expr =[[import <nixpkgs> {}]]
+          },
+          options = {
+            nixos = {
+              expr = [[(builtins.getFlake (builtins.getEnv DOTFILES_HOME)).nixosConfigurations.thunkbox.options]]
+            },
+          },
+        }
+      },
     },
   },
   {
