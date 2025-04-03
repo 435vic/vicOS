@@ -54,4 +54,10 @@ return {
       filetypes = { "java" },
     },
   },
+  {
+    "gh_actions_ls",
+    lsp = {
+      filetypes = { "yaml.github" },
+    },
+  },
 }

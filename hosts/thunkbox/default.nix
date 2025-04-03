@@ -67,6 +67,8 @@
       enableUserService = true;
     };
 
+    virtualisation.docker.enable = true;
+
     networking.wireless.interfaces = ["wlp4s0"];
 
     # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-

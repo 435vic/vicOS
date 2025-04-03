@@ -22,6 +22,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+vim.filetype.add({
+  pattern = {
+    ['.*/%.github[%w/]+workflows[%w/]+.*%.ya?ml'] = 'yaml.github',
+  },
+})
+
 -- ▄▄▄▄  █ █  ▐▌  ▄ ▄▄▄▄   ▄▄▄
 -- █   █ █ ▀▄▄▞▘  ▄ █   █ ▀▄▄
 -- █▄▄▄▀ █        █ █   █ ▄▄▄▀
