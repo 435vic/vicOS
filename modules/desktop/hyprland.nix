@@ -25,7 +25,7 @@ in {
       type = types.str;
       default =
         if config.vicos.desktop.browser.zen.enable
-        then "zen"
+        then "zen-beta"
         else "firefox";
       description = "Default browser to launch when inputting browser keybind.";
     };
