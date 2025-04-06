@@ -79,6 +79,7 @@ nixCats@{utils, ...}: let
 
       misc = with pkgs.vimPlugins; [
         obsidian-nvim
+        markdown-preview-nvim
         presence-nvim
       ];
 

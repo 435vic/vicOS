@@ -127,4 +127,9 @@ require("lze").load {
       })
     end,
   },
+  {
+    "markdown-preview.nvim",
+    ft = { "markdown" },
+
+  },
 }

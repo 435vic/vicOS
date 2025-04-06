@@ -52,6 +52,11 @@ return {
     "jdtls",
     lsp = {
       filetypes = { "java" },
+      settings = {
+        jdtls = {
+          root_dir = vim.fn.getcwd(),
+        },
+      },
     },
   },
   {

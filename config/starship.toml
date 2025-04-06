@@ -22,7 +22,7 @@ $python\
 [](fg:color_blue bg:color_bg3)\
 $docker_context\
 $conda\
-$direnv\
+$nix_shell\
 [](fg:color_bg3 bg:color_bg1)\
 $cmd_duration\
 [ ](fg:color_bg1)\
@@ -153,13 +153,19 @@ style = "bg:color_bg3"
 format = '[[ $symbol( $environment) ](fg:#83a598 bg:color_bg3)]($style)'
 
 [direnv]
-disabled = false
+disabled = true 
 style = "bg:color_bg3"
 symbol = ' env'
 format = '[ $symbol$allowed ]($style)'
 not_allowed_msg = ' !'
 allowed_msg = ''
 denied_msg = ' '
+
+[nix_shell]
+disabled = false
+style = "bg:color_bg3"
+symbol = ' '
+format = '[ $symbol$state ]($style)'
 
 [time]
 disabled = false
