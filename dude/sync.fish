@@ -4,6 +4,7 @@ function help
     echo "arguments:"
     echo "  -e/--edit: open dotfiles in editor before syncing"
     echo "  -f/--fast: automatically create commit message"
+    echo "  -m/--message: provide message for git commit"
 end
 
 function invalid_args
@@ -12,7 +13,7 @@ function invalid_args
     exit 1
 end
 
-argparse 'e/edit' 'f/fast' 'd-dir=?!test -d "$_flag_value"' -- $argv
+argparse -x f,m 'e/edit' 'f/fast' 'm/message=?' 'd-dir=?!test -d "$_flag_value"' -- $argv
 or invalid_args
 
 set -q _flag_dir; or set -l _flag_dir "$DOTFILES_HOME"
@@ -45,9 +46,11 @@ if test -n "$git_untracked"
 end
 
 if test -n "$git_status"
+    set -g git_commit
     if set -q _flag_fast
-        set -g _dude_commit 1
         git commit -am "[dude] $(hostname) sync from version $(nixos-version --configuration-revision)"
+    else if set -q _flag_message
+        git commit -am $_flag_message
     else
         git commit -a
     end
@@ -61,8 +64,8 @@ end
 set -x DOTFILES_HOME $_flag_dir
 if not sudo nixos-rebuild-ng switch --impure --flake git+file:$_flag_dir?submodules=1
     notify-send -t 4000 "dude sync" "Error while syncing!"
-    if set -gq _dude_commit
-        echo "Reverting auto commit..."
+    if set -gq git_commit
+        echo "Reverting last commit..."
         git reset --soft HEAD^1
     end
     exit 1

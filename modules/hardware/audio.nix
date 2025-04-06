@@ -26,6 +26,6 @@ in {
       pulseaudio
     ];
 
-    hardware.pulseaudio.enable = mkForce false;
+    hardware.pulseaudio.enable = false;
   };
 }
