@@ -5,11 +5,11 @@
     nixpkgs.url = "nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
-    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -60,9 +60,11 @@
       name,
       system,
       configuration,
+      unstable ? false,
     }: let
+      hostNixpkgs = if unstable then nixpkgs-unstable else nixpkgs;
       pkgs =
-        import nixpkgs {
+        import hostNixpkgs {
           inherit system;
           overlays = [
             (final: prev: {
@@ -72,9 +74,9 @@
         }
         // pkgsDefaults;
     in
-      nixpkgs.lib.nixosSystem {
+      hostNixpkgs.lib.nixosSystem {
         modules = [
-          nixpkgs.nixosModules.readOnlyPkgs
+          hostNixpkgs.nixosModules.readOnlyPkgs
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
           spicetify-nix.nixosModules.default

@@ -1,5 +1,6 @@
 {inputs, ...}: {
   system = "x86_64-linux";
+  unstable = true;
 
   configuration = {
     config,

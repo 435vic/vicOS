@@ -17,7 +17,7 @@ in {
       };
       package = mkOption {
         type = types.package;
-        default = config.lib.flake.getInput "zen-browser" "packages" "default";
+        default = config.lib.flake.getInput "zen-browser" "packages" "beta-unwrapped";
         description = "The Zen browser package to use.";
       };
     };
