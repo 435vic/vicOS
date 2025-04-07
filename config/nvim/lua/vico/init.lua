@@ -28,6 +28,17 @@ vim.filetype.add({
   },
 })
 
+vim.diagnostic.config({ virtual_text = true })
+
+-- █  ▄▄▄ ▄▄▄▄  
+-- █ ▀▄▄  █   █ 
+-- █ ▄▄▄▀ █▄▄▄▀ 
+-- █      █     
+--        ▀     
+if nixCats("ide.lsp") then
+  require("lze").load("vico.lsp")
+end
+
 -- ▄▄▄▄  █ █  ▐▌  ▄ ▄▄▄▄   ▄▄▄
 -- █   █ █ ▀▄▄▞▘  ▄ █   █ ▀▄▄
 -- █▄▄▄▀ █        █ █   █ ▄▄▄▀

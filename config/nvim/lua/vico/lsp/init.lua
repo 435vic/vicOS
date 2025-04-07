@@ -12,26 +12,32 @@ local function lsp_on_attach(_, bufid)
   nmap('<leader>ff', vim.lsp.buf.format, 'Format Document')
 end
 
+-- For all LSPs, .git guarantees that the folder is
+-- a project
+vim.lsp.config('*', {
+  root_markers = {'.git'},
+});
+
+vim.lsp.enable({
+  'lua_ls',
+  'nixd',
+  'hls'
+});
+
 return {
   {
-    "nvim-lspconfig",
-    on_require = { "lspconfig" },
-    lsp = function(plugin)
-      if (plugin.name == "ts_ls") then
-        -- Typescript-tools is better, but is not in lspconfig
-        require("typescript-tools").setup({})
-        return
-      end
-
-      require("lspconfig")[plugin.name].setup(vim.tbl_extend("force", {
-        capabilities = require('blink.cmp').get_lsp_capabilities(),
-        on_attach = lsp_on_attach,
-      }, plugin.lsp or {}))
-    end,
-  },
-  {
     "typescript-tools.nvim",
-    on_require = { "typescript-tools" }
+    ft = {
+      'javascript',
+      'javascriptreact',
+      'javascript.jsx',
+      'typescript',
+      'typescriptreact',
+      'typescript.tsx',
+    },
+    after = function(_)
+      require('typescript-tools').setup({})
+    end,
   },
   {
     "lazydev.nvim",
@@ -44,5 +50,14 @@ return {
       })
     end,
   },
-  { import = "vico.plugin.lsp.config" },
+  {
+    "nvim-jdtls",
+    ft = "java",
+    after = function(_)
+      require('jdtls').start_or_attach({
+        cmd = { 'jdtls' },
+        root_dir = vim.fs.dirname(vim.fs.find({'pom.xml', 'config.gradle', '.git'}, { upward = true })[1]),
+      })
+    end,
+  },
 }

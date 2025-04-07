@@ -41,15 +41,6 @@ vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { noremap = true, desc = "Exp
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "Git Status (fugitive)", })
 
 
--- █  ▄▄▄ ▄▄▄▄  
--- █ ▀▄▄  █   █ 
--- █ ▄▄▄▀ █▄▄▄▀ 
--- █      █     
---        ▀     
-if nixCats("ide.lsp") then
-  require("lze").load("vico.plugin.lsp")
-end
-
 -- ▗▞▀▚▖   ■  ▗▞▀▘▗▞▀▚▖   ■  ▗▞▀▚▖ ▄▄▄ ▗▞▀▜▌
 -- ▐▛▀▀▘▗▄▟▙▄▖▝▚▄▖▐▛▀▀▘▗▄▟▙▄▖▐▛▀▀▘█    ▝▚▄▟▌
 -- ▝▚▄▄▖  ▐▌      ▝▚▄▄▖  ▐▌  ▝▚▄▄▖█

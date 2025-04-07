@@ -70,6 +70,7 @@ nixCats@{utils, ...}: let
           nvim-lspconfig
           lazydev-nvim
           typescript-tools-nvim
+          nvim-jdtls
         ];
 
         extra = with pkgs.vimPlugins; [
