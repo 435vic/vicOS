@@ -13,7 +13,7 @@ function invalid_args
     exit 1
 end
 
-argparse -x f,m 'e/edit' 'f/fast' 'm/message=?' 'd-dir=?!test -d "$_flag_value"' -- $argv
+argparse -x f,m 'e/edit' 'f/fast' 'm/message=' 'd-dir=?!test -d "$_flag_value"' -- $argv
 or invalid_args
 
 set -q _flag_dir; or set -l _flag_dir "$DOTFILES_HOME"
