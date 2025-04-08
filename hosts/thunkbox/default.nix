@@ -4,6 +4,7 @@
 
   configuration = {
     config,
+    pkgs,
     ...
   }: {
     imports = [
@@ -16,6 +17,9 @@
 
     vicos = {
       username = "vico";
+      user.packages = [
+        pkgs.unstable.kicad-small
+      ];
       hardware = {
         laptop.enable = true;
         laptop.quietBoot = true;

@@ -26,6 +26,10 @@ vim.lsp.enable({
 
 return {
   {
+    "nvim-lspconfig",
+    on_require = { "lspconfig" },
+  },
+  {
     "typescript-tools.nvim",
     ft = {
       'javascript',
@@ -36,6 +40,7 @@ return {
       'typescript.tsx',
     },
     after = function(_)
+      require("lspconfig")
       require('typescript-tools').setup({})
     end,
   },
