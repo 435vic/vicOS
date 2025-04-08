@@ -17,9 +17,7 @@
 
     vicos = {
       username = "vico";
-      user.packages = [
-        pkgs.unstable.kicad-small
-      ];
+
       hardware = {
         laptop.enable = true;
         laptop.quietBoot = true;
@@ -35,6 +33,7 @@
         apps = {
           discord.enable = true;
           spotify.enable = true;
+          cad.enable = true;
         };
 
         gaming.enable = true;
