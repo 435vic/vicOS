@@ -7,16 +7,19 @@
   cfg = config.vicos.desktop.apps.cad;
   kicad = pkgs.runCommand "kicad" {
     buildInputs = [ pkgs.makeWrapper ];
+    binaries = [ "kicad" "gerbview" "bitmap2component" "pl_editor" "eeschema" "pcb_calculator" "pcbnew" ];
   } ''
     mkdir $out
     ln -s ${pkgs.kicad-small}/* $out
     rm $out/bin
     mkdir $out/bin
     ln -s ${pkgs.kicad-small}/bin/* $out/bin
-    rm $out/bin/kicad
     # kicad isn't really working on wayland right now
-    makeWrapper ${pkgs.kicad-small}/bin/kicad $out/bin/kicad \
-      --set-default GDK_BACKEND x11
+    for binary in $binaries; do
+      rm $out/bin/$binary
+      makeWrapper ${pkgs.kicad-small}/bin/$binary $out/bin/$binary \
+        --set-default GDK_BACKEND x11
+    done
   '';
 in {
   options = {
