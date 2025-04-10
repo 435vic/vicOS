@@ -15,6 +15,9 @@ in {
       recursive = true;
     };
 
+    # without this rofi won't show svg icons
+    programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+
     vicos.user.packages = with pkgs.unstable; [
       rofi-wayland-unwrapped
       #(rofimoji.override {rofi = rofi-wayland-unwrapped;})
