@@ -19,8 +19,18 @@ in {
         libnotify
         xdg-utils
         playerctl
+        libsForQt5.qt5ct
+        adwaita-qt
         zed-editor.fhs #FIXME: move somewhere else maybe?
       ];
+
+      environment.sessionVariables = {
+        XCURSOR_SIZE = "24";
+        XCURSOR_THEME = mkDefault "Adwaita";
+        GTK_THEME = mkDefault "Adwaita:dark";
+        QT_STYLE_OVERRIDE = mkDefault "Adwaita-Dark";
+        QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
+      };
 
       services.udisks2.enable = true;
     }
@@ -35,6 +45,7 @@ in {
         grim
         swayimg
         imv # image viewer
+        libsForQt5.qt5.qtwayland
       ];
     })
 
