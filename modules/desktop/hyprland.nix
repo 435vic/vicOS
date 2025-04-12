@@ -88,11 +88,12 @@ in {
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command = pkgs.writeShellScript "hyprland-start" ''
-          if uwsm check may-start; then
-            exec uwsm start hyprland-uwsm.desktop 
-          fi
-        '';
+        #command = pkgs.writeShellScript "hyprland-start" ''
+        #  if uwsm check may-start; then
+        #    exec uwsm start hyprland-uwsm.desktop 
+        #  fi
+        #'';
+        command = "uwsm start hyprland-uwsm.desktop";
         user = config.vicos.username;
       };
     };
