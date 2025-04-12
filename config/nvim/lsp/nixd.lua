@@ -9,7 +9,7 @@ return {
       },
       options = {
         nixos = {
-          expr = [[(builtins.getFlake (builtins.getEnv DOTFILES_HOME)).nixosConfigurations.thunkbox.options]]
+          expr = [[(builtins.getFlake (builtins.getEnv "DOTFILES_HOME")).nixosConfigurations.thunkbox.options]]
         },
       },
     }
