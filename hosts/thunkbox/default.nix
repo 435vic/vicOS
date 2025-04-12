@@ -15,6 +15,19 @@
 
     hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
 
+    programs.dconf = {
+      enable = true;
+      profiles.user.databases = [
+        {
+          settings = {
+            "org/gnome/desktop/interface" = {
+              cursor-theme = "Nordzy-cursors";
+            };
+          };
+        }
+      ];
+    };
+
     vicos = {
       username = "vico";
 
