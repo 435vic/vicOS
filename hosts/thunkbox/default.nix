@@ -37,6 +37,7 @@
           enable = true;
           environmentVariables = {
             HYPRCURSOR_THEME = "Nordzy-cursors";
+            XCURSOR_THEME = "Nordzy-cursors";
             HYPRCURSOR_SIZE = "24";
           };
         };
