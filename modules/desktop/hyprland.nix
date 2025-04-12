@@ -35,10 +35,23 @@ in {
       default = "alacritty";
       description = "Default terminal to launch when inputting terminal keybind.";
     };
+
+    environmentVariables = mkOption {
+      type = with types; attrsOf str;
+      default = {};
+      description = "Environment variables to set in ~/.config/uwsm/env-hyprland.";
+    };
   };
 
   config = mkIf cfg.enable {
     vicos.desktop.wayland.enable = true;
+    vicos.desktop.hyprland.environmentVariables = {
+        XCURSOR_SIZE = "24";
+        XCURSOR_THEME = mkDefault "Adwaita";
+        GTK_THEME = mkDefault "Adwaita:dark";
+        QT_STYLE_OVERRIDE = mkDefault "Adwaita-Dark";
+        QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
+    };
 
     environment.sessionVariables = {
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
@@ -50,16 +63,12 @@ in {
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      #package = pkgs.unstable.mesa.drivers;
-      #package32 = pkgs.unstable.pkgsi686Linux.mesa.drivers;
     };
 
     programs.hyprland = {
       enable = true;
       xwayland.enable = true;
       withUWSM = true;
-      #package = pkgs.unstable.hyprland;
-      #portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
     };
 
     environment.systemPackages = with pkgs.unstable; [
@@ -67,6 +76,7 @@ in {
       hyprpaper # wallpaper manager
       hyprpicker # color picker
       hyprshot # screenshot tool
+      hyprcursor # cursors
 
       mako # notification daemon
       pamixer # volume control
@@ -78,12 +88,11 @@ in {
     services.greetd = {
       enable = true;
       settings.default_session = {
-        #command = pkgs.writeShellScript "hyprland-start" ''
-        #  if uwsm check may-start && uwsm select; then
-        #    exec uwsm start default
-        #  fi
-        #'';
-        command = "uwsm start hyprland-uwsm.desktop";
+        command = pkgs.writeShellScript "hyprland-start" ''
+          if uwsm check may-start; then
+            exec uwsm start hyprland-uwsm.desktop 
+          fi
+        '';
         user = config.vicos.username;
       };
     };
@@ -93,6 +102,11 @@ in {
         source = config.lib.vicos.dirFromConfig "hypr";
         recursive = true;
       };
+
+      "uwsm/env-hyprland".text = pipe cfg.environmentVariables [
+        (mapAttrsToList (n: v: "export ${escapeShellArg n}=${escapeShellArg v}"))
+        concatLines
+      ];
 
       "hypr/hyprland.pre.conf".text = ''
         $term = ${cfg.defaultTerminal}

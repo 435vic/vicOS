@@ -18,6 +18,11 @@
     vicos = {
       username = "vico";
 
+      # Theme stuff, should probably go in a theme module
+      user.packages = [
+        config.vicos.flake.packages.nordzy-cursors
+      ];
+
       hardware = {
         laptop.enable = true;
         laptop.quietBoot = true;
@@ -28,7 +33,13 @@
       desktop = {
         enable = true;
         rofi.enable = true;
-        hyprland.enable = true;
+        hyprland = {
+          enable = true;
+          environmentVariables = {
+            HYPRCURSOR_THEME = "Nordzy-cursors";
+            HYPRCURSOR_SIZE = "24";
+          };
+        };
 
         apps = {
           discord.enable = true;
