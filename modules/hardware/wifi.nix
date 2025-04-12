@@ -6,12 +6,19 @@
 }:
 with lib; let
   cfg = config.vicos.hardware.wifi;
-  interfaces = config.networking.wireless.interfaces;
+  interfaces = cfg.interfaces; 
 in {
-  options.vicos.hardware.wifi.enable = mkEnableOption "wifi";
+  options.vicos.hardware.wifi = {
+    enable = mkEnableOption "wifi";
+    interfaces = mkOption {
+      type = with types; listOf str;
+      default = [];
+      description = "wifi interfaces to enable.";
+    };
+  };
 
   config = mkIf cfg.enable {
-    networking.wireless.enable = true;
+    #networking.wireless.enable = true;
 
     networking = {
       useDHCP = false;

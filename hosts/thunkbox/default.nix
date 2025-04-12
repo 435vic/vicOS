@@ -41,6 +41,7 @@
         laptop.quietBoot = true;
         audio.enable = true;
         wifi.enable = true;
+        wifi.interfaces = [ "wlp4s0" ];
       };
 
       desktop = {
@@ -98,7 +99,6 @@
 
     virtualisation.docker.enable = true;
 
-    networking.wireless.interfaces = ["wlp4s0"];
 
     # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
     # TODO: move to hardware modules (perhaps with a profile system?)
