@@ -186,6 +186,7 @@ in {
     # TODO: remove once it is made default on NixOS 25.05
     environment.systemPackages = [
       pkgs.unstable.nixos-rebuild-ng
+      pkgs.ragenix
       (pkgs.writeShellScriptBin "dude" ''
         ${cfg.flake.path}/dude/dude "$@"
       '')
