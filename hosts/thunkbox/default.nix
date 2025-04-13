@@ -92,6 +92,8 @@
       };
     };
 
+    programs.zoxide.enable = true;
+
     services.asusd = {
       enable = true;
       enableUserService = true;
