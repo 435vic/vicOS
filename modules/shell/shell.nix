@@ -53,6 +53,9 @@ in {
       environment.systemPackages = with pkgs.unstable; [
         ripgrep
         jq
+        eza
+        bat
+        gitui
         nix-search-cli
       ];
 
