@@ -88,11 +88,6 @@ in {
     services.greetd = {
       enable = true;
       settings.default_session = {
-        #command = pkgs.writeShellScript "hyprland-start" ''
-        #  if uwsm check may-start; then
-        #    exec uwsm start hyprland-uwsm.desktop 
-        #  fi
-        #'';
         command = "uwsm start hyprland-uwsm.desktop";
         user = config.vicos.username;
       };
@@ -108,6 +103,11 @@ in {
         (mapAttrsToList (n: v: "export ${escapeShellArg n}=${escapeShellArg v}"))
         concatLines
       ];
+
+      mako = {
+        source = config.lib.vicos.dirFromConfig "mako";
+        recursive = true;
+      };
 
       "hypr/hyprland.pre.conf".text = ''
         $term = ${cfg.defaultTerminal}
