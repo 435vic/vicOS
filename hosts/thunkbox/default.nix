@@ -101,6 +101,11 @@
 
     virtualisation.docker.enable = true;
 
+    networking.firewall.allowedUDPPorts = [ 1900 ];
+
+    networking.firewall.allowedTCPPorts = [
+      1338 # dms
+    ];
 
     # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
     # TODO: move to hardware modules (perhaps with a profile system?)

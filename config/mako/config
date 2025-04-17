@@ -1,3 +1,3 @@
 default-timeout=5000
-icon-path=/etc/profiles/per-user/vico/share/icons:/run/current-system/sw/share/icons
+icon-path=/etc/profiles/per-user/vico/share/icons/hicolor:/run/current-system/sw/share/icons/hicolor
 
