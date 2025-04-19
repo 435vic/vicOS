@@ -11,7 +11,7 @@ in mkIf (cfg.active == "rose-pine") {
       package = pkgs.rose-pine-gtk-theme;
       iconPackage = pkgs.rose-pine-icon-theme;
       name = "rose-pine";
-      iconName = "rose-pine";
+      iconName = "oomox-rose-pine";
     };
 
     cursor = {
