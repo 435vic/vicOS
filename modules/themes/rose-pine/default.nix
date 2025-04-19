@@ -10,8 +10,8 @@ in mkIf (cfg.active == "rose-pine") {
     gtk = {
       package = pkgs.rose-pine-gtk-theme;
       iconPackage = pkgs.rose-pine-icon-theme;
-      name = "rose-pine-gtk";
-      iconName = "rose-pine-icons";
+      name = "rose-pine";
+      iconName = "rose-pine";
     };
 
     cursor = {
