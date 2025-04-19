@@ -15,18 +15,6 @@
 
     hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
 
-    programs.dconf = {
-      enable = true;
-      profiles.user.databases = [
-        {
-          settings = {
-            "org/gnome/desktop/interface" = {
-              cursor-theme = "Nordzy-cursors";
-            };
-          };
-        }
-      ];
-    };
 
     vicos = {
       username = "vico";
@@ -49,11 +37,11 @@
         rofi.enable = true;
         hyprland = {
           enable = true;
-          environmentVariables = {
-            HYPRCURSOR_THEME = "Nordzy-cursors";
-            XCURSOR_THEME = "Nordzy-cursors";
-            HYPRCURSOR_SIZE = "24";
-          };
+          #environmentVariables = {
+          #  HYPRCURSOR_THEME = "Nordzy-cursors";
+          #  XCURSOR_THEME = "Nordzy-cursors";
+          #  HYPRCURSOR_SIZE = "24";
+          #};
         };
 
         apps = {

@@ -120,5 +120,12 @@
       mapAttrs callHost (vicos.lib.getHosts ./hosts);
 
     lib = import ./lib {inherit (nixpkgs) lib;};
+
+    templates = {
+      rust = {
+        path = ./templates/rust;
+        description = "Rust flake template using fenix";
+      };
+    };
   };
 }
