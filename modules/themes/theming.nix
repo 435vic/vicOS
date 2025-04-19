@@ -94,6 +94,7 @@ in {
     vicos.desktop.hyprland.environmentVariables = {
       XCURSOR_THEME = cfg.cursor.name;
       XCURSOR_SIZE = "24";
+      GTK_THEME = mkForce cfg.gtk.name;
       HYPRCURSOR_THEME = cfg.cursor.hyprcursorName;
       HYPCURSOR_SIZE = "24";
     };

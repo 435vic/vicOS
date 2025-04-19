@@ -16,7 +16,7 @@ in mkIf (cfg.active == "rose-pine") {
 
     cursor = {
       package = pkgs.rose-pine-cursor;
-      name = "rose-pine-cursor";
+      name = "BreezeX-RoséPine-Linux";
       hyprcursorPackage = pkgs.rose-pine-hyprcursor;
       hyprcursorName = "rose-pine-hyprcursor";
     };
