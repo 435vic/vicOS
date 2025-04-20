@@ -4,15 +4,41 @@
     "mode": "dock",
     "exclusive": true,
     "gtk-layer-shell": true,
-    "spacing": 4,
     "modules-left": ["hyprland/workspaces", "mpris"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["pulseaudio#microphone", "idle_inhibitor", "custom/power_profile", "network", "wireplumber", "clock", "battery", "tray"],
+    "modules-right": [ "network", "idle_inhibitor", "custom/power_profile", "pulseaudio", "battery", "clock", "tray"],
     "hyprland/window": {
         "format": "{}",
         "rewrite": {
-          "(.*) — Mozilla Firefox": "🌎 $1"
+          "(.*) — Mozilla Firefox": "🌎 $1",
+          "(.*) — Zen Browser": "🌎 $1"
         }
+    },
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "on-click": "activate",
+        "format": "{icon}",
+        "format-icons": {
+            "1": "一",
+            "2": "二",
+            "3": "三",
+            "4": "四",
+            "5": "五",
+            "6": "六",
+            "7": "七",
+            "8": "八",
+            "9": "九",
+            "10": "十"
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+        },
     },
 
     "custom/power_profile": {
@@ -23,15 +49,6 @@
         "on-click": "/run/current-system/sw/bin/asusctl profile -n; /run/current-system/sw/bin/pkill -SIGRTMIN+8 .waybar-wrapped",
         "signal": 8
     },
-
-   // "custom/weather" : {
-   //      //shows the current weather and forecast
-   //      "tooltip" : true,
-   //      "format" : "{}",
-   //      "interval" : 30,
-   //      "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
-   //      "return-type" : "json"
-   //  },
 
     "tray": {
         "icon-size": 14,
@@ -87,25 +104,26 @@
         "format-icons": [" ", " ", " ", " ", " "]
     },
 
-    "wireplumber": {
-        "scroll-step": 5, // %, can be a float
+    "pulseaudio": {
         "format": "{icon} {volume}%",
-        "format-bluetooth": "{icon} {volume}% ",
-        "format-bluetooth-muted": " {icon}",
+        "tooltip": false,
         "format-muted": " ",
+        "on-click": "/run/current-system/sw/bin/pamixer -t",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "/run/current-system/sw/bin/pamixer -i 5",
+        "on-scroll-down": "/run/current-system/sw/bin/pamixer -d 5",
+        "scroll-step": 5,
         "format-icons": {
             "headphone": "",
-            "hands-free": "󰂑",
-            "headset": "󰂑",
+            "hands-free": "",
+            "headset": "",
             "phone": "",
             "portable": "",
             "car": "",
             "default": ["", "", " "]
-        },
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-click-right": "pavucontrol"
+        }
     },
-
+    
     "temperature": {
         "thermal-zone": 0,
         "format": "{temperatureC}°C ",
@@ -136,7 +154,7 @@
         "format": "{format_source}",
         "format-source": "",
         "format-source-muted": " ",
-        "on-click": "pamixer --default-source -t",
+        "on-click": "/run/current-system/sw/bin/pamixer --default-source -t",
         "on-scroll-up": "",
         "on-scroll-down": "",
         "scroll-step": 0

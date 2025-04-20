@@ -1,255 +1,213 @@
-/* colors */
-/* Gruvbox Dark */
-@define-color bg        #282828;
-@define-color fglight   #282828;
-@define-color bg1       #3c3836;
-@define-color bg2       #504945;
-@define-color bg3       #665c54;
-@define-color bg4       #7c6f64;
-@define-color fg        #ebdbb2;
-@define-color red       #cc241d;
-@define-color green     #98971a;
-@define-color yellow    #d79921;
-@define-color blue      #458588;
-@define-color purple    #b16286;
-@define-color aqua      #689d6a;
-@define-color gray      #a89984;
-@define-color brgray    #928374;
-@define-color brred     #fb4934;
-@define-color brgreen   #b8bb26;
-@define-color bryellow  #fabd2f;
-@define-color brblue    #83a598;
-@define-color brpurple  #d3869b;
-@define-color braqua    #8ec07c;
-@define-color orange    #d65d0e;
-@define-color brorange  #fe8019;
-@define-color tooltipbg rgba(40, 40, 40, 0.8);
-
-/* Gruvbox Light */
 /*
-@define-color bg        #fbf1c7;
-@define-color fglight   #fbf1c7;
-@define-color bg1       #ebdbb2;
-@define-color bg2       #d5c4a1;
-@define-color bg3       #bdae93;
-@define-color bg4       #a89984;
-@define-color fg        #3c3836;
-@define-color red       #cc241d;
-@define-color green     #98971a;
-@define-color yellow    #d79921;
-@define-color blue      #458588;
-@define-color purple    #b16286;
-@define-color aqua      #689d6a;
-@define-color gray      #7c6f64;
-@define-color brgray    #928374;
-@define-color brred     #9d0006;
-@define-color brgreen   #79740e;
-@define-color bryellow  #b57614;
-@define-color brblue    #076678;
-@define-color brpurple  #8f3f71;
-@define-color braqua    #427b58;
-@define-color orange    #d65d0e;
-@define-color brorange  #af3a03;
-@define-color tooltipbg rgba(251, 241, 199, 0.8);
+* Flavour: Rosé Pine
+* Maintainer: DankChoir
 */
 
+@define-color base            #191724;
+@define-color surface         #1f1d2e;
+@define-color overlay         #26233a;
+
+@define-color muted           #6e6a86;
+@define-color subtle          #908caa;
+@define-color text            #e0def4;
+
+@define-color love            #eb6f92;
+@define-color gold            #f6c177;
+@define-color rose            #ebbcba;
+@define-color pine            #31748f;
+@define-color foam            #9ccfd8;
+@define-color iris            #c4a7e7;
+
+@define-color highlightLow    #21202e;
+@define-color highlightMed    #403d52;
+@define-color highlightHigh   #524f67;
+
 * {
-    font-size: 14px;
-    border-radius: 5px;
-}
-
-tooltip {
-    font-family: "JetBrainsMono Nerd Font", monospace;
-    background-color: @tooltipbg;
-    border-radius: 5px;
-    border: 1px solid @bg3;
-}
-
-tooltip label {
-    color: @fg;
-    text-shadow: none;
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", "Noto Sans", monospace;
+  font-weight: bold;
+  font-size: 14px;
+  min-height: 0;
 }
 
 window#waybar {
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: "SpaceMono Nerd Font", "Noto Sans", monospace;
-    background-color: transparent;
-    border-bottom: 0px;
-    color: @fg;
-    transition-property: background-color;
-    transition-duration: .5s;
+  background: rgba(21, 18, 27, 0);
+  color: @text;
 }
 
-window#waybar.hidden {
-    opacity: 0.2;
-}
-
-window#waybar.empty #window {
-    background-color: transparent;
-    padding: 0;
-}
-
-
-
-/*
-window#waybar.empty {
-    background-color: transparent;
-}
-window#waybar.solo {
-    background-color: #FFFFFF;
-}
-*/
-
-.modules-right {
-    margin: 10px 10px 0 0;
-}
-.modules-center {
-    margin: 10px 0 0 0;
-}
-.modules-left {
-    margin: 10px 0 0 10px;
-}
-
-button {
-    /* Use box-shadow instead of border so the text isn't offset */
-    /* box-shadow: inset 0 -3px transparent; */
-    border: none;
-}
-
-/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-/*
-button:hover {
-    background: inherit;
-    box-shadow: inset 0 -3px @fg;
-} */
-
-#workspaces {
-    background-color: @bg;
+tooltip {
+  background: @base;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: @overlay;
 }
 
 #workspaces button {
-    padding: 0 5px;
-    background-color: transparent;
-    color: @fg;
-    border-radius: 0;
+  padding: 5px 2px;
+  color: @highlightMed;
+  margin-right: 5px;
 }
 
-#workspaces button:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-#workspaces button:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-#workspaces button:first-child:last-child {
-    border-radius: 5px;
-}
-
-#workspaces button:hover {
-    color: @yellow;
+#workspaces button.active {
+  color: @text;
 }
 
 #workspaces button.focused {
-    background-color: @bg3;
-    /* box-shadow: inset 0 -3px #ffffff; */
+  color: @subtle;
+  background: @love;
+  border-radius: 10px;
 }
 
 #workspaces button.urgent {
-    background-color: @purple;
+  color: @base;
+  background: @pine;
+  border-radius: 10px;
 }
 
-#idle_inhibitor,
-#cava,
-#scratchpad,
-#mode,
+#workspaces button:hover {
+  background: @highlightLow;
+  color: @text;
+  border-radius: 10px;
+}
+
+#custom-power_profile,
+#custom-weather,
 #window,
 #clock,
 #battery,
-#backlight,
-#custom-weather,
-#wireplumber,
-#tray,
-#mpris,
+#pulseaudio,
 #network,
-#custom-power_profile,
-#load {
-    padding: 0 10px;
-    background-color: @bg;
-    color: @fg;
+#idle_inhibitor,
+#bluetooth,
+#temperature,
+#workspaces,
+#tray,
+#memory,
+#backlight {
+  background: @base;
+  opacity: 0.9;
+  padding: 0px 10px;
+  margin: 3px 0px;
+  margin-top: 10px;
+  border: 1px solid @overlay;
 }
 
-#mode {
-    background-color: @aqua;
-    color: @fglight;
-    /* box-shadow: inset 0 -3px #ffffff; */
+#idle_inhibitor {
+  color: @gold;
 }
 
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
+#memory {
+  color: @foam;
 }
 
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-    margin-right: 0;
+#temperature {
+  color: @rose;
+  border-radius: 0px 0px 0px 0px;
+  border-right: 0px;
 }
 
-#battery.charging, #battery.plugged {
-    background-color: @green;
-    color: @fglight;
+#temperature.critical {
+  color: @love;
 }
 
-@keyframes blink {
-    to {
-        background-color: @bg;
-        color: @fg;
-    }
+#backlight {
+  color: @text;
+  border-radius: 0px 10px 10px 0px;
+  margin-right: 10px;
 }
 
-/* Using steps() instead of linear as a timing function to limit cpu usage */
-#battery.critical:not(.charging) {
-    background-color: @red;
-    color: @fg;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: steps(12);
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+#tray {
+  border-radius: 10px;
+  margin-right: 10px;
 }
 
-#wireplumber.muted {
-    background-color: @blue;
+#workspaces {
+  background: @base;
+  border-radius: 10px;
+  margin-left: 10px;
+  padding-right: 0px;
+  padding-left: 5px;
 }
 
-#tray > .passive {
-    -gtk-icon-effect: dim;
+#custom-power_profile {
+  color: @foam;
+  border-radius: 0px 10px 10px 0px;
 }
 
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
+#window {
+  border-radius: 10px;
+  margin-left: 60px;
+  margin-right: 60px;
 }
 
-#mpris.playing {
-    background-color: @yellow;
-    color: @fglight;
+window#waybar.empty #window {
+  background: none;
+  border: none;
+}
+
+#clock {
+  color: @gold;
+  border-radius: 10px;
+  border-right: 0px;
+  margin-right: 10px;
+}
+
+#network {
+  color: @love;
+  border-radius: 10px 0px 0px 10px;
+  /* border-left: 0px; */
+  border-right: 0px;
+}
+
+#bluetooth {
+  color: @gold;
+  border-radius: 0px 0px 0px 0px;
+  border-right: 0px;
+  /* margin-right: 10px; */
+}
+
+#pulseaudio {
+  color: @iris;
+  border-radius: 10px 0px 0px 10px;
+  /* border-left: 0px; */
+  border-right: 0px;
+  margin-left: 4px;
+}
+
+#pulseaudio.muted {
+  color: @love;
 }
 
 #pulseaudio.microphone {
-    padding: 0px;
-    background-color: transparent;
+  color: #c4a7e7;
+  border-left: 0px;
+  border-right: 0px;
+  border-radius: 0px 10px 10px 0px;
+  margin-right: 10px;
 }
 
-#pulseaudio.microphone.muted {
-    padding: 0 6px;
-    background-color: @red;
+#battery {
+  color: @text;
+  border-radius: 0 10px 10px 0;
+  border-left: 0px;
+  margin-right: 4px;
 }
 
-#tray menu {
-    font-family: sans-serif;
+#custom-weather {
+  border-radius: 0px 10px 10px 0px;
+  /* border-right: 0px; */
+  margin-left: 0px;
 }
 
-#scratchpad.empty {
-    background: transparent;
-    padding: 0;
+#custom-spotify {
+  min-width: 140px;
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
+  padding: 0 10px;
+  color: @foam;
+  padding: 0px 10px;
+  margin: 3px 0px;
+  margin-top: 10px;
 }
