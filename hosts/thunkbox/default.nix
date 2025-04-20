@@ -15,14 +15,8 @@
 
     hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
 
-
     vicos = {
       username = "vico";
-
-      # Theme stuff, should probably go in a theme module
-      user.packages = [
-        config.vicos.flake.packages.nordzy-cursors
-      ];
 
       hardware = {
         laptop.enable = true;
@@ -37,11 +31,6 @@
         rofi.enable = true;
         hyprland = {
           enable = true;
-          #environmentVariables = {
-          #  HYPRCURSOR_THEME = "Nordzy-cursors";
-          #  XCURSOR_THEME = "Nordzy-cursors";
-          #  HYPRCURSOR_SIZE = "24";
-          #};
         };
 
         apps = {
@@ -88,12 +77,6 @@
     };
 
     virtualisation.docker.enable = true;
-
-    networking.firewall.allowedUDPPorts = [ 1900 ];
-
-    networking.firewall.allowedTCPPorts = [
-      1338 # dms
-    ];
 
     # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
     # TODO: move to hardware modules (perhaps with a profile system?)

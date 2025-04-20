@@ -16,6 +16,7 @@ nixCats@{utils, ...}: let
         universal-ctags
         ripgrep
         fd
+        nodePackages.vscode-json-languageserver
       ];
 
       ide = {

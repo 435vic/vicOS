@@ -1,17 +1,3 @@
-
-local function lsp_on_attach(_, bufid)
-  local nmap = function(keys, func, desc)
-    vim.keymap.set('n', keys, func, { buffer = bufid, desc = desc })
-  end
-
-  nmap('gd', '<CMD>Telescope lsp_definitions<CR>', 'Goto Definition')
-  nmap('gD', '<CMD>Telescope lsp_declarations<CR>', 'Goto Declaration')
-  nmap('gi', '<CMD>Telescope lsp_implementations<CR>', 'Goto implementation')
-  nmap('gr', '<CMD>Telescope lsp_references<CR>', 'Goto Reference(s)')
-  nmap('<F2>', vim.lsp.buf.rename, 'Rename Symbol')
-  nmap('<leader>ff', vim.lsp.buf.format, 'Format Document')
-end
-
 -- For all LSPs, .git guarantees that the folder is
 -- a project
 vim.lsp.config('*', {
@@ -22,7 +8,8 @@ vim.lsp.enable({
   'lua_ls',
   'nixd',
   'nil',
-  'hls'
+  'hls',
+  'jsonls',
 });
 
 return {

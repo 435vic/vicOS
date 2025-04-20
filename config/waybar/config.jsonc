@@ -67,8 +67,8 @@
       "interval": 1,
       "dynamic-len": 60,
       "status-icons": {
-        "playing": "",
-        "paused": "",
+        "paused": "",
+        "playing": "",
         "stopped": ""
       },
       "dynamic-order": ["title", "artist"],
