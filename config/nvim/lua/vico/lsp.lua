@@ -1,21 +1,24 @@
--- For all LSPs, .git guarantees that the folder is
--- a project
-vim.lsp.config('*', {
-  root_markers = {'.git'},
-});
-
-vim.lsp.enable({
-  'lua_ls',
-  'nixd',
-  'nil',
-  'hls',
-  'jsonls',
-});
-
 return {
   {
     "nvim-lspconfig",
-    on_require = { "lspconfig" },
+    event = { "DeferredUIEnter" },
+    after = function(_)
+      vim.lsp.config('*', {
+        root_markers = {'.git'},
+      });
+
+      vim.lsp.config('jsonls', {
+        cmd = { "vscode-json-languageserver", "--stdio" }
+      })
+
+      vim.lsp.enable({
+        'lua_ls',
+        'nixd',
+        'nil',
+        'hls',
+        'jsonls',
+      });
+    end,
   },
   {
     "typescript-tools.nvim",
