@@ -57,6 +57,7 @@ in {
         bat
         gitui
         nix-search-cli
+        fzf
       ];
 
       home.configFile.fish = {

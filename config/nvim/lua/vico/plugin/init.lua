@@ -84,6 +84,35 @@ require("lze").load {
         options = {
           theme = colorscheme,
         },
+        sections = {
+          lualine_a = {{
+            'mode',
+            fmt = function(s)
+              local mode_map = {
+                ['NORMAL'] = 'N',
+                ['O-PENDING'] = 'N?',
+                ['INSERT'] = 'I',
+                ['VISUAL'] = 'V',
+                ['V-BLOCK'] = 'VB',
+                ['V-LINE'] = 'VL',
+                ['V-REPLACE'] = 'VR',
+                ['REPLACE'] = 'R',
+                ['COMMAND'] = '!',
+                ['SHELL'] = 'SH',
+                ['TERMINAL'] = 'T',
+                ['EX'] = 'X',
+                ['S-BLOCK'] = 'SB',
+                ['S-LINE'] = 'SL',
+                ['SELECT'] = 'S',
+                ['CONFIRM'] = 'Y?',
+                ['MORE'] = 'M',
+              }
+              return mode_map[s] or s
+            end
+          }},
+          lualine_b = { { 'FugitiveHead', icon='' } },
+          lualine_c = { { 'diagnostics' }, 'filename' },
+        },
         tabline = {
           lualine_a = { 'buffers' },
           -- if you use lualine-lsp-progress, I have mine here instead of fidget

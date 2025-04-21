@@ -80,6 +80,7 @@ in {
 
       mako # notification daemon
       pamixer # volume control
+      btop # process manager
     ];
 
     security.pam.services.swaylock = {};
