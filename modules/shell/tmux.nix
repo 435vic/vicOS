@@ -50,6 +50,7 @@ in {
       vicos.user.packages = [ pkgs.unstable.sesh ];
       programs.fish.interactiveShellInit = mkAfter ''
         bind ctrl-f 'sesh connect (sesh list | fzf)'
+        bind -M insert ctrl-f 'sesh connect (sesh list | fzf)'
       '';
       environment.etc."tmux.conf".text = mkAfter ''
         bind-key "T" run-shell "sesh connect \"$(

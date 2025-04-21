@@ -63,9 +63,9 @@ if test $status -ne 0
 end
 
 function sync
-    set -g sync_time $CMD_DURATION
     set -fx DOTFILES_HOME $argv[1]
     sudo nixos-rebuild-ng switch --impure --flake git+file:$argv[1]?submodules=1
+    set -g sync_time $CMD_DURATION
 end
 
 if not sync $_flag_dir
@@ -77,7 +77,6 @@ if not sync $_flag_dir
     exit 1
 end
 
-
 set generations (nixos-rebuild-ng list-generations --json)
 set gen_number (echo $generations | jq -r '.[0].generation')
 set gen_description (echo $generations | jq -r '"Gen \(.[0].generation) NixOS \(.[0].nixosVersion) Kernel \(.[0].kernelVersion)"')
@@ -85,5 +84,5 @@ git tag -a "$(hostname)-gen-$gen_number" -m "$gen_description"
 
 notify-send --icon=software-update-available "dude sync" "sync successful! took $sync_time"s
 
-echo "donezo"
+echo "donezo. took $sync_time"s
 
