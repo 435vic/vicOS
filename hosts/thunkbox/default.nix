@@ -78,6 +78,9 @@
 
     virtualisation.docker.enable = true;
 
+    # TODO: decide whether to include this on modules or not
+    services.gnome.gnome-keyring.enable = true;
+
     # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
     # TODO: move to hardware modules (perhaps with a profile system?)
     boot.initrd.availableKernelModules = [
