@@ -80,6 +80,7 @@
 
     # TODO: decide whether to include this on modules or not
     services.gnome.gnome-keyring.enable = true;
+    security.pam.services.hyprland.enableGnomeKeyring = true;
 
     # -=-=-=-=-=- MOVE THIS CONFIG TO MODULES!! -=-=-=-=-=-
     # TODO: move to hardware modules (perhaps with a profile system?)
