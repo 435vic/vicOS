@@ -49,16 +49,7 @@ vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "Git Status (fugitive)",
 
 require("lze").load {
   { import = "vico.plugin.treesitter" },
-  {
-    "telescope.nvim",
-    cmd = { "Telescope" },
-    keys = {
-      { "<leader>pf", "<cmd>Telescope find_files<CR>", mode = {"n"}, desc = "Find files in project (Telescope)" },
-      { "<C-p>", "<cmd>Telescope git_files<CR>", mode = {"n"}, desc = "Find git files in project (Telescope)" },
-      { "<leader>ps", "<cmd>Telescope live_grep<CR>", mode = {"n"}, desc = "Grep for string in project (Telescope)" },
-      { "<leader>b", "<cmd>Telescope buffers<CR>", mode = {"n"}, desc = "Find buffer (Telescope)" },
-    },
-  },
+  { import = "vico.plugin.telescope" },
   {
     "blink.cmp",
     enable = nixCats('ide.cmp'),
