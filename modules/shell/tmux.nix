@@ -53,7 +53,7 @@ in {
         bind -M insert ctrl-f 'sesh connect (sesh list | fzf)'
       '';
       environment.etc."tmux.conf".text = mkAfter ''
-        bind-key "ctrl-f" run-shell "sesh connect \"$(
+        bind-key "C-f" run-shell "sesh connect \"$(
           sesh list --icons | fzf-tmux -p 80%,70% \
             --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
             --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
