@@ -1,9 +1,11 @@
 local is_inside_worktree = {}
+local telescope_opts = {
+  hidden = true
+}
 
 -- Use git ls-files if a git repo is detected, otherwise
 -- fall back to normal files
 local function find_files()
-  local opts = {}
 
   local cwd = vim.fn.getcwd()
   if is_inside_worktree[cwd] == nil then
@@ -12,9 +14,9 @@ local function find_files()
   end
 
   if is_inside_worktree[cwd] then
-    require("telescope.builtin").git_files(opts)
+    require("telescope.builtin").git_files(telescope_opts)
   else
-    require("telescope.builtin").find_files(opts)
+    require("telescope.builtin").find_files(telescope_opts)
   end
 end
 
@@ -24,16 +26,22 @@ local function find_string()
   })
 end
 
+local function telescope(cmd)
+  return function()
+    require("telescope.builtin")[cmd](telescope_opts)
+  end
+end
+
 --- @type lze.PluginSpec
 return {
   "telescope.nvim",
   cmd = { "Telescope" },
   keys = {
     { "<leader><Space>", find_files, mode = {"n"}, desc = "Quick find files (Telescope)" },
-    { "<leader>ff", "<cmd>Telescope find_files<CR>", mode = {"n"}, desc = "Find files in project (Telescope)" },
-    { "<leader>fl", "<cmd>Telescope live_grep<CR>", mode = {"n"}, desc = "Live grep (Telescope)" },
+    { "<leader>ff", telescope("find_files"), mode = {"n"}, desc = "Find files in project (Telescope)" },
+    { "<leader>fl", telescope("live_grep"), mode = {"n"}, desc = "Live grep (Telescope)" },
     { "<leader>fs", find_string, mode = {"n"}, desc = "Find/grep string (Telescope)" },
-    { "<leader>b", "<cmd>Telescope buffers<CR>", mode = {"n"}, desc = "Find buffer (Telescope)" },
+    { "<leader>b", telescope("buffers"), mode = {"n"}, desc = "Find buffer (Telescope)" },
   },
 }
 

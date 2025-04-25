@@ -9,7 +9,7 @@ local colorscheme = nixCats("colorscheme")
 vim.cmd.colorscheme(colorscheme)
 
 -- Register extra plugins to be lazy loaded if enabled
-if nixCats("extraThemes") then
+if nixCats("extraThemes") ~= nil then
   require("lze").load("vico.plugin.colorschemes")
 end
 
@@ -52,7 +52,7 @@ require("lze").load {
   { import = "vico.plugin.telescope" },
   {
     "blink.cmp",
-    enable = nixCats('ide.cmp'),
+    enable = nixCats('ide.cmp') ~= nil,
     event = { "DeferredUIEnter" },
     on_require = { "blink.cmp" },
     after = function(_)
@@ -68,7 +68,7 @@ require("lze").load {
   },
   {
     "lualine.nvim",
-    enabled = nixCats('ide.extra'),
+    enabled = nixCats('ide.extra') ~= nil,
     event = 'DeferredUIEnter',
     after = function(_)
       require('lualine').setup({
@@ -115,7 +115,7 @@ require("lze").load {
   },
   {
     "which-key.nvim",
-    enabled = nixCats('training'),
+    enabled = nixCats('training') ~= nil,
     event = 'DeferredUIEnter',
     keys = {
       { "<leader>?", function() require('which-key').show({ global = false }) end, desc = "Buffer Local Keymaps (which-key)", }
@@ -123,12 +123,12 @@ require("lze").load {
   },
   {
     "vim-be-good",
-    enabled = nixCats('training'),
+    enabled = nixCats('training') ~= nil,
     cmd = { "VimBeGood" },
   },
   {
     "presence.nvim",
-    enabled = nixCats('misc'),
+    enabled = nixCats('misc') ~= nil,
     event = 'DeferredUIEnter',
     after = function()
       require("presence").setup({
@@ -141,6 +141,18 @@ require("lze").load {
   {
     "markdown-preview.nvim",
     ft = { "markdown" },
-
+  },
+  {
+    "copilot.vim",
+    enabled = nixCats('ai.copilot') ~= nil,
+    on_require = 'copilot'
+  },
+  {
+    "CopilotChat.nvim",
+    enabled = nixCats('ai.copilot') ~= nil,
+    cmd = { "CopilotChatOpen" },
+    after = function()
+      require("CopilotChat").setup({})
+    end,
   },
 }

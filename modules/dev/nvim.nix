@@ -7,7 +7,7 @@
 with lib; let
   cfg = config.vicos.dev.nvim;
   flakePkgs = config.vicos.flake.packages;
-  nvim = if cfg.pure then flakePkgs.vvim else flakePkgs.vvim.impure;
+  nvim = if cfg.pure then flakePkgs.vvim-unfree else flakePkgs.vvim-unfree.impure;
 in {
   options.vicos.dev.nvim = {
     enable = mkOption {

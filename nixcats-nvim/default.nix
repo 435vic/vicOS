@@ -27,6 +27,10 @@ nixCats@{utils, ...}: let
           nix-doc
         ];
       };
+
+      ai = with pkgs; [
+        nodejs_22
+      ];
     };
 
     startupPlugins = {
@@ -79,6 +83,13 @@ nixCats@{utils, ...}: let
         ];
       };
 
+      ai = {
+        copilot = with pkgs.vimPlugins; [
+          copilot-vim
+          CopilotChat-nvim
+        ];
+      };
+
       misc = with pkgs.vimPlugins; [
         obsidian-nvim
         markdown-preview-nvim
@@ -103,6 +114,11 @@ nixCats@{utils, ...}: let
       misc = true;
     };
 
+    # added so that you don't need to allow unfree packages on nix run vicOS#vvim
+    unfreeCategories = {
+      ai = true;
+    };
+
     themeData = pkgs: { themeIndex = (theming pkgs).index; };
   in {
     # vico's vim :o
@@ -112,6 +128,15 @@ nixCats@{utils, ...}: let
         wrapRc = true;
       };
       categories = fullCategories // themeData pkgs;
+    };
+
+    vvim-unfree = {pkgs, ...}: {
+      settings = {
+        aliases = [ "vim" "nvim" ];
+        wrapRc = true;
+      };
+
+      categories = fullCategories // unfreeCategories // themeData pkgs;
     };
   };
 in {
