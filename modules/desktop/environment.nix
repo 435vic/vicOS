@@ -22,6 +22,7 @@ in {
         libsForQt5.qt5ct
         adwaita-qt
         zed-editor.fhs #FIXME: move somewhere else maybe?
+        nemo # file explorer
       ];
 
       environment.sessionVariables = {
