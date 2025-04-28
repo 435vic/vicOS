@@ -41,7 +41,7 @@
             {
               selector = "desc:LG Electronics LG ULTRAGEAR 0x00003B2A";
               mode = "1920x1080@165";
-              position = "2048x0";
+              position = "2560x0";
               scale = 1;
               primary = true;
             }
