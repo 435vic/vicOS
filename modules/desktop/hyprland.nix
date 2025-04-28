@@ -6,6 +6,36 @@
 }:
 with lib; let
   cfg = config.vicos.desktop.hyprland;
+  mkOpt = type: description: mkOption {
+    inherit type description;
+  };
+  mkOpt' = type: description: default: mkOption {
+    inherit type description default;
+  };
+  hyprlandMonitor = types.submodule ({config, ...}: {
+    options = {
+      output = mkOpt types.str "output";
+      selector = mkOpt' types.str "more specific selector (see wiki)" "";
+      mode = mkOpt' types.str "mode" "preferred";
+      position = mkOpt' types.str "position" "auto";
+      scale = mkOpt' types.int "scale" 1;
+      disable = mkOpt' types.bool "disabled" false;
+      primary = mkOpt' types.bool "define this monitor as $monitor.primary" false;
+      rawDefinition = mkOpt types.str "final monitor declaration";
+    };
+
+    config = mkMerge [
+      (mkIf (config.selector != "") {
+        output = config.selector;
+      })
+      {
+        rawDefinition = 
+          if config.disable
+          then "monitor = ${config.output},disable"
+          else "monitor = ${config.output},${config.mode},${config.position},${toString config.scale}";
+      }
+    ];
+  });
 in {
   options.vicos.desktop.hyprland = {
     enable = lib.mkEnableOption "Hyprland";
@@ -13,6 +43,12 @@ in {
       type = types.str;
       default = "";
       description = "Extra configuration to add to the Hyprland configuration file.";
+    };
+
+    monitors = mkOption {
+      type = types.listOf hyprlandMonitor;
+      description = "Hyprland monitor definitions.";
+      default = [];
     };
 
     defaultEditor = mkOption {
@@ -110,10 +146,18 @@ in {
         recursive = true;
       };
 
-      "hypr/hyprland.pre.conf".text = ''
+      "hypr/hyprland.pre.conf".text = let
+        primaryMonitor = findFirst (x: x.primary) {} cfg.monitors;
+      in ''
         $term = ${cfg.defaultTerminal}
         $browser = ${cfg.defaultBrowser}
         $editor = ${cfg.defaultEditor}
+
+        ${concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
+
+        ${optionalString (primaryMonitor ? output) '' 
+          $monitor.primary = ${primaryMonitor.output}
+        ''} 
 
         exec-once = hyprlock --immediate
       '';

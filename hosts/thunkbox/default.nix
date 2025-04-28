@@ -31,6 +31,20 @@
         rofi.enable = true;
         hyprland = {
           enable = true;
+          monitors = [
+            {
+              selector = "desc:Chimei Innolux Corporation 0x1540";
+              mode = "2560x1440@165";
+              position = "0x0";
+              scale = 1;
+            }
+            {
+              selector = "desc:LG Electronics LG ULTRAGEAR 0x00003B2A";
+              mode = "1920x1080@165";
+              position = "2048x0";
+              scale = 1;
+            }
+          ];
         };
 
         apps = {
