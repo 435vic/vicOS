@@ -51,6 +51,12 @@ in {
       default = [];
     };
 
+    primaryMonitor = mkOption {
+      type = types.str;
+      description = "Monitor to mark as primary.";
+      default = "";
+    };
+
     defaultEditor = mkOption {
       type = types.str;
       default = "zeditor";
@@ -81,13 +87,22 @@ in {
 
   config = mkIf cfg.enable {
     vicos.desktop.wayland.enable = true;
-    vicos.desktop.hyprland.environmentVariables = {
-        XCURSOR_SIZE = "24";
-        XCURSOR_THEME = mkDefault "Adwaita";
-        GTK_THEME = mkDefault "Adwaita:dark";
-        QT_STYLE_OVERRIDE = mkDefault "Adwaita-Dark";
-        QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
-    };
+    vicos.desktop.hyprland = mkMerge [
+      {
+        environmentVariables = {
+          XCURSOR_SIZE = "24";
+          XCURSOR_THEME = mkDefault "Adwaita";
+          GTK_THEME = mkDefault "Adwaita:dark";
+          QT_STYLE_OVERRIDE = mkDefault "Adwaita-Dark";
+          QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
+        };
+      }
+      (let
+        primaryMonitor = findFirst (m: m.primary) {} cfg.monitors;
+      in mkIf (primaryMonitor ? output) {
+        primaryMonitor = primaryMonitor.output;
+      })
+    ];
 
     environment.sessionVariables = {
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
@@ -147,18 +162,15 @@ in {
       };
 
       "hypr/hyprland.pre.conf".text = let
-        primaryMonitor = findFirst (x: x.primary) {} cfg.monitors;
       in ''
         $term = ${cfg.defaultTerminal}
         $browser = ${cfg.defaultBrowser}
         $editor = ${cfg.defaultEditor}
 
         ${concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
-
-        ${optionalString (primaryMonitor ? output) '' 
-          $monitor.primary = ${primaryMonitor.output}
+        ${optionalString (cfg.primaryMonitor != "") '' 
+          $monitor.primary = ${cfg.primaryMonitor}
         ''} 
-
         exec-once = hyprlock --immediate
       '';
 

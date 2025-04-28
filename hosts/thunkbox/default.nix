@@ -43,6 +43,7 @@
               mode = "1920x1080@165";
               position = "2048x0";
               scale = 1;
+              primary = true;
             }
           ];
         };
