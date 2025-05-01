@@ -46,6 +46,13 @@
               primary = true;
             }
           ];
+          # extraConfig = let
+          #   gameMode = pkgs.writeFish ''
+          #
+          #   '';
+          # in ''
+          #   bind = $mainMod+Alt, exec, 
+          # '';
         };
 
         apps = {
@@ -85,6 +92,10 @@
     };
 
     programs.zoxide.enable = true;
+
+    environment.systemPackages = with pkgs; [
+      typst # better latex
+    ];
 
     services.asusd = {
       enable = true;

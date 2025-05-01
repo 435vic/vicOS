@@ -42,6 +42,7 @@ in {
   config = mkIf cfg.enable {
     vicos.user.packages = mkMerge [
       (mkIf cfg.kicad.enable [ cfg.kicad.package ])
+      pkgs.freecad
     ];
   };
 }

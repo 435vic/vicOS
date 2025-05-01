@@ -17,6 +17,7 @@ return {
         'nil',
         'hls',
         'jsonls',
+        'tinymist'
       });
     end,
   },

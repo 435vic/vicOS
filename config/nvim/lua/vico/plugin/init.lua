@@ -143,6 +143,13 @@ require("lze").load {
     ft = { "markdown" },
   },
   {
+    "typst-preview.nvim",
+    ft = { "typst" },
+    after = function()
+      require('typst-preview').setup {}
+    end
+  },
+  {
     "copilot.vim",
     enabled = nixCats('ai.copilot') ~= nil,
     on_require = 'copilot'
@@ -152,7 +159,7 @@ require("lze").load {
     enabled = nixCats('ai.copilot') ~= nil,
     cmd = { "CopilotChatOpen" },
     after = function()
-      require("CopilotChat").setup({})
+      require("CopilotChat").setup {}
     end,
   },
 }

@@ -25,6 +25,7 @@ nixCats@{utils, ...}: let
           nixd
           nil
           nix-doc
+          tinymist
         ];
       };
 
@@ -76,6 +77,7 @@ nixCats@{utils, ...}: let
           lazydev-nvim
           typescript-tools-nvim
           nvim-jdtls
+          typst-preview-nvim
         ];
 
         extra = with pkgs.vimPlugins; [
