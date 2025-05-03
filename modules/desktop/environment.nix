@@ -34,13 +34,6 @@ in {
         QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
       };
 
-      programs.nix-ld = {
-        enable = true;
-        # include a base set of libraries from steam-run
-        # contains most of what normal, run of the mill packages
-        # require
-        libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
-      };
 
       services.udisks2.enable = true;
     }
@@ -57,6 +50,16 @@ in {
         imv # image viewer
         libsForQt5.qt5.qtwayland
       ];
+    })
+
+    (mkIf cfg.nix-ld.enable {
+      programs.nix-ld = {
+        enable = true;
+        # include a base set of libraries from steam-run
+        # contains most of what normal, run of the mill packages
+        # require
+        libraries = pkgs.steam-run.args.multiPkgs pkgs;
+      };
     })
 
     # TODO: X11

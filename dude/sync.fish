@@ -66,7 +66,7 @@ function sync
     set -fx DOTFILES_HOME $argv[1]
     set sync_start (date +%s)
     sudo nixos-rebuild-ng switch --impure --flake git+file:$argv[1]?submodules=1
-    set sync_time (math (date +%s) - $sync_start)
+    and set sync_time (math (date +%s) - $sync_start)
 end
 
 if not sync $_flag_dir
