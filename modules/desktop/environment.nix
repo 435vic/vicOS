@@ -11,6 +11,7 @@ in {
     enable = mkEnableOption "Desktop environment";
     wayland.enable = mkEnableOption "Wayland";
     xorg.enable = mkEnableOption "X11";
+    nix-ld.enable = mkEnableOption "nix-ld with steam-run libraries";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -31,6 +32,14 @@ in {
         GTK_THEME = mkDefault "Adwaita:dark";
         QT_STYLE_OVERRIDE = mkDefault "Adwaita-Dark";
         QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
+      };
+
+      programs.nix-ld = {
+        enable = true;
+        # include a base set of libraries from steam-run
+        # contains most of what normal, run of the mill packages
+        # require
+        libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
       };
 
       services.udisks2.enable = true;

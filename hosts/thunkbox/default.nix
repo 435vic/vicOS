@@ -28,6 +28,7 @@
 
       desktop = {
         enable = true;
+        nix-ld.enable = true;
         rofi.enable = true;
         hyprland = {
           enable = true;
