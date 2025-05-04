@@ -108,7 +108,9 @@
     formatter = pkgs.alejandra;
     # helps avoiding unnecessary evaluation time on nix flake check/show
     legacyPackages = (import ./packages pkgs) // nvimPackages; 
-
+    devShells = {
+      java = import ./shells/java.nix { inherit pkgs; };
+    };
   }) // {
     nixosConfigurations = let
       # why specify the name of the host both as the dir/filename and in the config
