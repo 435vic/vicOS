@@ -47,13 +47,6 @@
               primary = true;
             }
           ];
-          # extraConfig = let
-          #   gameMode = pkgs.writeFish ''
-          #
-          #   '';
-          # in ''
-          #   bind = $mainMod+Alt, exec, 
-          # '';
         };
 
         apps = {
@@ -101,6 +94,49 @@
     services.asusd = {
       enable = true;
       enableUserService = true;
+    };
+
+    services.restic.backups = let
+      excludes = pkgs.writeText "fd-excludes" ''
+        /home/vico/.*
+        /home/vico/Downloads
+        Unity
+        node_modules
+        *~
+        *.o
+        *.lo
+        *.pyc
+        *.class
+        .venv
+        .git
+        target
+        dist
+      '';
+    in {
+      local = let
+        includeFile = "/run/restic-backups-local/raw_include";
+      in {
+        initialize = true;
+        passwordFile = "/run/agenix/rustic-password";
+
+        # can't negate patters with ! on fd
+        # so we gotta include these paths manually
+        # see https://github.com/sharkdp/fd/issues/1457#issuecomment-1880604708
+        paths = [
+          "/home/vico/.local/share/PrismLauncher"
+          "/home/vico/.local/user/Pictures"
+          "/home/vico/.local/user/Documents"
+          "/home/vico/vicOS"
+        ];
+
+        extraBackupArgs = [
+          "--files-from-raw=${includeFile}"
+        ];
+
+        repository = "/mnt/memes/backup";
+        backupPrepareCommand = "${pkgs.fd}/bin/fd . /home/vico -aH -tfile --ignore-file ${excludes} --print0 >> ${includeFile}";
+        backupCleanupCommand = "rm ${includeFile}";
+      };
     };
 
     virtualisation.docker.enable = true;
