@@ -96,6 +96,7 @@ nixCats@{utils, ...}: let
         obsidian-nvim
         markdown-preview-nvim
         presence-nvim
+        localPkgs.golf-vim
       ];
 
       extraThemes = otherThemes;

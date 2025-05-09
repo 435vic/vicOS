@@ -162,4 +162,9 @@ require("lze").load {
       require("CopilotChat").setup {}
     end,
   },
+  {
+    "vim-golf",
+    enabled = nixCats('misc') ~= nil,
+    cmd = { "Golf" }
+  },
 }

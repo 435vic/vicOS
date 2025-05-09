@@ -36,11 +36,23 @@ end
 return {
   "telescope.nvim",
   cmd = { "Telescope" },
+  after = function()
+    require("telescope").setup {
+      defaults = {
+        mappings = {
+          n = {
+            ["<C-p>"] = require('telescope.actions.layout').toggle_preview
+          },
+        },
+      },
+    }
+  end,
   keys = {
     { "<leader><Space>", find_files, mode = {"n"}, desc = "Quick find files (Telescope)" },
     { "<leader>ff", telescope("find_files"), mode = {"n"}, desc = "Find files in project (Telescope)" },
     { "<leader>fl", telescope("live_grep"), mode = {"n"}, desc = "Live grep (Telescope)" },
     { "<leader>fs", find_string, mode = {"n"}, desc = "Find/grep string (Telescope)" },
+    { "<leader>fd", telescope("diagnostics"), mode = {"n"}, desc = "Find diagnostics" },
     { "<leader>b", telescope("buffers"), mode = {"n"}, desc = "Find buffer (Telescope)" },
   },
 }

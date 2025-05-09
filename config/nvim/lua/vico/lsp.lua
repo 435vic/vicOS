@@ -1,3 +1,4 @@
+--- @type lze.Spec
 return {
   {
     "nvim-lspconfig",
