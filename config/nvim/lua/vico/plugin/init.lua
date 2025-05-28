@@ -163,7 +163,7 @@ require("lze").load {
     end,
   },
   {
-    "vim-golf",
+    "golf-vim",
     enabled = nixCats('misc') ~= nil,
     cmd = { "Golf" }
   },
