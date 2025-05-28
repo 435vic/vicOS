@@ -13,7 +13,9 @@
       ./REFACTORME_fonts.nix # for the love of god refactor this to the theme modules
     ];
 
-    hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+    hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
+    # https://github.com/NVIDIA/open-gpu-kernel-modules/issues/866
+    boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
 
     vicos = {
       username = "vico";
