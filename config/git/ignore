@@ -10,3 +10,5 @@ Icon?
 
 # Direnv cache
 .direnv/
+
+**/.claude/settings.local.json

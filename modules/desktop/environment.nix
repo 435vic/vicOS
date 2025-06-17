@@ -24,6 +24,9 @@ in {
         adwaita-qt
         zed-editor.fhs #FIXME: move somewhere else maybe?
         nemo # file explorer
+        (mpv.override {
+          scripts = [ mpvScripts.webtorrent-mpv-hook ];
+        })
       ];
 
       environment.sessionVariables = {
