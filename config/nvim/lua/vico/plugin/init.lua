@@ -139,6 +139,22 @@ require("lze").load {
     end,
   },
   {
+    "obsidian.nvim",
+    enabled = nixCats('misc') ~= nil,
+    event = 'DeferredUIEnter',
+    ft = 'markdown',
+    after = function()
+      require("obsidian").setup {
+        workspaces = {
+          {
+            name = "main",
+            path = "~/vaults/main",
+          },
+        }
+      }
+    end,
+  },
+  {
     "markdown-preview.nvim",
     ft = { "markdown" },
   },
