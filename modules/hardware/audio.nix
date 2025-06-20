@@ -26,6 +26,6 @@ in {
       pulseaudio
     ];
 
-    hardware.pulseaudio.enable = false;
+    services.pulseaudio.enable = false;
   };
 }

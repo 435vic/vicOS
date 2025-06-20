@@ -15,7 +15,8 @@
 
     hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
     # https://github.com/NVIDIA/open-gpu-kernel-modules/issues/866
-    boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
+    # might be resolved now
+    # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
 
     vicos = {
       username = "vico";
