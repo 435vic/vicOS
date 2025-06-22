@@ -38,6 +38,7 @@ in {
       };
 
 
+      vicos.services.syncthing.enable = true;
       services.udisks2.enable = true;
     }
 

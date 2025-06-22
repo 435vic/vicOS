@@ -2,19 +2,27 @@
   lib,
   config,
   ...
-}: let
+}: with lib; let
   cfg = config.vicos.services.syncthing;
 in {
-  config = {
+  options.vicos.services.syncthing = {
+    enable = mkEnableOption "syncthing";
+  };
+
+  config = mkIf cfg.enable {
     services.syncthing = {
       enable = true;
       openDefaultPorts = true;
+      dataDir = "/home/vico";
       user = "vico";
       settings = {
         devices = {
-          "vico_phone" = "LRQUHKH-METM6P4-27SJ4QD-OMWQXDM-YDWIYRL-NLJTD6I-LFHTMLK-TNXFTAC";
+          "vico_phone" = {
+            id = "LRQUHKH-METM6P4-27SJ4QD-OMWQXDM-YDWIYRL-NLJTD6I-LFHTMLK-TNXFTAC";
+          };
         };
 
+        # present in every host
         folders = {
           "Obsidian" = {
             path = "~/vaults";
