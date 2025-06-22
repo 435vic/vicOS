@@ -150,8 +150,9 @@ require("lze").load {
             name = "main",
             path = "~/vaults/main",
           },
-        }
+        },
       }
+      vim.opt.conceallevel = 1
     end,
   },
   {
