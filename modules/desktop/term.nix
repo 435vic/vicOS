@@ -10,6 +10,11 @@ in {
   options.vicos.desktop.term = {
     ghostty = {
       enable = mkEnableOption "ghostty";
+      package = mkOption {
+        type = types.package;
+        default = pkgs.unstable.ghostty;
+        description = "The ghostty package to use.";
+      };
     };
   };
 
@@ -22,7 +27,7 @@ in {
     environment.systemPackages = [
       (
         if cfg.ghostty.enable
-        then pkgs.unstable.ghostty
+        then cfg.ghostty.package
         else pkgs.unstable.alacritty
       )
     ];
