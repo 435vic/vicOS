@@ -18,6 +18,7 @@
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs = {

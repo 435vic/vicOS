@@ -134,7 +134,7 @@ require("lze").load {
       require("presence").setup({
         neovim_image_text = "i use neovim btw",
         main_image = "file",
-        --log_level = "debug",
+        -- log_level = "debug",
       })
     end,
   },
