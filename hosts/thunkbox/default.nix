@@ -107,6 +107,8 @@
       enableUserService = true;
     };
 
+    programs.kdeconnect.enable = true;
+
     services.restic.backups = let
       excludes = pkgs.writeText "fd-excludes" ''
         /home/vico/.*
