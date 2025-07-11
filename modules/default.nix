@@ -182,6 +182,10 @@ in {
       configurationRevision = cfg.flake.rev;
     };
 
+    services = {
+      avahi.enable = mkDefault true;
+    };
+
     # nixos-rebuild-ng is an objectively better version of nixos-rebuild
     # TODO: remove once it is made default on NixOS 25.05
     environment.systemPackages = [
