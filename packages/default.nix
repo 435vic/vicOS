@@ -4,5 +4,6 @@ pkgs: {
   viper = pkgs.callPackage ./viper.nix {};
   rpc-bridge = pkgs.callPackage ./rpc-bridge.nix {};
   nordzy-cursors = pkgs.callPackage ./nordzy-cursors.nix {};
+  tidal-dl-ng = pkgs.callPackage ./tidal-dl-ng.nix {};
   # nix-search = pkgs.callPackage ./nix-search.nix { };
 }
