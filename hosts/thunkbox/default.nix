@@ -80,6 +80,7 @@
 
       services = {
         waybar.enable = true;
+        ssh.enable = true;
       };
 
       # a lot easier while I figure out vim
