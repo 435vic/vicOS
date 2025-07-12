@@ -12,7 +12,11 @@ in {
       default = config.vicos.desktop.enable;
       description = "Whether to enable mpd";
     };
-    mpris.enable = mkEnableOption "mpris compatibility";
+    mpris.enable = mkOption {
+      type = types.bool;
+      default = cfg.enable;
+      description = "Whether to enable MPRIS for mpd via mpd-mpris";
+    };
   };
 
   config = mkMerge [
@@ -37,14 +41,12 @@ in {
     })
     (mkIf (cfg.enable && cfg.mpris.enable) {
       systemd.user.services.mpd-mpris = {
-        Install = { WantedBy = [ "default.target" ]; };
+        wantedBy = [ "default.target" ];
 
-        Unit = {
-          Description = "An MPRIS protocol implementation for the MPD music player";
-          After = "mpd.service";
-        };
+        description = "An MPRIS protocol implementation for the MPD music player";
+        after = [ "mpd.service" ];
 
-        Service = {
+        serviceConfig = {
           Type = "dbus";
           Restart = "on-failure";
           RestartSec = "5s";
