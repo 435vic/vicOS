@@ -14,6 +14,7 @@
     ];
 
     hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
+    hardware.bluetooth.enable = true;
 
     vicos = {
       username = "vico";
