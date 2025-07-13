@@ -103,7 +103,6 @@
 
     environment.systemPackages = with pkgs; [
       typst # better latex
-      rmpc # music player
     ];
 
     services.asusd = {
