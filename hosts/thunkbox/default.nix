@@ -146,6 +146,12 @@
       };
     };
 
+    services.syncthing.settings.folders = {
+      "ConvertedMusic" = {
+        path = "/mnt/memes/converted_music/";
+      };
+    };
+
     virtualisation.docker.enable = true;
 
     # TODO: decide whether to include this on modules or not

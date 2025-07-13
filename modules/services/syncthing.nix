@@ -16,13 +16,6 @@ in {
       dataDir = "/home/vico";
       user = "vico";
       settings = {
-        devices = {
-          "vico_phone" = {
-            id = "LRQUHKH-METM6P4-27SJ4QD-OMWQXDM-YDWIYRL-NLJTD6I-LFHTMLK-TNXFTAC";
-          };
-        };
-
-        # present in every host
         folders = {
           "Obsidian" = {
             path = "~/vaults";
@@ -31,6 +24,16 @@ in {
 
           "Sync" = {
             path = "~/sync";
+            devices = [ "vico_phone" ];
+          };
+
+          "Music" = {
+            path = "~/music";
+          };
+          
+          # phone pics
+          "Camera" = {
+            path = "~/camera";
             devices = [ "vico_phone" ];
           };
         };
