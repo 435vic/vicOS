@@ -149,6 +149,7 @@
     services.syncthing.settings.folders = {
       "ConvertedMusic" = {
         path = "/mnt/memes/converted_music/";
+        devices = [ "vico_phone" ];
       };
     };
 
