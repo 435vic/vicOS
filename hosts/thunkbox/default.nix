@@ -31,6 +31,7 @@
         enable = true;
         # nix-ld.enable = true;
         rofi.enable = true;
+        music.enable = true;
         hyprland = {
           enable = true;
           monitors = [
