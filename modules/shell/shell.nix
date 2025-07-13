@@ -58,6 +58,7 @@ in {
         gitui
         nix-search-cli
         fzf
+        fd
       ];
 
       home.configFile.fish = {
