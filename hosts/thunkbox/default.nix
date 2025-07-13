@@ -63,15 +63,6 @@
 
         term.ghostty = {
           enable = true;
-          # NOTE: workaround patch for https://github.com/ghostty-org/ghostty/issues/7724
-          # Change when switching to linux 6.15.5
-          package = pkgs.unstable.ghostty.overrideAttrs (_: {
-            preBuild = ''
-              shopt -s globstar
-              sed -i 's/^const xev = @import("xev");$/const xev = @import("xev").Epoll;/' **/*.zig
-              shopt -u globstar
-            '';
-          });
         };
 
         browser = {
