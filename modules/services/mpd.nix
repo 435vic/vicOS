@@ -23,7 +23,7 @@ in {
     (mkIf cfg.enable {
       services.mpd = {
         enable = true;
-        musicDirectory = mkDefault "/home/${config.vicos.user.name}/Music";
+        musicDirectory = mkDefault "/home/${config.vicos.user.name}/music";
         extraConfig = ''
           audio_output {
             type "pipewire"
@@ -44,7 +44,7 @@ in {
         wantedBy = [ "default.target" ];
 
         description = "An MPRIS protocol implementation for the MPD music player";
-        after = [ "mpd.service" ];
+        after = [  "mpd.service" ];
 
         serviceConfig = {
           Type = "dbus";
