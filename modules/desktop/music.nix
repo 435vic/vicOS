@@ -17,6 +17,15 @@ in {
       beets
       yt-dlp
       rmpc
+      (pkgs.makeDesktopItem {
+        name = "rmpc";
+        desktopName = "rmpc music player";
+        genericName = "Music Player";
+        icon = "juk";
+        exec = "${pkgs.rmpc}/bin/rmpc";
+        terminal = true;
+        keywords = [ "music" "media" "console" ];
+      })
     ];
 
     networking.firewall.allowedTCPPorts = [ 8337 ]; # beets web interface
