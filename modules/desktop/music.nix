@@ -19,6 +19,8 @@ in {
       rmpc
     ];
 
+    networking.firewall.allowedTCPPorts = [ 8337 ]; # beets web interface
+
     home.configFile = {
       beets = {
         source = config.lib.vicos.dirFromConfig "beets";
