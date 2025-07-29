@@ -93,7 +93,7 @@ in {
 
     vicos.user = {
       description = mkDefault "The primary user account";
-      extraGroups = ["wheel"];
+      extraGroups = ["wheel" "dialout"];
       isNormalUser = true;
       home = "/home/${cfg.username}";
       name = cfg.username;
