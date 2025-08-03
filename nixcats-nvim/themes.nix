@@ -24,27 +24,34 @@ pkgs: rec {
   pkgFor = colorscheme: let
     inherit (builtins) elemAt match warn elem;
     parts = match "(.+)-([^-]+)" colorscheme;
-    base = if parts != null then elemAt parts 0 else null;
-    variant = if parts != null then elemAt parts 1 else null;
+    base =
+      if parts != null
+      then elemAt parts 0
+      else null;
+    variant =
+      if parts != null
+      then elemAt parts 1
+      else null;
 
     baseDef = definitions.${colorscheme} or null;
     variantDef = definitions.${base} or null;
 
     variantPackageWarn = warn "Unknown colorscheme ${colorscheme}, falling back to ${base}" variantDef.package;
-  in if parts != null && variantDef != null then
-    if elem variant variantDef.variants
-    then variantDef.package
-    else variantPackageWarn
-  else if (baseDef) != null then
-    baseDef.package
-  else
-    throw "Unknown colorscheme ${colorscheme}";
+  in
+    if parts != null && variantDef != null
+    then
+      if elem variant variantDef.variants
+      then variantDef.package
+      else variantPackageWarn
+    else if baseDef != null
+    then baseDef.package
+    else throw "Unknown colorscheme ${colorscheme}";
 
-  index = with pkgs.lib; pipe definitions [
-    (mapAttrsToList (name: def: {
-      "${def.package.pname}" = (map (variant: "${name}-${variant}") def.variants) ++ [ name ];
-    }))
-    mergeAttrsList
-  ];
+  index = with pkgs.lib;
+    pipe definitions [
+      (mapAttrsToList (name: def: {
+        "${def.package.pname}" = (map (variant: "${name}-${variant}") def.variants) ++ [name];
+      }))
+      mergeAttrsList
+    ];
 }
-

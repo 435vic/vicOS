@@ -61,8 +61,12 @@
       system,
       configuration,
       unstable ? false,
+      minimal ? false,
     }: let
-      hostNixpkgs = if unstable then nixpkgs-unstable else nixpkgs;
+      hostNixpkgs =
+        if unstable
+        then nixpkgs-unstable
+        else nixpkgs;
       pkgs =
         import hostNixpkgs {
           inherit system;
@@ -80,55 +84,66 @@
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
           spicetify-nix.nixosModules.default
-          ./modules
+          (
+            if minimal
+            then ./modules/minimal.nix
+            else ./modules
+          )
           ./.secrets/modules
           {
             nixpkgs.pkgs = pkgs;
             networking.hostName = name;
-            vicos.flake = vicos // {
-              packages = self.legacyPackages.${system};
-            };
+            vicos.flake =
+              vicos
+              // {
+                packages = self.legacyPackages.${system};
+              };
           }
           configuration
         ];
       };
-  in forEachSystem (system: let
-    pkgs = nixpkgs-unstable.legacyPackages.${system};
-    nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
-    nvimPackages = let
-      inherit (nixCat.utils) mergeCatDefs;
-      impureOverride = {...}: { settings.wrapRc = false; };
-      mkCat = name: def: (nixCat.override { inherit name; }) // {
-        impure = nixCat.override {
-          inherit name;
-          packageDefinitions.${name} = mergeCatDefs nixCat.packageDefinitions.${name} impureOverride;  
+  in
+    forEachSystem (system: let
+      pkgs = nixpkgs-unstable.legacyPackages.${system};
+      nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
+      nvimPackages = let
+        inherit (nixCat.utils) mergeCatDefs;
+        impureOverride = {...}: {settings.wrapRc = false;};
+        mkCat = name: def:
+          (nixCat.override {inherit name;})
+          // {
+            impure = nixCat.override {
+              inherit name;
+              packageDefinitions.${name} = mergeCatDefs nixCat.packageDefinitions.${name} impureOverride;
+            };
+          };
+      in
+        pkgs.lib.mapAttrs mkCat nixCat.packageDefinitions;
+    in {
+      formatter = pkgs.alejandra;
+      # helps avoiding unnecessary evaluation time on nix flake check/show
+      legacyPackages = (import ./packages pkgs) // nvimPackages;
+      devShells = {
+        java = import ./shells/java.nix {inherit pkgs;};
+      };
+    })
+    // {
+      nixosConfigurations = let
+        # why specify the name of the host both as the dir/filename and in the config
+        # when you can spend more time writing a function to do it for you?
+        mkNamedHost = name: config: mkHost (config // {inherit name;});
+        # hosts are provided the vicOS object with inputs, context, etc.
+        callHost = name: host: mkNamedHost name (host vicos);
+      in
+        mapAttrs callHost (vicos.lib.getHosts ./hosts);
+
+      lib = import ./lib {inherit (nixpkgs) lib;};
+
+      templates = {
+        rust = {
+          path = ./templates/rust;
+          description = "Rust flake template using fenix";
         };
       };
-    in pkgs.lib.mapAttrs mkCat nixCat.packageDefinitions;
-  in {
-    formatter = pkgs.alejandra;
-    # helps avoiding unnecessary evaluation time on nix flake check/show
-    legacyPackages = (import ./packages pkgs) // nvimPackages; 
-    devShells = {
-      java = import ./shells/java.nix { inherit pkgs; };
     };
-  }) // {
-    nixosConfigurations = let
-      # why specify the name of the host both as the dir/filename and in the config
-      # when you can spend more time writing a function to do it for you?
-      mkNamedHost = name: config: mkHost (config // {inherit name;});
-      # hosts are provided the vicOS object with inputs, context, etc.
-      callHost = name: host: mkNamedHost name (host vicos);
-    in
-      mapAttrs callHost (vicos.lib.getHosts ./hosts);
-
-    lib = import ./lib {inherit (nixpkgs) lib;};
-
-    templates = {
-      rust = {
-        path = ./templates/rust;
-        description = "Rust flake template using fenix";
-      };
-    };
-  };
 }

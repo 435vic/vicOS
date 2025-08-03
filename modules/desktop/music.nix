@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: with lib; let
+}:
+with lib; let
   cfg = config.vicos.desktop.music;
 in {
   options.vicos.desktop.music = {
@@ -11,7 +12,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    vicos.services.mpd.enable = true; 
+    vicos.services.mpd.enable = true;
 
     vicos.user.packages = with pkgs; [
       beets
@@ -24,11 +25,11 @@ in {
         icon = "juk";
         exec = "${pkgs.rmpc}/bin/rmpc";
         terminal = true;
-        keywords = [ "music" "media" "console" ];
+        keywords = ["music" "media" "console"];
       })
     ];
 
-    networking.firewall.allowedTCPPorts = [ 8337 ]; # beets web interface
+    networking.firewall.allowedTCPPorts = [8337]; # beets web interface
 
     home.configFile = {
       beets = {

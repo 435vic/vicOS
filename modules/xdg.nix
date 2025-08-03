@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: with lib; let
+}:
+with lib; let
   cfg = config.vicos.xdg;
 in {
   options.vicos.xdg = {
@@ -55,5 +56,4 @@ in {
         mkdir -p "$XDG_DATA_HOME/pki/nssdb"
     '';
   };
-
 }

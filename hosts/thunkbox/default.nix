@@ -24,7 +24,7 @@
         laptop.quietBoot = true;
         audio.enable = true;
         wifi.enable = true;
-        wifi.interfaces = [ "wlp4s0" ];
+        wifi.interfaces = ["wlp4s0"];
       };
 
       desktop = {
@@ -149,7 +149,7 @@
     services.syncthing.settings.folders = {
       "ConvertedMusic" = {
         path = "/mnt/memes/converted_music/";
-        devices = [ "vico_phone" ];
+        devices = ["vico_phone"];
       };
     };
 

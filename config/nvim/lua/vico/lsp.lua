@@ -64,7 +64,8 @@ return {
         'nil',
         'hls',
         'jsonls',
-        'tinymist'
+        'tinymist',
+        'yamlls'
       });
     end,
   },

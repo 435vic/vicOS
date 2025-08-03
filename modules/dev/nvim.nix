@@ -7,13 +7,22 @@
 with lib; let
   cfg = config.vicos.dev.nvim;
   flakePkgs = config.vicos.flake.packages;
-  nvim = if cfg.pure then flakePkgs.vvim-unfree else flakePkgs.vvim-unfree.impure;
+  nvim =
+    if cfg.pure
+    then flakePkgs.vvim-unfree
+    else flakePkgs.vvim-unfree.impure;
 in {
   options.vicos.dev.nvim = {
     enable = mkOption {
       type = types.bool;
       description = "Whether to enable neovim";
       default = true;
+    };
+
+    package = mkOption {
+      type = types.package;
+      description = "neovim package to use";
+      default = nvim;
     };
 
     pure = mkOption {
@@ -25,7 +34,7 @@ in {
 
   config = mkIf cfg.enable {
     environment.systemPackages = [
-      nvim
+      cfg.package
     ];
 
     environment.variables.EDITOR = "nvim";

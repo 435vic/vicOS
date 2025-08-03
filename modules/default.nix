@@ -85,7 +85,9 @@ in {
         overlays = inputs.${input}.overlays.${element};
         packages = inputs.${input}.packages.${system}.${element};
       }
-      .${output};
+      .${
+        output
+      };
 
     i18n.defaultLocale = mkDefault "en_US.UTF-8";
 

@@ -2,7 +2,8 @@
   lib,
   config,
   ...
-}: with lib; let
+}:
+with lib; let
   cfg = config.vicos.services.syncthing;
 in {
   options.vicos.services.syncthing = {
@@ -19,22 +20,22 @@ in {
         folders = {
           "Obsidian" = {
             path = "~/vaults";
-            devices = [ "vico_phone" ];
+            devices = ["vico_phone"];
           };
 
           "Sync" = {
             path = "~/sync";
-            devices = [ "vico_phone" ];
+            devices = ["vico_phone"];
           };
 
           "Music" = {
             path = "~/music";
           };
-          
+
           # phone pics
           "Camera" = {
             path = "~/camera";
-            devices = [ "vico_phone" ];
+            devices = ["vico_phone"];
           };
         };
       };

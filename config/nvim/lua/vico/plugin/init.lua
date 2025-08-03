@@ -6,6 +6,13 @@
 --
 -- The default colorscheme is loaded on startup
 local colorscheme = nixCats("colorscheme")
+if colorscheme == "rose-pine" then
+  require("rose-pine").setup({
+    styles = {
+      italic = false;
+    }
+  });
+end
 vim.cmd.colorscheme(colorscheme)
 
 -- Register extra plugins to be lazy loaded if enabled
@@ -140,7 +147,8 @@ require("lze").load {
   },
   {
     "obsidian.nvim",
-    enabled = nixCats('misc') ~= nil,
+    -- enabled = nixCats('misc') ~= nil,
+    enabled = false;
     event = 'DeferredUIEnter',
     ft = 'markdown',
     after = function()

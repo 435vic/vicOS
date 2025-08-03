@@ -3,7 +3,7 @@
   pkgs,
   lib,
   ...
-}: 
+}:
 with lib; let
   cfg = config.vicos.desktop.apps.spotify;
   spicetify = config.vicos.flake.inputs.spicetify-nix;

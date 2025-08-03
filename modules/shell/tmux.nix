@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: with lib; let
+}:
+with lib; let
   cfg = config.vicos.shell.tmux;
 in {
   options.vicos.shell.tmux = {
@@ -15,7 +16,7 @@ in {
       };
     };
     plugins = mkOption {
-      default = [ ];
+      default = [];
       type = types.listOf types.package;
       description = "List of tmux plugins to install.";
       example = lib.literalExpression "[ pkgs.tmuxPlugins.nord ]";
@@ -24,14 +25,14 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      environment.variables.TMUX_HOME = "$XDG_CONFIG_HOME/tmux";
+      environment.variables.TMUX_HOME = "${config.home.configDir}/tmux";
 
-      vicos.user.packages = [ pkgs.unstable.tmux ];
+      vicos.user.packages = [pkgs.unstable.tmux];
 
       environment.etc."tmux.conf".text = ''
         source-file $TMUX_HOME/tmux.conf
 
-        ${lib.optionalString (cfg.plugins != [ ]) ''
+        ${lib.optionalString (cfg.plugins != []) ''
           ${lib.concatMapStringsSep "\n" (plugin: "run-shell ${plugin.rtp}") cfg.plugins}
         ''}
       '';
@@ -47,7 +48,7 @@ in {
       };
     }
     (mkIf cfg.sesh.enable {
-      vicos.user.packages = [ pkgs.unstable.sesh ];
+      vicos.user.packages = [pkgs.unstable.sesh];
       programs.fish.interactiveShellInit = mkAfter ''
         bind ctrl-f 'sesh connect (sesh list | fzf)'
         bind -M insert ctrl-f 'sesh connect (sesh list | fzf)'

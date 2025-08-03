@@ -1,14 +1,19 @@
-nixCats@{utils, ...}: let
+nixCats @ {utils, ...}: let
   luaPath = ../config/nvim;
   theming = import ./themes.nix;
 
-  categoryDefinitions = {pkgs, categories, ...}: let
+  categoryDefinitions = {
+    pkgs,
+    categories,
+    ...
+  }: let
     themes = theming pkgs;
     mainTheme = themes.pkgFor (categories.colorscheme or "rose-pine");
-    otherThemes = with pkgs.lib; pipe themes.definitions [
-      (pkgs.lib.mapAttrsToList (_: def: def.package))
-      (pkgs.lib.filter (pkg: pkg.pname != mainTheme.pname))
-    ];
+    otherThemes = with pkgs.lib;
+      pipe themes.definitions [
+        (pkgs.lib.mapAttrsToList (_: def: def.package))
+        (pkgs.lib.filter (pkg: pkg.pname != mainTheme.pname))
+      ];
     localPkgs = pkgs.callPackage ./packages.nix {};
   in {
     lspsAndRuntimeDeps = {
@@ -20,12 +25,17 @@ nixCats@{utils, ...}: let
       ];
 
       ide = {
+        # most of the time we leave the language server installation
+        # up to the project specific flake, but some languages are so often used
+        # or often present in flakeless setups that it's worth to bundle them
+        # with the editor
         lsp = with pkgs; [
           lua-language-server
           nixd
           nil
           nix-doc
           tinymist
+          yaml-language-server
         ];
       };
 
@@ -110,32 +120,44 @@ nixCats@{utils, ...}: let
       colorscheme = "rose-pine";
     };
 
-    fullCategories = baseCategories // {
-      ide = true;
-      training = true;
-      extraThemes = true;
-      misc = true;
-    };
+    fullCategories =
+      baseCategories
+      // {
+        ide = true;
+        training = true;
+        extraThemes = true;
+        misc = true;
+      };
 
     # added so that you don't need to allow unfree packages on nix run vicOS#vvim
     unfreeCategories = {
       ai = true;
     };
 
-    themeData = pkgs: { themeIndex = (theming pkgs).index; };
+    themeData = pkgs: {themeIndex = (theming pkgs).index;};
   in {
     # vico's vim :o
     vvim = {pkgs, ...}: {
       settings = {
-      	aliases = [ "vim" "nvim" ];
+        aliases = ["vim" "nvim"];
         wrapRc = true;
       };
       categories = fullCategories // themeData pkgs;
     };
 
+    vvim-wsl = {pkgs,...}: {
+      settings = {
+        aliases = ["vim" "nvim"];
+        wrapRc = true;
+      };
+      categories = fullCategories // themeData pkgs // {
+        wsl = true;
+      };
+    };
+
     vvim-unfree = {pkgs, ...}: {
       settings = {
-        aliases = [ "vim" "nvim" ];
+        aliases = ["vim" "nvim"];
         wrapRc = true;
       };
 
@@ -145,7 +167,10 @@ nixCats@{utils, ...}: let
 in {
   inherit luaPath categoryDefinitions packageDefinitions;
   default = "vvim";
-  builder = nixpkgs: system: utils.baseBuilder luaPath {
-    inherit nixpkgs system;
-  } categoryDefinitions packageDefinitions;
+  builder = nixpkgs: system:
+    utils.baseBuilder luaPath {
+      inherit nixpkgs system;
+    }
+    categoryDefinitions
+    packageDefinitions;
 }

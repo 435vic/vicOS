@@ -3,7 +3,8 @@
   config,
   pkgs,
   ...
-}: with lib; let
+}:
+with lib; let
   cfg = config.vicos.services.mpd;
 in {
   options.vicos.services.mpd = {
@@ -32,7 +33,7 @@ in {
         '';
 
         # run mpd as main user, as pipewire doesn't normally run as system
-        user = config.vicos.user.name; 
+        user = config.vicos.user.name;
       };
 
       systemd.services.mpd.environment = {
@@ -41,10 +42,10 @@ in {
     })
     (mkIf (cfg.enable && cfg.mpris.enable) {
       systemd.user.services.mpd-mpris = {
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
 
         description = "An MPRIS protocol implementation for the MPD music player";
-        after = [  "mpd.service" ];
+        after = ["mpd.service"];
 
         serviceConfig = {
           Type = "dbus";

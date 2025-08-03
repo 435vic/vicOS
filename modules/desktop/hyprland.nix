@@ -6,12 +6,14 @@
 }:
 with lib; let
   cfg = config.vicos.desktop.hyprland;
-  mkOpt = type: description: mkOption {
-    inherit type description;
-  };
-  mkOpt' = type: description: default: mkOption {
-    inherit type description default;
-  };
+  mkOpt = type: description:
+    mkOption {
+      inherit type description;
+    };
+  mkOpt' = type: description: default:
+    mkOption {
+      inherit type description default;
+    };
   hyprlandMonitor = types.submodule ({config, ...}: {
     options = {
       output = mkOpt types.str "output";
@@ -29,7 +31,7 @@ with lib; let
         output = config.selector;
       })
       {
-        rawDefinition = 
+        rawDefinition =
           if config.disable
           then "monitor = ${config.output},disable"
           else "monitor = ${config.output},${config.mode},${config.position},${toString config.scale}";
@@ -99,9 +101,10 @@ in {
       }
       (let
         primaryMonitor = findFirst (m: m.primary) {} cfg.monitors;
-      in mkIf (primaryMonitor ? output) {
-        primaryMonitor = primaryMonitor.output;
-      })
+      in
+        mkIf (primaryMonitor ? output) {
+          primaryMonitor = primaryMonitor.output;
+        })
     ];
 
     environment.sessionVariables = {
@@ -168,9 +171,9 @@ in {
         $editor = ${cfg.defaultEditor}
 
         ${concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
-        ${optionalString (cfg.primaryMonitor != "") '' 
+        ${optionalString (cfg.primaryMonitor != "") ''
           $monitor.primary = ${cfg.primaryMonitor}
-        ''} 
+        ''}
         exec-once = hyprlock --immediate
       '';
 

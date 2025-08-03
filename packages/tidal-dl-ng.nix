@@ -4,7 +4,8 @@
   ffmpeg,
   fetchPypi,
   ...
-}: python3Packages.buildPythonPackage rec {
+}:
+python3Packages.buildPythonPackage rec {
   pname = "tidal-dl-ng";
   version = "0.26.2";
   pyproject = true;
@@ -15,7 +16,7 @@
     hash = "sha256-mguTwHF5oiI/3RE9iOgGUX7LaEFeXARg8XL2LxR6fXE=";
   };
 
-  build-system = [ python3Packages.poetry-core ];
+  build-system = [python3Packages.poetry-core];
 
   dependencies = with python3Packages; [
     requests

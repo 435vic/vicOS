@@ -6,10 +6,11 @@
   ...
 }:
 with lib; let
-  mkStringOpt = default: description: mkOption {
-    type = types.str;
-    inherit default description;
-  };
+  mkStringOpt = default: description:
+    mkOption {
+      type = types.str;
+      inherit default description;
+    };
   homeDir = config.vicos.user.home;
   cfg = config.home;
 in {
@@ -26,12 +27,12 @@ in {
       description = "Files to place in $XDG_DATA_HOME";
     };
 
-    binDir     = mkStringOpt "${homeDir}/.local/bin" "";
-    cacheDir   = mkStringOpt "${homeDir}/.cache" "";
-    configDir  = mkStringOpt "${homeDir}/.config" "";
-    dataDir    = mkStringOpt "${homeDir}/.local/share" "";
-    stateDir   = mkStringOpt "${homeDir}/.local/state" "";
-    fakeDir    = mkStringOpt "${homeDir}/.local/user" "";
+    binDir = mkStringOpt "${homeDir}/.local/bin" "";
+    cacheDir = mkStringOpt "${homeDir}/.cache" "";
+    configDir = mkStringOpt "${homeDir}/.config" "";
+    dataDir = mkStringOpt "${homeDir}/.local/share" "";
+    stateDir = mkStringOpt "${homeDir}/.local/state" "";
+    fakeDir = mkStringOpt "${homeDir}/.local/user" "";
   };
 
   config = let
@@ -89,11 +90,11 @@ in {
       '';
 
     environment.sessionVariables = mkOrder 10 {
-      XDG_BIN_HOME    = cfg.binDir;
-      XDG_CACHE_HOME  = cfg.cacheDir;
+      XDG_BIN_HOME = cfg.binDir;
+      XDG_CACHE_HOME = cfg.cacheDir;
       XDG_CONFIG_HOME = cfg.configDir;
-      XDG_DATA_HOME   = cfg.dataDir;
-      XDG_STATE_HOME  = cfg.stateDir;
+      XDG_DATA_HOME = cfg.dataDir;
+      XDG_STATE_HOME = cfg.stateDir;
       XDG_FAKE_HOME = cfg.fakeDir;
       XDG_DESKTOP_DIR = cfg.fakeDir;
     };

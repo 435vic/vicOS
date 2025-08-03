@@ -6,7 +6,7 @@
 }:
 with lib; let
   cfg = config.vicos.hardware.wifi;
-  interfaces = cfg.interfaces; 
+  interfaces = cfg.interfaces;
 in {
   options.vicos.hardware.wifi = {
     enable = mkEnableOption "wifi";

@@ -2,7 +2,8 @@
   lib,
   config,
   ...
-}: with lib; let
+}:
+with lib; let
   cfg = config.vicos.services.ssh;
 in {
   options.vicos.services.ssh = {
@@ -11,7 +12,7 @@ in {
 
   config = {
     # Ensure this directory exists and has correct permissions.
-    systemd.user.tmpfiles.rules = [ "d %h/.config/ssh 700 - - - -" ];
+    systemd.user.tmpfiles.rules = ["d %h/.config/ssh 700 - - - -"];
 
     services.openssh = {
       enable = true;

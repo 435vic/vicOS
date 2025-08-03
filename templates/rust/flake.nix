@@ -13,23 +13,24 @@
     nixpkgs,
     fenix,
     ...
-  }: flake-utils.lib.eachDefaultSystem (system: let
-    pkgs = import nixpkgs {
-      inherit system;
-    };
-    rustPkgs = fenix.packages.${system};
-  in {
-    devShells.default = pkgs.mkShell {
-      packages = [
-        (rustPkgs.stable.withComponents [
-          "cargo"
-          "clippy"
-          "rust-src"
-          "rustc"
-          "rustfmt"
-          "rust-analyzer"
-        ])
-      ];
-    };
-  });
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+      };
+      rustPkgs = fenix.packages.${system};
+    in {
+      devShells.default = pkgs.mkShell {
+        packages = [
+          (rustPkgs.stable.withComponents [
+            "cargo"
+            "clippy"
+            "rust-src"
+            "rustc"
+            "rustfmt"
+            "rust-analyzer"
+          ])
+        ];
+      };
+    });
 }

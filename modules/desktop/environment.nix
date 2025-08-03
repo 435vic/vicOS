@@ -25,7 +25,7 @@ in {
         zed-editor.fhs #FIXME: move somewhere else maybe?
         nemo # file explorer
         (mpv.override {
-          scripts = [ mpvScripts.webtorrent-mpv-hook ];
+          scripts = [mpvScripts.webtorrent-mpv-hook];
         })
       ];
 
@@ -36,7 +36,6 @@ in {
         QT_STYLE_OVERRIDE = mkDefault "Adwaita-Dark";
         QT_QPA_PLATFORMTHEME = mkDefault "qt5ct";
       };
-
 
       vicos.services.syncthing.enable = true;
       services.udisks2.enable = true;
