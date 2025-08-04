@@ -26,20 +26,7 @@
     };
 
     vicosCats = import ../../nixcats-nvim inputs.nixCats;
-    nixCat = vicosCats.builder nixpkgs system vicosCats.default;
-    nvimPackages = let
-      inherit (nixCat.utils) mergeCatDefs;
-      impureOverride = {...}: {settings.wrapRc = false;};
-      mkCat = name: def:
-        (nixCat.override {inherit name;})
-        // {
-          impure = nixCat.override {
-            inherit name;
-            packageDefinitions.${name} = mergeCatDefs nixCat.packageDefinitions.${name} impureOverride;
-          };
-        };
-    in
-      pkgs.lib.mapAttrs mkCat nixCat.packageDefinitions;
+    nvimPackages = vicosCats.mkNvimPackages { inherit nixpkgs system;  };
   in {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
@@ -53,6 +40,16 @@
             wsl.enable = true;
             wsl.defaultUser = "vico";
             vicos.username = "vico";
+            nix.registry.vicos = {
+              from.id = "vicOS";
+              from.type = "indirect";
+              to = {
+                type = "git";
+                submodules = true;
+                dir = "hosts/wsl";
+                url = "file:///home/vico/vicOS";
+              };
+            };
             vicos.flake = let
               vicosPath = "/home/vico/vicOS";
               rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
@@ -68,5 +65,7 @@
         ];
       };
     };
+
+    packages.${system} = nvimPackages;
   };
 }

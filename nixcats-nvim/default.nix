@@ -36,6 +36,7 @@ nixCats @ {utils, ...}: let
           nix-doc
           tinymist
           yaml-language-server
+          prettier
         ];
       };
 
@@ -68,6 +69,10 @@ nixCats @ {utils, ...}: let
         telescope = with pkgs.vimPlugins; [
           telescope-nvim
           telescope-fzf-native-nvim
+        ];
+
+        general = with pkgs.vimPlugins; [
+          conform-nvim
         ];
       };
 
@@ -164,7 +169,7 @@ nixCats @ {utils, ...}: let
       categories = fullCategories // unfreeCategories // themeData pkgs;
     };
   };
-in {
+in rec {
   inherit luaPath categoryDefinitions packageDefinitions;
   default = "vvim";
   builder = nixpkgs: system:
@@ -173,4 +178,20 @@ in {
     }
     categoryDefinitions
     packageDefinitions;
+  mkNvimPackages = {
+    nixpkgs,
+    system,
+  }: let
+    inherit (nixCat.utils) mergeCatDefs;
+    impureOverride = {...}: {settings.wrapRc = false;};
+    nixCat = builder nixpkgs system default;
+    mkCat = name: def:
+      (nixCat.override {inherit name;})
+      // {
+        impure = nixCat.override {
+          inherit name;
+          packageDefinitions.${name} = mergeCatDefs nixCat.packageDefinitions.${name} impureOverride;
+        };
+      };
+  in nixpkgs.lib.mapAttrs mkCat nixCat.packageDefinitions; 
 }

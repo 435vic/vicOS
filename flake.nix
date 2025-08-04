@@ -105,24 +105,10 @@
   in
     forEachSystem (system: let
       pkgs = nixpkgs-unstable.legacyPackages.${system};
-      nixCat = vicosCats.builder nixpkgs-unstable system vicosCats.default;
-      nvimPackages = let
-        inherit (nixCat.utils) mergeCatDefs;
-        impureOverride = {...}: {settings.wrapRc = false;};
-        mkCat = name: def:
-          (nixCat.override {inherit name;})
-          // {
-            impure = nixCat.override {
-              inherit name;
-              packageDefinitions.${name} = mergeCatDefs nixCat.packageDefinitions.${name} impureOverride;
-            };
-          };
-      in
-        pkgs.lib.mapAttrs mkCat nixCat.packageDefinitions;
     in {
       formatter = pkgs.alejandra;
       # helps avoiding unnecessary evaluation time on nix flake check/show
-      legacyPackages = (import ./packages pkgs) // nvimPackages;
+      legacyPackages = (import ./packages pkgs) // (vicosCats.mkNvimPackages { inherit nixpkgs system; });
       devShells = {
         java = import ./shells/java.nix {inherit pkgs;};
       };
