@@ -36,7 +36,6 @@ nixCats @ {utils, ...}: let
           nix-doc
           tinymist
           yaml-language-server
-          prettier
           prettierd
         ];
       };

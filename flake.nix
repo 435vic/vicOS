@@ -108,7 +108,7 @@
     in {
       formatter = pkgs.alejandra;
       # helps avoiding unnecessary evaluation time on nix flake check/show
-      legacyPackages = (import ./packages pkgs) // (vicosCats.mkNvimPackages { inherit nixpkgs system; });
+      legacyPackages = (import ./packages pkgs) // (vicosCats.mkNvimPackages { inherit system; nixpkgs = nixpkgs-unstable; });
       devShells = {
         java = import ./shells/java.nix {inherit pkgs;};
       };

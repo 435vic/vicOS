@@ -61,7 +61,7 @@
             };
           }
           ./configuration.nix
-          ../../modules/minimal.nix
+          ../../modules/_minimal.nix
         ];
       };
     };
