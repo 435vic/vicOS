@@ -144,6 +144,40 @@
         backupPrepareCommand = "${pkgs.fd}/bin/fd . /home/vico -aH -tfile --ignore-file ${excludes} --print0 >> ${includeFile}";
         backupCleanupCommand = "rm ${includeFile}";
       };
+
+      b2 = let
+        includeFile = "/run/restic-backups-local/raw_include";
+      in {
+        initialize = false;
+        passwordFile = "/run/agenix/rustic-password";
+        environmentFile = "/run/agenix/restic-b2-env";
+
+        # can't negate patters with ! on fd
+        # so we gotta include these paths manually
+        # see https://github.com/sharkdp/fd/issues/1457#issuecomment-1880604708
+        paths = [
+          "/home/vico/.local/share/PrismLauncher"
+          "/home/vico/.local/user/Pictures"
+          "/home/vico/.local/user/Documents"
+          "/home/vico/.config"
+          "/home/vico/.ssh"
+          "/home/vico/vicOS"
+        ];
+
+        extraBackupArgs = [
+          "--files-from-raw=${includeFile}"
+        ];
+
+        repository = "s3:https://s3.us-east-005.backblazeb2.com/thunkbox-restic";
+        backupPrepareCommand = ''
+          notify-send "Backup in Progress" "Backing up to b2..." --icon=drive-harddisk --urgency=low
+          ${pkgs.fd}/bin/fd . /home/vico -aH -tfile --ignore-file ${excludes} --print0 >> ${includeFile}
+        '';
+        backupCleanupCommand = ''
+          notify-send "Backup Done" "finished :)" --icon=drive-harddisk --urgency=low
+          rm ${includeFile}
+        '';
+      };
     };
 
     services.syncthing.settings.folders = {
