@@ -146,7 +146,7 @@
       };
 
       b2 = let
-        includeFile = "/run/restic-backups-local/raw_include";
+        includeFile = "/run/restic-backups-b2/raw_include";
       in {
         initialize = false;
         passwordFile = "/run/agenix/rustic-password";
