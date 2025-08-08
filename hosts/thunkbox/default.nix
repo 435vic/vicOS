@@ -170,11 +170,9 @@
 
         repository = "s3:https://s3.us-east-005.backblazeb2.com/thunkbox-restic";
         backupPrepareCommand = ''
-          ${pkgs.libnotify}/bin/notify-send "Backup in Progress" "Backing up to b2..." --icon=drive-harddisk --urgency=low
           ${pkgs.fd}/bin/fd . /home/vico -aH -tfile --ignore-file ${excludes} --print0 >> ${includeFile}
         '';
         backupCleanupCommand = ''
-          ${pkgs.libnotify}/bin/notify-send "Backup Done" "finished :)" --icon=drive-harddisk --urgency=low
           rm ${includeFile}
         '';
       };
