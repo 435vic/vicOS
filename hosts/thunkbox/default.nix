@@ -160,8 +160,10 @@
           "/home/vico/.local/share/PrismLauncher"
           "/home/vico/.local/user/Pictures"
           "/home/vico/.local/user/Documents"
-          "/home/vico/.config"
           "/home/vico/.ssh"
+          "/mnt/memes/old_phone_pics"
+          "/mnt/memes/OBSVideos"
+          "/mnt/memes/SteamClips"
           "/home/vico/vicOS"
         ];
 
