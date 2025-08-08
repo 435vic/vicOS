@@ -175,6 +175,25 @@ require("lze").load {
     end
   },
   {
+    "conform.nvim",
+    enabled = nixCats('general') ~= nil,
+    event = "DeferredUIEnter",
+    keys = {
+      { "<leader>f", function() require('conform').format({ async = true }) end, desc = "Buffer Local Keymaps (which-key)", }
+    },
+    after = function()
+      require('conform').setup {
+        formatters_by_ft = {
+          yaml = { 'prettierd', 'prettier', stop_after_first = true }
+        }
+      }
+    end,
+    beforeAll = function()
+      -- set formatexpr
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end
+  },
+  {
     "copilot.vim",
     enabled = nixCats('ai.copilot') ~= nil,
     on_require = 'copilot'
