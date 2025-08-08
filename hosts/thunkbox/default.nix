@@ -151,6 +151,7 @@
         initialize = false;
         passwordFile = "/run/agenix/rustic-password";
         environmentFile = "/run/agenix/restic-b2-env";
+        progressFps = 0.0166;
 
         # can't negate patters with ! on fd
         # so we gotta include these paths manually
