@@ -141,6 +141,15 @@ nixCats @ {utils, ...}: let
 
     themeData = pkgs: {themeIndex = (theming pkgs).index;};
   in {
+    vvim-minimal = { pkgs, ... }: {
+      settings = {
+        aliases = [ "vim" "nvim" ];
+        wrapRc = true;
+      };
+
+      categories = baseCategories;
+    };
+
     # vico's vim :o
     vvim = {pkgs, ...}: {
       settings = {
