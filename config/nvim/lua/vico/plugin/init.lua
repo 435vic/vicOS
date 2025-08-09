@@ -59,7 +59,7 @@ require("lze").load {
   { import = "vico.plugin.telescope" },
   {
     "blink.cmp",
-    enable = nixCats('ide.cmp') ~= nil,
+    enabled = nixCats('ide.cmp') ~= nil,
     event = { "DeferredUIEnter" },
     on_require = { "blink.cmp" },
     after = function(_)
