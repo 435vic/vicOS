@@ -94,6 +94,7 @@
 
     environment.systemPackages = with pkgs; [
       typst # better latex
+      virt-viewer
     ];
 
     services.asusd = {
