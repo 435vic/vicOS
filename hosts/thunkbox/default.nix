@@ -188,6 +188,11 @@
       };
     };
 
+    # zerotier testing
+    services.zerotierone = {
+      enable = true;
+    };
+
     virtualisation.docker.enable = true;
 
     # TODO: decide whether to include this on modules or not
