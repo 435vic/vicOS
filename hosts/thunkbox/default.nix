@@ -192,6 +192,15 @@
     # zerotier testing
     services.zerotierone = {
       enable = true;
+      # should fix connection issues when switching networks
+      # (i.e wired "en*" to wireless "wl*")
+      localConf.settings = {
+        defaultBondingPolicy = "custom-active-backup";
+        policies.custom-active-backup = {
+          basePolicy = "active-backup";
+          failoverInterval = 10000;
+        };
+      };
     };
 
     virtualisation.docker.enable = true;
