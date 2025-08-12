@@ -184,6 +184,9 @@ in rec {
   builder = nixpkgs: system:
     utils.baseBuilder luaPath {
       inherit nixpkgs system;
+      extra_pkg_config = {
+        allowUnfree = true;
+      };
     }
     categoryDefinitions
     packageDefinitions;

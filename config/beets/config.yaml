@@ -8,6 +8,16 @@ import:
 replaygain:
   backend: ffmpeg
 
+fetchart:
+  minwidth: 500
+  maxwidth: 700
+  sources:
+    - filesystem
+    - coverart: release
+    - itunes
+    - coverart: releasegroup
+    - '*'
+
 convert:
   # auto_keep: yes
   # quiet: yes
