@@ -21,7 +21,7 @@ nixCats @ {utils, ...}: let
         universal-ctags
         ripgrep
         fd
-        nodePackages.vscode-json-languageserver
+        vscode-langservers-extracted
       ];
 
       ide = {
@@ -93,6 +93,7 @@ nixCats @ {utils, ...}: let
           typescript-tools-nvim
           nvim-jdtls
           typst-preview-nvim
+          vim-mustache-handlebars
         ];
 
         extra = with pkgs.vimPlugins; [
