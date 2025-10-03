@@ -37,6 +37,7 @@ nixCats @ {utils, ...}: let
           tinymist
           yaml-language-server
           prettierd
+          emmet-language-server
         ];
       };
 
