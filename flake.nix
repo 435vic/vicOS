@@ -1,135 +1,98 @@
 {
-  description = "vicOS v2 - Now with added protein!";
+  description = "vico's dotfiles - Neovim, packages, shells, and templates";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
-
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    spicetify-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
-    agenix.url = "github:ryantm/agenix";
-
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    stash.url = "github:435vic/stash";
+    stash.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    agenix,
-    spicetify-nix,
-    nixCats,
-    ...
-  } @ inputs: let
-    inherit (nixpkgs.lib) genAttrs mapAttrs;
-    inherit (builtins) getEnv;
-
-    forEachSystem = nixCats.utils.eachSystem ["x86_64-linux" "aarch64-linux"];
-
-    vicos = let
-      pathEnv = getEnv "DOTFILES_HOME";
-      vicosPath =
-        if pathEnv == ""
-        then abort "DOTFILES_HOME must be set!"
-        else pathEnv;
-      rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
-    in {
-      inherit rev inputs;
-      lib = import ./lib {inherit (nixpkgs) lib;};
-      path = vicosPath;
-    };
-
-    pkgsDefaults = {
-      config.allowUnfree = true;
-      config.permittedInsecurePackages = [];
-    };
-
-    vicosCats = import ./nixcats-nvim inputs.nixCats;
-
-    mkHost = {
-      name,
-      system,
-      configuration,
-      unstable ? false,
-      minimal ? false,
-    }: let
-      hostNixpkgs =
-        if unstable
-        then nixpkgs-unstable
-        else nixpkgs;
-      pkgs =
-        import hostNixpkgs {
-          inherit system;
-          overlays = [
-            (final: prev: {
-              unstable = import nixpkgs-unstable {inherit system;} // pkgsDefaults;
-            })
-          ];
-        }
-        // pkgsDefaults;
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      flake-parts,
+      ...
+    }:
+    let
+      vicosCats = import ./nixcats-nvim inputs.nixCats;
     in
-      hostNixpkgs.lib.nixosSystem {
-        modules = [
-          hostNixpkgs.nixosModules.readOnlyPkgs
-          home-manager.nixosModules.home-manager
-          agenix.nixosModules.default
-          spicetify-nix.nixosModules.default
-          (
-            if minimal
-            then ./modules/minimal.nix
-            else ./modules
-          )
-          ./.secrets/modules
-          {
-            nixpkgs.pkgs = pkgs;
-            networking.hostName = name;
-            vicos.flake =
-              vicos
-              // {
-                packages = self.legacyPackages.${system};
-              };
-          }
-          configuration
-        ];
-      };
-  in
-    forEachSystem (system: let
-      pkgs = nixpkgs-unstable.legacyPackages.${system};
-    in {
-      formatter = pkgs.alejandra;
-      # helps avoiding unnecessary evaluation time on nix flake check/show
-      legacyPackages = (import ./packages pkgs) // (vicosCats.mkNvimPackages { inherit system; nixpkgs = nixpkgs-unstable; });
-      devShells = {
-        java = import ./shells/java.nix {inherit pkgs;};
-      };
-    })
-    // {
-      nixosConfigurations = let
-        # why specify the name of the host both as the dir/filename and in the config
-        # when you can spend more time writing a function to do it for you?
-        mkNamedHost = name: config: mkHost (config // {inherit name;});
-        # hosts are provided the vicOS object with inputs, context, etc.
-        callHost = name: host: mkNamedHost name (host vicos);
-      in
-        mapAttrs callHost (vicos.lib.getHosts ./hosts);
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-      lib = import ./lib {inherit (nixpkgs) lib;};
+      perSystem =
+        { pkgs, system, ... }:
+        {
+          formatter = pkgs.alejandra;
 
-      templates = {
-        rust = {
-          path = ./templates/rust;
-          description = "Rust flake template using fenix";
+          packages =
+            (import ./packages pkgs)
+            // (vicosCats.mkNvimPackages {
+              inherit system;
+              nixpkgs = nixpkgs;
+            });
+
+          devShells = {
+            java = import ./shells/java.nix { inherit pkgs; };
+          };
         };
-      };
+
+      flake =
+        { config, ... }:
+        {
+          nixosConfigurations.test = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              self.nixosModules.full
+              {
+                vicos.user = "test";
+                boot.loader.grub.devices = [ "nodev" ];
+                fileSystems."/" = {
+                  device = "/dev/sda1";
+                  fsType = "ext4";
+                };
+                nixpkgs.config.allowUnfree = true;
+                system.stateVersion = "24.11";
+              }
+            ];
+          };
+
+          templates = {
+            rust = {
+              path = ./templates/rust;
+              description = "Rust flake template using fenix";
+            };
+          };
+
+          nixosModules =
+            let
+              mkVicOSModule =
+                mod:
+                { pkgs, ... }:
+                let
+                  system = pkgs.stdenv.hostPlatform.system;
+                in
+                {
+                  imports = [
+                    mod
+                    inputs.stash.nixosModules.stash
+                  ];
+
+                  _module.args.vicos = {
+                    packages = self.packages.${system};
+                  };
+                };
+            in
+            rec {
+              full = mkVicOSModule ./modules/profiles/nonserver.nix;
+              server = mkVicOSModule ./modules/profiles/server.nix;
+              default = full;
+            };
+        };
     };
 }

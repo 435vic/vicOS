@@ -6,12 +6,24 @@
     "gtk-layer-shell": true,
     "modules-left": ["hyprland/workspaces", "mpris"],
     "modules-center": ["hyprland/window"],
-    "modules-right": [ "network", "idle_inhibitor", "custom/power_profile", "pulseaudio", "battery", "clock", "tray"],
+    "modules-right": [ "network", "idle_inhibitor", "power-profiles-daemon", "pulseaudio", "battery", "clock", "tray"],
     "hyprland/window": {
         "format": "{}",
         "rewrite": {
           "(.*) — Mozilla Firefox": "🌎 $1",
           "(.*) — Zen Browser": "🌎 $1"
+        }
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon} ",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "",
+            "balanced": "",
+            "power-saver": ""
         }
     },
 

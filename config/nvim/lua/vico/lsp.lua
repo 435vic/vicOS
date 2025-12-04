@@ -9,6 +9,27 @@ return {
         root_markers = {'.git'},
       });
 
+      vim.lsp.config('emmet_language_server', {
+        filetypes = {
+          'astro',
+          'css',
+          'eruby',
+          'html',
+          'htmlangular',
+          'htmldjango',
+          'javascriptreact',
+          'less',
+          'pug',
+          'sass',
+          'scss',
+          'svelte',
+          'templ',
+          'typescriptreact',
+          'vue',
+          'html.handlebars',
+        },
+      });
+
       vim.lsp.config('jsonls', {
         cmd = { "vscode-json-languageserver", "--stdio" },
         settings = {
@@ -58,19 +79,35 @@ return {
           },
         },
       })
+
+      vim.lsp.config('basedpyright', {
+        settings = {
+          basedpyright = {
+            allowedUntypedLibraries = { "socket" },
+          }
+        }
+      })
+
       vim.lsp.enable({
         'lua_ls',
         'nixd',
+        'clangd',
+        'basedpyright',
         'nil',
         'hls',
+        'denols',
         'jsonls',
         'tinymist',
-        'yamlls'
+        'yamlls',
+        'html',
+        'css',
+        'emmet_language_server'
       });
     end,
   },
   {
     "typescript-tools.nvim",
+    enabled = false,
     ft = {
       'javascript',
       'javascriptreact',

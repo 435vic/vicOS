@@ -207,6 +207,11 @@ require("lze").load {
     end,
   },
   {
+    "vim-mustache-handlebars",
+    enabled = nixCats('lsp'),
+    event = "DeferredUIEnter",
+  },
+  {
     "golf-vim",
     enabled = nixCats('misc') ~= nil,
     cmd = { "Golf" }

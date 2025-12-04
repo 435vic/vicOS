@@ -86,6 +86,7 @@ tooltip {
 #tray,
 #memory,
 #mpris,
+#power-profiles-daemon,
 #backlight {
   background: @base;
   opacity: 0.9;
@@ -137,6 +138,7 @@ tooltip {
   padding-left: 5px;
 }
 
+#power-profiles-daemon,
 #custom-power_profile {
   color: @foam;
   border-radius: 0px 10px 10px 0px;
