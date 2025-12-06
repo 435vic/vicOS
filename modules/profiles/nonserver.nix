@@ -1,4 +1,4 @@
-{ lib, vicos, ... }:
+{ lib, vicos, config, ... }:
 {
   imports = [
     ./base.nix
@@ -26,9 +26,15 @@
     loader.timeout = 0;
   };
 
+  # add the full neovim experience
   environment.systemPackages = [
     vicos.packages.vvim-unfree.impure
   ];
+
+  home.configFile."nvim" = {
+    source = config.lib.vicos.stash "config/nvim";
+    recursive = true;
+  };
 
   programs.nix-ld.enable = lib.mkDefault true;
 

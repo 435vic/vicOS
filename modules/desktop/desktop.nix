@@ -30,6 +30,7 @@ in
           pamixer # volume control
           btop # process manager
           ghostty # terminal
+          legcord # discord client
           ;
 
         helium = lib.mkIf (vicos ? packages) vicos.packages.helium;
