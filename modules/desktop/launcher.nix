@@ -82,7 +82,7 @@
       }@args:
       let
         termArgsStr = builtins.replaceStrings [ "@pname@" ] [ program.pname ] (
-          builtins.concatStringsSep " " termArgs
+          builtins.concatStringsSep " " (termArgs ++ config.vicos.desktop.termAppExtraArgs)
         );
 
         exec = lib.getExe program;
