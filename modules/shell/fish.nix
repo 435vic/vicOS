@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   programs.fish.enable = true;
   programs.direnv.enable = true;
@@ -11,6 +16,7 @@
       eza
       bat
       gitui
+      gitFull
       nix-search-cli
       fzf
       fd
@@ -18,6 +24,10 @@
       nixd
       ;
   };
+
+  # extremely slow, has to be rebuilt everytime the installed packages list changes, which
+  # is almost every rebuild.
+  documentation.man.generateCaches = lib.mkForce false;
 
   programs.fish.shellAliases = {
     "ls" = "eza";
