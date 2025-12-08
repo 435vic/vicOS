@@ -18,6 +18,13 @@
     }:
     let
       vicosCats = import ./nixcats-nvim inputs.nixCats;
+      myPkgs =
+        pkgs:
+        (import ./packages pkgs)
+        // (vicosCats.mkNvimPackages {
+          system = pkgs.stdenv.hostPlatform.system;
+          nixpkgs = nixpkgs;
+        });
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
@@ -28,14 +35,16 @@
       perSystem =
         { pkgs, system, ... }:
         {
+          # please stop prentending you care about "free software"
+          # no one is gonna die if i download steam.
+          # people do die from attack drones though!
+          _module.args.pkgs = import nixpkgs {
+            config.allowUnfree = true;
+          };
+
           formatter = pkgs.alejandra;
 
-          packages =
-            (import ./packages pkgs)
-            // (vicosCats.mkNvimPackages {
-              inherit system;
-              nixpkgs = nixpkgs;
-            });
+          packages = myPkgs pkgs;
 
           devShells = {
             java = import ./shells/java.nix { inherit pkgs; };
@@ -60,6 +69,10 @@
                 system.stateVersion = "24.11";
               }
             ];
+          };
+
+          overlays.default = final: prev: {
+            vicos = myPkgs final;
           };
 
           templates = {
