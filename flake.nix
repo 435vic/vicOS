@@ -39,6 +39,7 @@
           # no one is gonna die if i download steam.
           # people do die from attack drones though!
           _module.args.pkgs = import nixpkgs {
+            inherit system;
             config.allowUnfree = true;
           };
 
