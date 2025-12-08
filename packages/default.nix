@@ -5,5 +5,5 @@ pkgs: rec {
   nordzy-cursors = pkgs.callPackage ./nordzy-cursors.nix { };
   tidalapi = pkgs.python3Packages.callPackage ./tidal-dl-ng/tidalapi.nix { };
   tidal-dl-ng = pkgs.python3Packages.callPackage ./tidal-dl-ng { inherit tidalapi; };
-  helium = pkgs.callPackage ./helium.nix { };
+  helium = pkgs.callPackage ./helium.nix { enableWideVine = true; };
 }
