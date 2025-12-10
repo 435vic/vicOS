@@ -2,9 +2,8 @@
   pkgs,
   lib,
   config,
-  vicos ? { },
   ...
-}:
+}@args:
 let
   cfg = config.vicos.desktop;
 in
@@ -31,9 +30,10 @@ in
           btop # process manager
           ghostty # terminal
           legcord # discord client
+          thunderbird # mail client
           ;
 
-        helium = lib.mkIf (vicos ? packages) vicos.packages.helium;
+        helium = lib.mkIf (args ? vicos) args.vicos.packages.helium;
       };
 
       # DARK MODEEEE
