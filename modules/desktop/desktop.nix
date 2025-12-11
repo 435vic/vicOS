@@ -2,8 +2,9 @@
   pkgs,
   lib,
   config,
+  vicos ? { },
   ...
-}@args:
+}:
 let
   cfg = config.vicos.desktop;
 in
@@ -33,7 +34,7 @@ in
           thunderbird # mail client
           ;
 
-        helium = lib.mkIf (args ? vicos) args.vicos.packages.helium;
+        helium = lib.mkIf (vicos ? packages) vicos.packages.helium;
       };
 
       # DARK MODEEEE
