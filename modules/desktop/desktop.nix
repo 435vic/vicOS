@@ -32,6 +32,7 @@ in
           ghostty # terminal
           legcord # discord client
           thunderbird # mail client
+          mpv # video player
           ;
 
         helium = lib.mkIf (vicos ? packages) vicos.packages.helium;
