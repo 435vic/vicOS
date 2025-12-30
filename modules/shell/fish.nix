@@ -9,9 +9,11 @@
   programs.direnv.enable = true;
   programs.direnv.enableFishIntegration = true;
   programs.starship.enable = true;
+  programs.zoxide.enable = true;
   environment.systemPackages = builtins.attrValues {
     inherit (pkgs)
       ripgrep
+      wget
       jq
       eza
       bat
@@ -23,6 +25,8 @@
       nil
       nixd
       ;
+
+    ghostty-terminfo = pkgs.ghostty.terminfo;
   };
 
   # extremely slow, has to be rebuilt everytime the installed packages list changes, which
