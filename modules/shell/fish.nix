@@ -43,9 +43,17 @@
     if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
     then
       shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-      export SHELL=fish
       exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
     fi
+  '';
+
+  programs.fish.interactiveShellInit = lib.mkAfter ''
+    # disable fish greeting
+    set -U fish_greeting
+    # vi mode on everything
+    set -g fish_key_bindings fish_vi_key_bindings
+    # set fish as the default shell if on interactive mode
+    set -x SHELL fish
   '';
 
   home.configFile.fish = {

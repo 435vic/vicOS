@@ -106,7 +106,6 @@ let
               p.git_config
               p.git_rebase
 
-              # Java (you have ftplugin for it)
               p.java
 
               # Misc useful
