@@ -45,6 +45,8 @@ in
 
     home.configFile."git/ignore".source = config.lib.vicos.stash "config/git/ignore";
     home.configFile."starship.toml".source = config.lib.vicos.stash "config/starship.toml";
+    home.configFile."starship-jetpack.toml".source =
+      config.lib.vicos.stash "config/starship-jetpack.toml";
     home.file.".ssh/config".source = config.lib.vicos.stash "config/ssh/config";
   };
 }
