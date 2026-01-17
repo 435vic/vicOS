@@ -105,6 +105,7 @@
             rec {
               full = mkVicOSModule ./modules/profiles/nonserver.nix;
               server = mkVicOSModule ./modules/profiles/server.nix;
+              wsl = mkVicOSModule ./modules/profiles/wsl.nix;
               default = full;
             };
         };
