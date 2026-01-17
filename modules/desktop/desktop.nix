@@ -28,6 +28,7 @@ in
           ripdrag
           mako # notification daemon
           pamixer # volume control
+          brightnessctl # backlight control
           btop # process manager
           ghostty # terminal
           legcord # discord client
