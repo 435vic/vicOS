@@ -91,6 +91,8 @@ in
       recursive = true;
     };
 
+    config.networking.useNetworkd = false;
+
     # Use Windows browser via wslview
     environment.sessionVariables = {
       BROWSER = "wslview";
@@ -103,23 +105,5 @@ in
       # Use Windows OpenGL for GUI apps
       useWindowsDriver = true;
     };
-
-    # Bandaid: link stash config files during activation since systemd isn't available
-    system.activationScripts.linkStashConfigs = {
-      text = ''
-        echo "Linking stash config files for WSL..."
-        ${stashFileLinks}
-        ${staticFileLinks}
-        echo "Done linking config files."
-      '';
-      deps = [ ];
-    };
-
-    # ========================================================================
-    # BANDAID: Stash systemd overrides for WSL
-    # Remove this section once stash supports standalone/activation-time linking
-    # ========================================================================
-    systemd.services."stash-${user}" = lib.mkForce {};
-    systemd.services."stash-init-${user}" = lib.mkForce {};
   };
 }
