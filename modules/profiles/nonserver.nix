@@ -6,6 +6,7 @@
     ../desktop/gaming.nix
     ../desktop/launcher.nix
     ../desktop/hyprland.nix
+    ../desktop/xdg.nix
     ../shell/shell.nix
     ../shell/tmux.nix
     ../shell/fish.nix

@@ -36,7 +36,7 @@ in
 
     home.configFile."git/config" = {
       enable = cfg.git.name != null && cfg.git.email != null;
-      text = ''
+      text = lib.optionalString (cfg.git.name != null && cfg.git.email != null) ''
         [user]
           name = ${cfg.git.name}
           email = ${cfg.git.email}

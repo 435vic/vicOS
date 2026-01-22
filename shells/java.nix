@@ -5,7 +5,7 @@
 pkgs.mkShellNoCC {
   packages = [
     pkgs.jdt-language-server
-    (pkgs.callPackage pkgs.gradle-packages.gradle_8 {
+    (pkgs.gradle_8.override {
       java = jdk;
     })
     pkgs.maven
