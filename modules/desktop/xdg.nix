@@ -7,6 +7,7 @@
 let
   user = config.vicos.user;
   homeDir = config.users.users.${user}.home;
+  userDir = "${homeDir}/.local/user";
   screenshotDir = "${homeDir}/pictures/screenshots";
 in
 {
@@ -18,17 +19,18 @@ in
 
   systemd.tmpfiles.rules = [
     "d ${screenshotDir} 0755 ${user} users -"
+    "d ${userDir} 0755 ${user} users -"
   ];
 
   home.configFile."user-dirs.dirs".text = ''
-    XDG_DESKTOP_DIR="${homeDir}"
-    XDG_DOCUMENTS_DIR="${homeDir}"
-    XDG_DOWNLOAD_DIR="${homeDir}/downloads"
-    XDG_MUSIC_DIR="${homeDir}/music"
+    XDG_DESKTOP_DIR="${userDir}"
+    XDG_DOCUMENTS_DIR="${userDir}"
+    XDG_DOWNLOAD_DIR="${userDir}"
+    XDG_MUSIC_DIR="${userDir}"
     XDG_PICTURES_DIR="${homeDir}/pictures"
-    XDG_PUBLICSHARE_DIR="${homeDir}"
-    XDG_TEMPLATES_DIR="${homeDir}"
-    XDG_VIDEOS_DIR="${homeDir}"
+    XDG_PUBLICSHARE_DIR="${userDir}"
+    XDG_TEMPLATES_DIR="${userDir}"
+    XDG_VIDEOS_DIR="${userDir}"
   '';
 
   home.configFile."user-dirs.locale".text = "en_US";
