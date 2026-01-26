@@ -1,0 +1,3 @@
+Host *.exe.xyz
+    SetEnv TERM=xterm-256color
+

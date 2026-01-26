@@ -2,12 +2,6 @@
 #
 # This profile provides a complete CLI environment for WSL, including
 # shell configuration, neovim, and common CLI tools.
-#
-# NOTE: This profile includes a bandaid fix for stash, which normally
-# relies on systemd for symlinking config files. Since WSL typically
-# runs without systemd, we manually symlink stash-based configs during
-# system activation. This should be removed once stash supports
-# activation-time linking.
 {
   lib,
   pkgs,

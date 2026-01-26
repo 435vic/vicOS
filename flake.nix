@@ -55,6 +55,10 @@
       flake =
         { config, ... }:
         {
+          dotfiles = {
+            config = "${self}/config";
+          };
+
           nixosConfigurations.test = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
