@@ -1,6 +1,6 @@
 directory: ~/music
 library: ~/music/library.db
-plugins: convert web fetchart embedart duplicates replaygain
+plugins: convert web fetchart embedart duplicates replaygain musicbrainz
 
 import:
   move: yes
@@ -18,10 +18,10 @@ fetchart:
     - coverart: releasegroup
     - '*'
 
-convert:
+# convert:
   # auto_keep: yes
   # quiet: yes
-  dest: /mnt/memes/converted_music
-  command: ffmpeg -i $source -y -vn -acodec libopus -ab 128k $dest
-  extension: opus
+  # dest: /mnt/memes/converted_music
+  # command: ffmpeg -i $source -y -vn -acodec libopus -ab 128k $dest
+  # extension: opus
 
