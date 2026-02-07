@@ -1,4 +1,9 @@
-{ lib, vicos, config, ... }:
+{
+  lib,
+  vicos,
+  config,
+  ...
+}:
 {
   imports = [
     ./base.nix
@@ -29,7 +34,7 @@
 
   # add the full neovim experience
   environment.systemPackages = [
-    vicos.packages.vvim-unfree.impure
+    vicos.packages.vvim.impure
   ];
 
   home.configFile."nvim" = {

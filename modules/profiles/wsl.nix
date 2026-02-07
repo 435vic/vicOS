@@ -8,7 +8,8 @@
   config,
   vicos,
   ...
-}: {
+}:
+{
   imports = [
     ./base.nix # includes vicos.nix and stash.nix
     ../shell/shell.nix
@@ -19,7 +20,7 @@
   config = {
     # Full neovim
     environment.systemPackages = [
-      vicos.packages.vvim-unfree.impure
+      vicos.packages.vvim.impure
 
       # WSL utilities
       pkgs.wslu # wslview, wslpath, etc.
