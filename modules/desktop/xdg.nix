@@ -37,22 +37,23 @@ in
 
   home.configFile."mimeapps.list".text =
     let
+      zedDesktop = "dev.zed.Zed.desktop";
       associations = {
-        "text/plain" = "zeditor.desktop";
-        "text/markdown" = "zeditor.desktop";
-        "text/x-readme" = "zeditor.desktop";
+        "text/plain" = zedDesktop;
+        "text/markdown" = zedDesktop;
+        "text/x-readme" = zedDesktop;
         "text/html" = "helium.desktop";
-        "text/xml" = "zeditor.desktop";
-        "text/csv" = "zeditor.desktop";
-        "text/x-c" = "zeditor.desktop";
-        "text/x-c++" = "zeditor.desktop";
-        "text/x-python" = "zeditor.desktop";
-        "text/x-java" = "zeditor.desktop";
-        "text/x-shellscript" = "zeditor.desktop";
-        "application/json" = "zeditor.desktop";
-        "application/x-yaml" = "zeditor.desktop";
-        "application/toml" = "zeditor.desktop";
-        "application/xml" = "zeditor.desktop";
+        "text/xml" = zedDesktop;
+        "text/csv" = zedDesktop;
+        "text/x-c" = zedDesktop;
+        "text/x-c++" = zedDesktop;
+        "text/x-python" = zedDesktop;
+        "text/x-java" = zedDesktop;
+        "text/x-shellscript" = zedDesktop;
+        "application/json" = zedDesktop;
+        "application/x-yaml" = zedDesktop;
+        "application/toml" = zedDesktop;
+        "application/xml" = zedDesktop;
 
         "application/pdf" = "helium.desktop";
 
@@ -85,7 +86,7 @@ in
       };
 
       formatEntries = lib.concatStringsSep "\n" (
-        lib.mapAttrsToList (mime: app: "${mime}=${app}") associations
+        lib.mapAttrsToList (mime: app: "${mime}=${app};") associations
       );
     in
     ''
