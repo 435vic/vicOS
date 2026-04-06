@@ -30,8 +30,8 @@
   };
 
   # extremely slow, has to be rebuilt everytime the installed packages list changes, which
-  # is almost every rebuild.
-  documentation.man.generateCaches = lib.mkForce false;
+  # is almost every rebuild. NixOS now allows it to be generated in the background, yaaay!
+  documentation.man.cache.generateAtRuntime = true;
 
   programs.fish.shellAliases = {
     "ls" = "eza";

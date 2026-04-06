@@ -88,7 +88,7 @@
         exec = lib.getExe program;
       in
       pkgs.makeDesktopItem (
-        (builtins.removeAttrs args [
+        (removeAttrs args [
           "program"
           "termArgs"
         ])
