@@ -157,6 +157,7 @@ in
         hyprshot # screenshot tool
         hyprcursor # cursor support
         rose-pine-hyprcursor # better default cursor
+        kitty # default hyprland terminal, in case something goes wrong or config isn't recognized
         ;
     };
 
