@@ -81,8 +81,6 @@ in
         "x-scheme-handler/http" = "helium.desktop";
         "x-scheme-handler/https" = "helium.desktop";
         "x-scheme-handler/mailto" = "thunderbird.desktop";
-
-
       };
 
       formatEntries = lib.concatStringsSep "\n" (

@@ -34,6 +34,7 @@ in
           legcord # discord client
           thunderbird # mail client
           mpv # video player
+          bitwarden-desktop
           ;
 
         helium = lib.mkIf (vicos ? packages) vicos.packages.helium;
