@@ -3,8 +3,6 @@
 # This profile provides a complete CLI environment for WSL, including
 # shell configuration, neovim, and common CLI tools.
 {
-  lib,
-  pkgs,
   config,
   vicos,
   ...
@@ -21,9 +19,6 @@
     # Full neovim
     environment.systemPackages = [
       vicos.packages.vvim.impure
-
-      # WSL utilities
-      pkgs.wslu # wslview, wslpath, etc.
     ];
 
     home.configFile."nvim" = {

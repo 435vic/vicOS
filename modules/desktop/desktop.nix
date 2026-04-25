@@ -35,6 +35,7 @@ in
           thunderbird # mail client
           mpv # video player
           bitwarden-desktop
+          zed-editor
           ;
 
         helium = lib.mkIf (vicos ? packages) vicos.packages.helium;

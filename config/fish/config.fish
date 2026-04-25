@@ -1,4 +1,2 @@
-# config here
+set -gx SSH_AUTH_SOCK ~/.bitwarden-ssh-agent.sock
 
-# Amp CLI
-fish_add_path "$HOME/.local/bin"
