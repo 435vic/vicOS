@@ -1,0 +1,53 @@
+diff --git a/tinygrad/runtime/autogen/libclang.py b/tinygrad/runtime/autogen/libclang.py
+index 97383fa21..230229e5e 100644
+--- a/tinygrad/runtime/autogen/libclang.py
++++ b/tinygrad/runtime/autogen/libclang.py
+@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias
+ from tinygrad.runtime.support.c import _IO, _IOW, _IOR, _IOWR
+ from tinygrad.runtime.support import c
+ from tinygrad.helpers import OSX
+-dll = c.DLL('libclang', '/opt/homebrew/opt/llvm@20/lib/libclang.dylib' if OSX else ['clang-20', 'clang'])
++dll = c.DLL('libclang', '@libclang@')
+ CXIndex: TypeAlias = ctypes.c_void_p
+ class struct_CXTargetInfoImpl(c.Struct): pass
+ CXTargetInfo: TypeAlias = c.POINTER[struct_CXTargetInfoImpl]
+@@ -1016,4 +1016,4 @@ CINDEX_VERSION_MAJOR = 0 # type: ignore
+ CINDEX_VERSION_MINOR = 64 # type: ignore
+ CINDEX_VERSION_ENCODE = lambda major,minor: (((major)*10000) + ((minor)*1)) # type: ignore
+ CINDEX_VERSION = CINDEX_VERSION_ENCODE(CINDEX_VERSION_MAJOR, CINDEX_VERSION_MINOR) # type: ignore
+-CINDEX_VERSION_STRINGIZE = lambda major,minor: CINDEX_VERSION_STRINGIZE_(major, minor) # type: ignore
+\ No newline at end of file
++CINDEX_VERSION_STRINGIZE = lambda major,minor: CINDEX_VERSION_STRINGIZE_(major, minor) # type: ignore
+diff --git a/tinygrad/runtime/autogen/llvm.py b/tinygrad/runtime/autogen/llvm.py
+index 9bcde17a4..144816f49 100644
+--- a/tinygrad/runtime/autogen/llvm.py
++++ b/tinygrad/runtime/autogen/llvm.py
+@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias
+ from tinygrad.runtime.support.c import _IO, _IOW, _IOR, _IOWR
+ from tinygrad.runtime.support import c
+ from tinygrad.helpers import WIN, OSX
+-dll = c.DLL('llvm', 'C:\\Program Files\\LLVM\\bin\\LLVM-C.dll' if WIN else '/opt/homebrew/opt/llvm@20/lib/libLLVM.dylib' if OSX else ['LLVM', 'LLVM-21', 'LLVM-20', 'LLVM-19', 'LLVM-18', 'LLVM-17', 'LLVM-16', 'LLVM-15', 'LLVM-14'])
++dll = c.DLL('llvm', '@libllvm@')
+ intmax_t: TypeAlias = ctypes.c_int64
+ @dll.bind(intmax_t, intmax_t)
+ def imaxabs(__n:intmax_t) -> intmax_t: ...
+@@ -3188,4 +3188,4 @@ LLVM_BLAKE3_OUT_LEN = 32 # type: ignore
+ LLVM_BLAKE3_BLOCK_LEN = 64 # type: ignore
+ LLVM_BLAKE3_CHUNK_LEN = 1024 # type: ignore
+ LLVM_BLAKE3_MAX_DEPTH = 54 # type: ignore
+-LTO_API_VERSION = 29 # type: ignore
+\ No newline at end of file
++LTO_API_VERSION = 29 # type: ignore
+diff --git a/tinygrad/runtime/support/compiler_cpu.py b/tinygrad/runtime/support/compiler_cpu.py
+index 2777d25b4..81bf92642 100644
+--- a/tinygrad/runtime/support/compiler_cpu.py
++++ b/tinygrad/runtime/support/compiler_cpu.py
+@@ -20,7 +20,7 @@ class ClangJITCompiler(Compiler):
+   def compile_to_obj(self, src:str) -> bytes:
+     """Compile C source to ELF object file (before linking)."""
+     # -fno-math-errno is required for __builtin_sqrt to become an instruction instead of a function call
+-    return subprocess.check_output([getenv("CC", 'clang'), '-c', '-x', 'c', '-O2', '-fPIC', '-ffreestanding', '-fno-math-errno', '-nostdlib',
++    return subprocess.check_output(['@clang@', '-c', '-x', 'c', '-O2', '-fPIC', '-ffreestanding', '-fno-math-errno', '-nostdlib',
+                                     '-fno-ident', f'--target={self.arch}-none-unknown-elf', *self.args, '-', '-o', '-'], input=src.encode('utf-8'))
+ 
+   def compile(self, src:str) -> bytes: return jit_loader(self.compile_to_obj(src))
