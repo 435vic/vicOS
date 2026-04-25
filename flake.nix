@@ -85,6 +85,11 @@
               path = ./templates/rust;
               description = "Rust flake template using fenix";
             };
+
+            tinygrad = {
+              path = ./templates/tinygrad;
+              description = "tinygrad project template with tinygrad master";
+            };
           };
 
           nixosModules =
