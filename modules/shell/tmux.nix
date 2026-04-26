@@ -7,11 +7,13 @@
     plugins = builtins.attrValues {
       inherit (pkgs.tmuxPlugins)
         yank
-        rose-pine
         ;
     };
 
     extraConfig = ''
+      set -g @rose_pine_variant 'main'
+      run-shell ${pkgs.tmuxPlugins.rose-pine}/share/tmux-plugins/rose-pine/rose-pine.tmux
+      
       # Sesh
       bind-key "C-f" run-shell "sesh connect \"$(
         sesh list --icons | fzf-tmux -p 80%,70% \
