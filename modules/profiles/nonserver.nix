@@ -12,6 +12,7 @@
     ../desktop/launcher.nix
     ../desktop/hyprland.nix
     ../desktop/xdg.nix
+    ../desktop/music.nix
     ../shell/shell.nix
     ../shell/tmux.nix
     ../shell/fish.nix
