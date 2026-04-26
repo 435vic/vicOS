@@ -1,4 +1,17 @@
 { pkgs, lib, config, ... }: {
+  environment.systemPackages = [
+    config.lib.vicos.makeTUIApplication {
+      program = pkgs.rmpc;
+      name = "wiremix";
+      desktopName = "rmpc";
+      genericName = "Music Player";
+      categories = [
+        "Music"
+          "Audio"
+      ];
+    }
+  ];
+
   systemd.user.services.mpd-mpris = {
     wantedBy = ["default.target"];
 
@@ -30,9 +43,12 @@
   };
 
   systemd.user.services.mpd-discord-rpc = {
+    wantedBy = [ "mpd.service" ];
+
     description = "MPD Discord RPC";
     after = [ "mpd.service" ];
     wants = [ "mpd.service" ];
+    partOf = [ "mpd.service" ];
 
     serviceConfig = {
       ExecStart = "${lib.getExe pkgs.mpd-discord-rpc}";

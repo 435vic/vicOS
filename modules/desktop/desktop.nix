@@ -36,7 +36,6 @@ in
           mpv # video player
           bitwarden-desktop
           zed-editor
-          rmpc
           ;
 
         helium = lib.mkIf (vicos ? packages) vicos.packages.helium;
