@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   environment.systemPackages = [ pkgs.sesh ];
 
@@ -12,6 +12,7 @@
     };
 
     extraConfig = ''
+      # Sesh
       bind-key "C-f" run-shell "sesh connect \"$(
         sesh list --icons | fzf-tmux -p 80%,70% \
           --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
@@ -33,4 +34,7 @@
     bind ctrl-f 'sesh connect (sesh list | fzf)'
     bind -M insert ctrl-f 'sesh connect (sesh list | fzf)'
   '';
+
+  home.configFile."tmux/tmux.conf".source =
+    config.lib.vicos.stash "config/tmux/tmux.conf";
 }
