@@ -31,7 +31,7 @@ in
           brightnessctl # backlight control
           btop # process manager
           ghostty # terminal
-          legcord # discord client
+          vesktop # discord client
           thunderbird # mail client
           mpv # video player
           bitwarden-desktop
