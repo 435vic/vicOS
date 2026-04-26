@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }: {
   environment.systemPackages = [
-    config.lib.vicos.makeTUIApplication {
+    (config.lib.vicos.makeTUIApplication {
       program = pkgs.rmpc;
       name = "wiremix";
       desktopName = "rmpc";
@@ -9,7 +9,7 @@
         "Music"
           "Audio"
       ];
-    }
+    })
   ];
 
   systemd.user.services.mpd-mpris = {
