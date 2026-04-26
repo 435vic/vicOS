@@ -1,0 +1,43 @@
+/* 
+# ---------------------------------------
+# cybr-waybar     waybar config (part of cybrcore)
+# Project:        https://github.com/cybrcore/cybr-waybar
+# Author:         scherrer-txt   |   License:     GPL-3.0
+# Source:         ~/.config/waybar/config.jsonc
+# ---------------------------------------
+*/
+{
+	"include": "~/.config/waybar/cyber/modules.jsonc",
+	"height": 31,
+	"layer": "top",
+	"mode": "dock",
+	"exclusive": true,
+	"passtrough": false,
+	"gtk-layer-shell": true,
+	"margin-top": 0,
+	"margin-left": 0,
+	"margin-bottom": 0,
+	"margin-right": 0,
+	"on-scroll-threshold": 1,
+	"modules-left": [
+		// "custom/arch",
+		// "custom/arrow-left-re0",
+		"hyprland/workspaces",
+		"custom/arrow-left-no1"
+	],
+	"modules-center": [
+		"custom/arrow-right-no1",
+		"clock#date",
+		"custom/arrow-right-re0",
+		"hyprland/window",
+		"custom/arrow-left-re0",
+		"clock#time",
+		"custom/arrow-left-no1"
+	],
+	"modules-right": [
+		"custom/arrow-right-no1",
+		"network",
+		"pulseaudio",
+		"tray"
+	]
+}

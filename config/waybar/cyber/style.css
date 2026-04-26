@@ -187,6 +187,7 @@ window#waybar.hidden {
 	border-radius: 0;
 	border: none;
 	margin: 0;
+	padding: 0 8px;
 	font-weight: bolder;
 	color: @re0;
 	background: transparent;
@@ -198,10 +199,6 @@ window#waybar.hidden {
 	color: @re0;
 }
 
-#workspaces button.active label {
-	color: @gr0;
-}
-
 #workspaces button:hover {
 	background-color: @re2;
 }
@@ -210,12 +207,12 @@ window#waybar.hidden {
 	color: @re0;
 }
 
-#workspaces button.active:hover {
-	background-color: @gr2;
+#workspaces button.active label {
+	color: @ye0;
 }
 
-#workspaces button.active label {
-	color: @gr0;
+#workspaces button.active:hover {
+	background-color: @ye2;
 }
 
 #workspaces button.urgent {
