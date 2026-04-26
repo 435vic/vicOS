@@ -29,6 +29,18 @@
     };
   };
 
+  systemd.user.services.mpd-discord-rpc = {
+    description = "MPD Discord RPC";
+    after = [ "mpd.service" ];
+    wants = [ "mpd.service" ];
+
+    serviceConfig = {
+      ExecStart = "${lib.getExe pkgs.mpd-discord-rpc}";
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+  };
+
   systemd.user.sockets.mpd = {
     wantedBy = [ "sockets.target" ];
 
