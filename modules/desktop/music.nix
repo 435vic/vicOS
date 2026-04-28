@@ -2,7 +2,7 @@
   environment.systemPackages = [
     (config.lib.vicos.makeTUIApplication {
       program = pkgs.rmpc;
-      name = "wiremix";
+      name = "rmpc";
       desktopName = "rmpc";
       genericName = "Music Player";
       categories = [
