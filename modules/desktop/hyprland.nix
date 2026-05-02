@@ -165,20 +165,29 @@ in
     security.pam.services.swaylock = { };
     security.pam.services.hyprlock = { };
 
-    services.greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time";
-          user = "greeter";
-        };
-
-        initial_session = {
-          command = "uwsm start hyprland-uwsm.desktop";
-          user = "vico";
-        };
+    services.displayManager = {
+      ly.enable = true;
+      defaultSession = "hyprland-uwsm";
+      autoLogin = {
+        enable = true;
+        user = "vico";
       };
     };
+
+    # services.greetd = {
+    #   enable = true;
+    #   settings = {
+    #     default_session = {
+    #       command = "${pkgs.tuigreet}/bin/tuigreet --time";
+    #       user = "greeter";
+    #     };
+    #
+    #     initial_session = {
+    #       command = "uwsm start hyprland-uwsm.desktop";
+    #       user = "vico";
+    #     };
+    #   };
+    # };
 
     home.configFile = {
       hypr = {
