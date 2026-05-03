@@ -43,7 +43,6 @@ in
 
       programs.localsend.enable = true;
 
-
       # DARK MODEEEE
       programs.dconf = {
         enable = true;

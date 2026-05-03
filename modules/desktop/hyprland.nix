@@ -125,6 +125,8 @@ in
     };
 
     services.gnome.gnome-keyring.enable = true;
+    services.udisks2.enable = true;
+
     security.pam.services = {
       greetd.enableGnomeKeyring = true;
       greetd-password.enableGnomeKeyring = true;
@@ -166,28 +168,27 @@ in
     security.pam.services.hyprlock = { };
 
     services.displayManager = {
-      ly.enable = true;
+      ly = {
+        enable = true;
+        settings = let
+          blackhole = pkgs.fetchurl {
+            name = "blackhole.dur";
+            url = "https://codeberg.org/attachments/f336d6ac-8331-4323-91fc-0e4619803401";
+            hash = "sha256-fRm0wlkq9/GdLrVBOzMEnQG/i2ng+uGIzq0u9hu3m9g=";
+          };
+        in {
+          animation = "colormix";
+          dur_file_path = "${blackhole}";
+          full_color = true;
+          bigclock = "en";
+        };
+      };
       defaultSession = "hyprland-uwsm";
       autoLogin = {
         enable = true;
         user = "vico";
       };
     };
-
-    # services.greetd = {
-    #   enable = true;
-    #   settings = {
-    #     default_session = {
-    #       command = "${pkgs.tuigreet}/bin/tuigreet --time";
-    #       user = "greeter";
-    #     };
-    #
-    #     initial_session = {
-    #       command = "uwsm start hyprland-uwsm.desktop";
-    #       user = "vico";
-    #     };
-    #   };
-    # };
 
     home.configFile = {
       hypr = {
