@@ -24,6 +24,7 @@
       fd
       nil
       nixd
+      nh
       ;
 
     ghostty-terminfo = pkgs.ghostty.terminfo;
