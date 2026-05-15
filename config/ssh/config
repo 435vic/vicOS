@@ -1,10 +1,15 @@
-
 Host github.com
     IdentityFile ~/.ssh/id_ed25519
     IdentityAgent none
     IdentitiesOnly yes
 
-Match Host *.viclan,*.boredvico.dev User root
-    IdentityFile ~/.ssh/su_ed25519
+Host git.boredvico.dev
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityAgent none
+    IdentitiesOnly yes
+
+Match User vico
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityAgent none
     IdentitiesOnly yes
 
