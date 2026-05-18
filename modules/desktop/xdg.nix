@@ -3,15 +3,14 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   user = config.vicos.user;
   homeDir = config.users.users.${user}.home;
   userDir = "${homeDir}/.local/user";
   screenshotDir = "${homeDir}/pictures/screenshots";
-in
-{
-  environment.systemPackages = [ pkgs.xdg-user-dirs ];
+  apps = config.vicos.desktop.apps;
+in {
+  environment.systemPackages = [pkgs.xdg-user-dirs];
 
   environment.sessionVariables = {
     HYPRSHOT_DIR = screenshotDir;
@@ -35,63 +34,71 @@ in
 
   home.configFile."user-dirs.locale".text = "en_US";
 
-  home.configFile."mimeapps.list".text =
-    let
-      zedDesktop = "dev.zed.Zed.desktop";
-      associations = {
-        "text/plain" = zedDesktop;
-        "text/markdown" = zedDesktop;
-        "text/x-readme" = zedDesktop;
-        "text/html" = "helium.desktop";
-        "text/xml" = zedDesktop;
-        "text/csv" = zedDesktop;
-        "text/x-c" = zedDesktop;
-        "text/x-c++" = zedDesktop;
-        "text/x-python" = zedDesktop;
-        "text/x-java" = zedDesktop;
-        "text/x-shellscript" = zedDesktop;
-        "application/json" = zedDesktop;
-        "application/x-yaml" = zedDesktop;
-        "application/toml" = zedDesktop;
-        "application/xml" = zedDesktop;
+  home.configFile."mimeapps.list".text = let
+    editor = apps.editor.desktop;
+    browser = apps.browser.desktop;
+    fileManager = apps.fileManager.desktop;
+    imageViewer = apps.imageViewer.desktop;
+    mailClient = apps.mailClient.desktop;
+    mediaPlayer = apps.mediaPlayer.desktop;
+    pdfViewer = apps.pdfViewer.desktop;
 
-        "application/pdf" = "helium.desktop";
+    associations = {
+      "inode/directory" = fileManager;
+      "application/x-directory" = fileManager;
 
-        "image/png" = "imv.desktop";
-        "image/jpeg" = "imv.desktop";
-        "image/gif" = "imv.desktop";
-        "image/webp" = "imv.desktop";
-        "image/svg+xml" = "imv.desktop";
-        "image/bmp" = "imv.desktop";
+      "text/plain" = editor;
+      "text/markdown" = editor;
+      "text/x-readme" = editor;
+      "text/html" = browser;
+      "text/xml" = editor;
+      "text/csv" = editor;
+      "text/x-c" = editor;
+      "text/x-c++" = editor;
+      "text/x-python" = editor;
+      "text/x-java" = editor;
+      "text/x-shellscript" = editor;
+      "application/json" = editor;
+      "application/x-yaml" = editor;
+      "application/toml" = editor;
+      "application/xml" = editor;
 
-        "video/mp4" = "mpv.desktop";
-        "video/x-matroska" = "mpv.desktop";
-        "video/webm" = "mpv.desktop";
-        "video/x-msvideo" = "mpv.desktop";
-        "video/quicktime" = "mpv.desktop";
-        "video/mpeg" = "mpv.desktop";
+      "application/pdf" = pdfViewer;
 
-        "audio/mpeg" = "mpv.desktop";
-        "audio/flac" = "mpv.desktop";
-        "audio/ogg" = "mpv.desktop";
-        "audio/wav" = "mpv.desktop";
-        "audio/x-wav" = "mpv.desktop";
-        "audio/mp4" = "mpv.desktop";
+      "image/png" = imageViewer;
+      "image/jpeg" = imageViewer;
+      "image/gif" = imageViewer;
+      "image/webp" = imageViewer;
+      "image/svg+xml" = imageViewer;
+      "image/bmp" = imageViewer;
 
-        "x-scheme-handler/http" = "helium.desktop";
-        "x-scheme-handler/https" = "helium.desktop";
-        "x-scheme-handler/mailto" = "thunderbird.desktop";
-      };
+      "video/mp4" = mediaPlayer;
+      "video/x-matroska" = mediaPlayer;
+      "video/webm" = mediaPlayer;
+      "video/x-msvideo" = mediaPlayer;
+      "video/quicktime" = mediaPlayer;
+      "video/mpeg" = mediaPlayer;
 
-      formatEntries = lib.concatStringsSep "\n" (
-        lib.mapAttrsToList (mime: app: "${mime}=${app};") associations
-      );
-    in
-    ''
-      [Default Applications]
-      ${formatEntries}
+      "audio/mpeg" = mediaPlayer;
+      "audio/flac" = mediaPlayer;
+      "audio/ogg" = mediaPlayer;
+      "audio/wav" = mediaPlayer;
+      "audio/x-wav" = mediaPlayer;
+      "audio/mp4" = mediaPlayer;
 
-      [Added Associations]
-      ${formatEntries}
-    '';
+      "x-scheme-handler/http" = browser;
+      "x-scheme-handler/https" = browser;
+      "x-scheme-handler/mailto" = mailClient;
+    };
+
+    formatEntries = lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (mime: app: "${mime}=${app};") associations
+    );
+  in ''
+    [Default Applications]
+    ${formatEntries}
+
+    [Added Associations]
+    ${formatEntries}
+  '';
 }

@@ -3,24 +3,21 @@
   config,
   lib,
   ...
-}:
-let
+}: let
   inherit (lib) mkOption types;
   cfg = config.vicos.hyprland;
+  desktop = config.vicos.desktop;
 
-  mkOpt =
-    type: description:
+  mkOpt = type: description:
     mkOption {
       inherit type description;
     };
-  mkOpt' =
-    type: description: default:
+  mkOpt' = type: description: default:
     mkOption {
       inherit type description default;
     };
   hyprlandMonitor = types.submodule (
-    { config, ... }:
-    {
+    {config, ...}: {
       options = {
         output = mkOpt types.str "output";
         selector = mkOpt' types.str "more specific selector (see wiki)" "";
@@ -38,16 +35,14 @@ let
         })
         {
           rawDefinition =
-            if config.disable then
-              "monitor = ${config.output},disable"
-            else
-              "monitor = ${config.output},${config.mode},${config.position},${toString config.scale}";
+            if config.disable
+            then "monitor = ${config.output},disable"
+            else "monitor = ${config.output},${config.mode},${config.position},${toString config.scale}";
         }
       ];
     }
   );
-in
-{
+in {
   options.vicos.hyprland = {
     extraConfig = mkOption {
       type = types.str;
@@ -58,7 +53,7 @@ in
     monitors = mkOption {
       type = types.listOf hyprlandMonitor;
       description = "Hyprland monitor definitions.";
-      default = [ ];
+      default = [];
     };
 
     primaryMonitor = mkOption {
@@ -85,21 +80,31 @@ in
       description = "Default terminal to launch when inputting terminal keybind.";
     };
 
+    defaultFileManager = mkOption {
+      type = types.str;
+      default = "nautilus";
+      description = "Default file manager to launch when inputting file manager keybind.";
+    };
+
     environmentVariables = mkOption {
       type = with types; attrsOf str;
-      default = { };
+      default = {};
       description = "Environment variables to set in ~/.config/uwsm/env-hyprland.";
     };
   };
 
   config = {
     vicos.desktop.wayland.enable = true;
-    vicos.hyprland =
-      let
-        primaryMonitor = lib.findFirst (m: m.primary) { } cfg.monitors;
-      in
+    vicos.hyprland = let
+      primaryMonitor = lib.findFirst (m: m.primary) {} cfg.monitors;
+    in
       lib.mkMerge [
         {
+          defaultEditor = lib.mkDefault desktop.apps.editor.command;
+          defaultBrowser = lib.mkDefault desktop.apps.browser.command;
+          defaultTerminal = lib.mkDefault desktop.apps.terminal.command;
+          defaultFileManager = lib.mkDefault desktop.apps.fileManager.command;
+
           environmentVariables = {
             XCURSOR_SIZE = lib.mkDefault "24";
             XCURSOR_THEME = lib.mkDefault "Adwaita";
@@ -122,9 +127,12 @@ in
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
+      TERMINAL = cfg.defaultTerminal;
     };
+    environment.pathsToLink = ["/share/hypr"];
 
     services.gnome.gnome-keyring.enable = true;
+    services.gvfs.enable = true;
     services.udisks2.enable = true;
 
     security.pam.services = {
@@ -148,24 +156,33 @@ in
       withUWSM = true;
     };
 
+    xdg.portal = {
+      enable = true;
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      config.hyprland.default = [
+        "hyprland"
+        "gtk"
+      ];
+    };
+
     programs.waybar.enable = true;
-    systemd.packages = [ pkgs.waybar ];
-    systemd.user.services.waybar.wantedBy = [ "default.target" ];
+    systemd.packages = [pkgs.waybar];
+    systemd.user.services.waybar.wantedBy = ["default.target"];
 
     environment.systemPackages = builtins.attrValues {
-      inherit (pkgs)
+      inherit
+        (pkgs)
         hyprlock # lock screem
         hyprpaper # wallpaper manager
         hyprpicker # color picker
         hyprshot # screenshot tool
         hyprcursor # cursor support
         rose-pine-hyprcursor # better default cursor
-        kitty # default hyprland terminal, in case something goes wrong or config isn't recognized
         ;
     };
 
-    security.pam.services.swaylock = { };
-    security.pam.services.hyprlock = { };
+    security.pam.services.swaylock = {};
+    security.pam.services.hyprlock = {};
 
     services.displayManager = {
       ly = {
@@ -177,7 +194,7 @@ in
             hash = "sha256-fRm0wlkq9/GdLrVBOzMEnQG/i2ng+uGIzq0u9hu3m9g=";
           };
         in {
-          animation = "colormix";
+          animation = "dur_file";
           dur_file_path = "${blackhole}";
           full_color = true;
           bigclock = "en";
@@ -215,6 +232,7 @@ in
         $term = ${cfg.defaultTerminal}
         $browser = ${cfg.defaultBrowser}
         $editor = ${cfg.defaultEditor}
+        $file = ${cfg.defaultFileManager}
 
         ${lib.concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
         ${lib.optionalString (cfg.primaryMonitor != "") ''

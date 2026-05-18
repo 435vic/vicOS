@@ -3,8 +3,7 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   options.vicos = {
     desktop.termAppExtraArgs = lib.mkOption {
       type = with lib.types; listOf str;
@@ -34,7 +33,7 @@
       recursive = true;
     };
 
-    programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+    programs.gdk-pixbuf.modulePackages = [pkgs.librsvg];
 
     environment.systemPackages = [
       pkgs.rofi-unwrapped
@@ -74,26 +73,25 @@
       })
     ];
 
-    lib.vicos.makeTUIApplication =
-      {
-        program,
-        termArgs ? [ ],
-        ...
-      }@args:
-      let
-        termArgsStr = builtins.replaceStrings [ "@pname@" ] [ program.pname ] (
-          builtins.concatStringsSep " " (termArgs ++ config.vicos.desktop.termAppExtraArgs)
-        );
+    lib.vicos.makeTUIApplication = {
+      program,
+      termArgs ? [],
+      ...
+    } @ args: let
+      termArgsStr = builtins.replaceStrings ["@pname@"] [program.pname] (
+        builtins.concatStringsSep " " (termArgs ++ config.vicos.desktop.termAppExtraArgs)
+      );
 
-        exec = lib.getExe program;
-      in
+      exec = lib.getExe program;
+      terminal = lib.getExe config.vicos.desktop.termAppEmulator;
+    in
       pkgs.makeDesktopItem (
         (removeAttrs args [
           "program"
           "termArgs"
         ])
         // {
-          exec = "${pkgs.ghostty}/bin/ghostty ${termArgsStr} -e ${exec}";
+          exec = "${terminal} ${termArgsStr} -e ${exec}";
         }
       );
   };

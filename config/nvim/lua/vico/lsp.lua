@@ -129,6 +129,10 @@ return {
         library = {
           { words = { "nixCats" }, path = (nixCats.nixCatsPath or "") .. '/lua' },
         },
+        enabled = function(root_dir)
+          return not vim.uv.fs_stat(root_dir .. "/.luarc.json")
+            and not vim.uv.fs_stat(root_dir .. "/.luarc.jsonc")
+        end,
       })
     end,
   },
