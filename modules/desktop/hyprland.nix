@@ -207,7 +207,21 @@ in {
       };
     };
 
-    home.configFile = {
+    home.configFile = let
+      toLua = lib.generators.toLua {};
+      monitorSpec = m:
+        if m.disable
+        then {
+          output = m.output;
+          disabled = true;
+        }
+        else {
+          output = m.output;
+          mode = m.mode;
+          position = m.position;
+          scale = m.scale;
+        };
+    in {
       hypr = {
         source = config.lib.vicos.stash "config/hypr";
         recursive = true;
@@ -228,17 +242,35 @@ in {
         recursive = true;
       };
 
-      "hypr/hyprland.pre.conf".text = ''
-        $term = ${cfg.defaultTerminal}
-        $browser = ${cfg.defaultBrowser}
-        $editor = ${cfg.defaultEditor}
-        $file = ${cfg.defaultFileManager}
-
-        ${lib.concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
-        ${lib.optionalString (cfg.primaryMonitor != "") ''
-          $monitor.primary = ${cfg.primaryMonitor}
-        ''}
+      "hypr/nixvars.lua".text = ''
+        return ${toLua {
+          programs = {
+            terminal = cfg.defaultTerminal;
+            browser = cfg.defaultBrowser;
+            editor = cfg.defaultEditor;
+            file = cfg.defaultFileManager;
+          };
+          monitor =
+            {
+              monitors = map monitorSpec cfg.monitors;
+            }
+            // lib.optionalAttrs (cfg.primaryMonitor != "") {
+              primary = cfg.primaryMonitor;
+            };
+        }}
       '';
+
+      # "hypr/hyprland.pre.conf".text = ''
+      #   $term = ${cfg.defaultTerminal}
+      #   $browser = ${cfg.defaultBrowser}
+      #   $editor = ${cfg.defaultEditor}
+      #   $file = ${cfg.defaultFileManager}
+      #
+      #   ${lib.concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
+      #   ${lib.optionalString (cfg.primaryMonitor != "") ''
+      #     $monitor.primary = ${cfg.primaryMonitor}
+      #   ''}
+      # '';
     };
   };
 }
