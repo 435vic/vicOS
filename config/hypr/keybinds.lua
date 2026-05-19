@@ -16,6 +16,7 @@ hl.bind(
     keys("CTRL", "ALT", "DELETE"),
     hl.dsp.exec_cmd("loginctl terminate-session $XDG_SESSION_ID")
 )
+hl.bind(keys(MAINMOD, "L"), hl.dsp.exec_cmd("loginctl lock-session"))
 
 hl.bind(keys(MAINMOD, "F"), app(VARS.programs.browser))
 hl.bind(keys(MAINMOD, "T"), app(VARS.programs.terminal))
@@ -42,6 +43,9 @@ for i = 1,10 do
     hl.bind(keys(MAINMOD, "SHIFT", num), hl.dsp.window.move({ workspace = i }))
     hl.bind(keys(MAINMOD, "ALT", num), hl.dsp.window.move({ workspace = i, follow = false }))
 end
+
+--bind = $mainMod+Shift, S, exec, hyprshot -zm region # quick shot for windows muscle memory 
+hl.bind(keys(MAINMOD, "SHIFT", "S"), hl.dsp.exec_cmd("hyprshot -zm region"))
 
 hl.bind(keys(MAINMOD, "mouse:272"), hl.dsp.window.drag(), { mouse = true })
 hl.bind(keys(MAINMOD, "mouse:273"), hl.dsp.window.resize(), { mouse = true })
