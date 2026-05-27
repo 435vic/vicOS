@@ -5,6 +5,7 @@
   ...
 }: let
   inherit (lib) mkOption types;
+  inherit (builtins) isFloat isInt removeAttrs;
   cfg = config.vicos.hyprland;
   desktop = config.vicos.desktop;
 
@@ -16,32 +17,18 @@
     mkOption {
       inherit type description default;
     };
-  hyprlandMonitor = types.submodule (
-    {config, ...}: {
-      options = {
-        output = mkOpt types.str "output";
-        selector = mkOpt' types.str "more specific selector (see wiki)" "";
-        mode = mkOpt' types.str "mode" "preferred";
-        position = mkOpt' types.str "position" "auto";
-        scale = mkOpt' types.int "scale" 1;
-        disable = mkOpt' types.bool "disabled" false;
-        primary = mkOpt' types.bool "define this monitor as $monitor.primary" false;
-        rawDefinition = mkOpt types.str "final monitor declaration";
-      };
+  hyprlandMonitor = types.submodule {
+    freeformType = types.attrsOf types.anything;
 
-      config = lib.mkMerge [
-        (lib.mkIf (config.selector != "") {
-          output = config.selector;
-        })
-        {
-          rawDefinition =
-            if config.disable
-            then "monitor = ${config.output},disable"
-            else "monitor = ${config.output},${config.mode},${config.position},${toString config.scale}";
-        }
-      ];
-    }
-  );
+    options = {
+      output = mkOpt types.str "output name or selector";
+      mode = mkOpt' types.str "mode" "preferred";
+      position = mkOpt' types.str "position" "auto";
+      scale = mkOpt' (types.oneOf [types.int types.float types.str]) "scale" 1;
+      disabled = mkOpt' types.bool "disabled" false;
+      primary = mkOpt' types.bool "define this monitor as $monitor.primary" false;
+    };
+  };
 in {
   options.vicos.hyprland = {
     extraConfig = mkOption {
@@ -52,7 +39,7 @@ in {
 
     monitors = mkOption {
       type = types.listOf hyprlandMonitor;
-      description = "Hyprland monitor definitions.";
+      description = "Hyprland monitor definitions. Entries are passed to hl.monitor, so arbitrary HL.MonitorSpec fields may be added in addition to the documented core options.";
       default = [];
     };
 
@@ -97,6 +84,10 @@ in {
     vicos.desktop.wayland.enable = true;
     vicos.hyprland = let
       primaryMonitor = lib.findFirst (m: m.primary) {} cfg.monitors;
+      primaryMonitorScale =
+        if primaryMonitor ? scale && (isInt primaryMonitor.scale || isFloat primaryMonitor.scale)
+        then primaryMonitor.scale
+        else 1;
     in
       lib.mkMerge [
         {
@@ -115,13 +106,28 @@ in {
         (lib.mkIf (primaryMonitor ? output) {
           primaryMonitor = primaryMonitor.output;
         })
-        (lib.mkIf (primaryMonitor.scale or 1 > 1) {
+        (lib.mkIf (primaryMonitorScale > 1) {
           environmentVariables = {
-            GDK_SCALE = builtins.toString (builtins.ceil primaryMonitor.scale);
-            XCURSOR_SIZE = builtins.toString (builtins.ceil primaryMonitor.scale * 16);
+            GDK_SCALE = builtins.toString (builtins.ceil primaryMonitorScale);
+            XCURSOR_SIZE = builtins.toString (builtins.ceil primaryMonitorScale * 16);
           };
         })
       ];
+
+    assertions = [
+      {
+        assertion = builtins.all (monitor: !(monitor ? rawDefinition)) cfg.monitors;
+        message = "vicos.hyprland.monitors.*.rawDefinition has been removed; set Hyprland Lua monitor fields directly instead.";
+      }
+      {
+        assertion = builtins.all (monitor: !(monitor ? selector)) cfg.monitors;
+        message = "vicos.hyprland.monitors.*.selector has been removed; put selectors such as desc:... in output instead.";
+      }
+      {
+        assertion = builtins.all (monitor: !(monitor ? disable)) cfg.monitors;
+        message = "vicos.hyprland.monitors.*.disable has been renamed to disabled to match HL.MonitorSpec.";
+      }
+    ];
 
     environment.sessionVariables = {
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
@@ -209,18 +215,7 @@ in {
 
     home.configFile = let
       toLua = lib.generators.toLua {};
-      monitorSpec = m:
-        if m.disable
-        then {
-          output = m.output;
-          disabled = true;
-        }
-        else {
-          output = m.output;
-          mode = m.mode;
-          position = m.position;
-          scale = m.scale;
-        };
+      monitorSpec = monitor: removeAttrs monitor ["primary" "selector" "rawDefinition" "disable"];
     in {
       hypr = {
         source = config.lib.vicos.stash "config/hypr";
@@ -259,18 +254,6 @@ in {
             };
         }}
       '';
-
-      # "hypr/hyprland.pre.conf".text = ''
-      #   $term = ${cfg.defaultTerminal}
-      #   $browser = ${cfg.defaultBrowser}
-      #   $editor = ${cfg.defaultEditor}
-      #   $file = ${cfg.defaultFileManager}
-      #
-      #   ${lib.concatStringsSep "\n" (map (m: m.rawDefinition) cfg.monitors)}
-      #   ${lib.optionalString (cfg.primaryMonitor != "") ''
-      #     $monitor.primary = ${cfg.primaryMonitor}
-      #   ''}
-      # '';
     };
   };
 }
