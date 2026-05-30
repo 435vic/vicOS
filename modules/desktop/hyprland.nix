@@ -29,6 +29,14 @@
       primary = mkOpt' types.bool "define this monitor as $monitor.primary" false;
     };
   };
+
+  hyprpaperWallpaper = types.submodule {
+    options = {
+      monitor = mkOpt' types.str "monitor name or selector" "";
+      fitMode = mkOpt' types.str "fit mode (contain|cover|tile|fill)" "cover";
+      path = mkOpt types.str "path to wallpaper or dir of wallpapers";
+    };
+  };
 in {
   options.vicos.hyprland = {
     extraConfig = mkOption {
@@ -41,6 +49,18 @@ in {
       type = types.listOf hyprlandMonitor;
       description = "Hyprland monitor definitions. Entries are passed to hl.monitor, so arbitrary HL.MonitorSpec fields may be added in addition to the documented core options.";
       default = [];
+    };
+
+    hyprpaper.wallpapers = mkOption {
+      type = types.listOf hyprpaperWallpaper;
+      default = [];
+      description = "Machine-specific Hyprpaper monitor declarations to write to ~/.config/hypr/hyprpaper.pre.conf.";
+    };
+
+    waybar.theme = mkOption {
+      type = types.str;
+      default = "rosepine";
+      description = "Waybar theme directory under config/waybar/themes to link to ~/.config/waybar.";
     };
 
     primaryMonitor = mkOption {
@@ -223,7 +243,7 @@ in {
       };
 
       waybar = {
-        source = config.lib.vicos.stash "config/waybar";
+        source = config.lib.vicos.stash "config/waybar/themes/${cfg.waybar.theme}";
         recursive = true;
       };
 
@@ -236,6 +256,8 @@ in {
         source = config.lib.vicos.stash "config/mako";
         recursive = true;
       };
+
+      "hypr/hyprpaper.pre.conf".text = cfg.hyprpaper.monitorDeclarations;
 
       "hypr/nixvars.lua".text = ''
         return ${toLua {
