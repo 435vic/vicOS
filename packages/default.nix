@@ -6,4 +6,5 @@ pkgs: rec {
   tidalapi = pkgs.python3Packages.callPackage ./tidal-dl-ng/tidalapi.nix { };
   tidal-dl-ng = pkgs.python3Packages.callPackage ./tidal-dl-ng { inherit tidalapi; };
   helium = pkgs.callPackage ./helium.nix { enableWideVine = true; };
+  llama-cpp = pkgs.callPackage ./llama-cpp { llguidanceSupport = true; vulkanSupport = true; };
 }

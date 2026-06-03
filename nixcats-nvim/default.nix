@@ -67,9 +67,33 @@ let
 
       optionalPlugins = {
         general = {
-          treesitter = with pkgs.vimPlugins; [
+          treesitter = with pkgs.vimPlugins; let
+            lark-src = pkgs.fetchFromGitHub {
+              owner = "chanicpanic";
+              repo = "tree-sitter-lark";
+              rev = "e2d4091560f94e3f9ad3f81f2f28a5fd50614f60";
+              hash = "sha256-eHx3UAVapKyd0Wmn3/150Bs22LfTjW1Mayvd3YVd7ak=";
+            };
+            lark = pkgs.tree-sitter.buildGrammar {
+              language = "lark";
+              version = "0.0.0+main";
+              src = lark-src;
+            };
+            lark-queries = pkgs.vimUtils.buildVimPlugin {
+              name = "tree-sitter-lark-queries";
+              src = lark-src;
+              postPatch = ''
+                # Move queries into the structure Neovim expects
+                mkdir -p queries/lark
+                mv queries/*.scm queries/lark/ 2>/dev/null || true
+              '';
+            };
+          in [
             nvim-treesitter-textobjects
+            lark-queries
             (nvim-treesitter.withPlugins (p: [
+              lark
+
               # Web development
               p.javascript
               p.typescript

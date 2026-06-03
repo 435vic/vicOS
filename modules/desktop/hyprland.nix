@@ -33,7 +33,7 @@
   hyprpaperWallpaper = types.submodule {
     options = {
       monitor = mkOpt' types.str "monitor name or selector" "";
-      fitMode = mkOpt' types.str "fit mode (contain|cover|tile|fill)" "cover";
+      fit_mode = mkOpt' types.str "fit mode (contain|cover|tile|fill)" "cover";
       path = mkOpt types.str "path to wallpaper or dir of wallpapers";
     };
   };
@@ -257,7 +257,16 @@ in {
         recursive = true;
       };
 
-      "hypr/hyprpaper.pre.conf".text = cfg.hyprpaper.monitorDeclarations;
+      "hypr/hyprpaper.nix.conf".text = let
+        # monitor key must go first to allow empty vals for fallback
+        monitor = w: "monitor = ${w.monitor}";
+        rest = w: removeAttrs w [ "monitor" ];
+      in lib.concatMapStringsSep "\n" (w: ''
+        wallpaper {
+          ${monitor w}
+          ${builtins.concatStringsSep "\n  " (lib.mapAttrsToList (k: v: "${k} = ${v}") (rest w))}
+        }
+      '') cfg.hyprpaper.wallpapers;
 
       "hypr/nixvars.lua".text = ''
         return ${toLua {

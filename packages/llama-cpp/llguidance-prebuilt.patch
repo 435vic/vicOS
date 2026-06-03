@@ -1,0 +1,62 @@
+--- a/common/CMakeLists.txt	2026-05-29 17:15:09.516847930 -0600
++++ b/common/CMakeLists.txt	2026-05-29 17:15:09.597878328 -0600
+@@ -139,30 +139,41 @@
+ 
+ if (LLAMA_LLGUIDANCE)
+     include(ExternalProject)
+-    set(LLGUIDANCE_SRC ${CMAKE_BINARY_DIR}/llguidance/source)
+-    set(LLGUIDANCE_PATH ${LLGUIDANCE_SRC}/target/release)
++    set(LLGUIDANCE_LIBRARY "" CACHE FILEPATH "Path to a pre-built llguidance static library")
++    set(LLGUIDANCE_INCLUDE_DIR "" CACHE PATH "Path to the directory containing llguidance.h")
+     set(LLGUIDANCE_LIB_NAME "${CMAKE_STATIC_LIBRARY_PREFIX}llguidance${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ 
+-    ExternalProject_Add(llguidance_ext
+-        GIT_REPOSITORY https://github.com/guidance-ai/llguidance
+-        # v1.0.1:
+-        GIT_TAG d795912fedc7d393de740177ea9ea761e7905774
+-        PREFIX ${CMAKE_BINARY_DIR}/llguidance
+-        SOURCE_DIR ${LLGUIDANCE_SRC}
+-        BUILD_IN_SOURCE TRUE
+-        CONFIGURE_COMMAND ""
+-        BUILD_COMMAND cargo build --release --package llguidance
+-        INSTALL_COMMAND ""
+-        BUILD_BYPRODUCTS ${LLGUIDANCE_PATH}/${LLGUIDANCE_LIB_NAME} ${LLGUIDANCE_PATH}/llguidance.h
+-        UPDATE_COMMAND ""
+-    )
++    if (LLGUIDANCE_LIBRARY STREQUAL "" OR LLGUIDANCE_INCLUDE_DIR STREQUAL "")
++        set(LLGUIDANCE_SRC ${CMAKE_BINARY_DIR}/llguidance/source)
++        set(LLGUIDANCE_PATH ${LLGUIDANCE_SRC}/target/release)
++
++        ExternalProject_Add(llguidance_ext
++            GIT_REPOSITORY https://github.com/guidance-ai/llguidance
++            # v1.0.1:
++            GIT_TAG d795912fedc7d393de740177ea9ea761e7905774
++            PREFIX ${CMAKE_BINARY_DIR}/llguidance
++            SOURCE_DIR ${LLGUIDANCE_SRC}
++            BUILD_IN_SOURCE TRUE
++            CONFIGURE_COMMAND ""
++            BUILD_COMMAND cargo build --release --package llguidance
++            INSTALL_COMMAND ""
++            BUILD_BYPRODUCTS ${LLGUIDANCE_PATH}/${LLGUIDANCE_LIB_NAME} ${LLGUIDANCE_PATH}/llguidance.h
++            UPDATE_COMMAND ""
++        )
++
++        set(LLGUIDANCE_LIBRARY ${LLGUIDANCE_PATH}/${LLGUIDANCE_LIB_NAME})
++        set(LLGUIDANCE_INCLUDE_DIR ${LLGUIDANCE_PATH})
++    endif()
++
+     target_compile_definitions(${TARGET} PUBLIC LLAMA_USE_LLGUIDANCE)
+ 
+     add_library(llguidance STATIC IMPORTED)
+-    set_target_properties(llguidance PROPERTIES IMPORTED_LOCATION ${LLGUIDANCE_PATH}/${LLGUIDANCE_LIB_NAME})
+-    add_dependencies(llguidance llguidance_ext)
++    set_target_properties(llguidance PROPERTIES IMPORTED_LOCATION ${LLGUIDANCE_LIBRARY})
++    if (TARGET llguidance_ext)
++        add_dependencies(llguidance llguidance_ext)
++    endif()
+ 
+-    target_include_directories(${TARGET} PRIVATE ${LLGUIDANCE_PATH})
++    target_include_directories(${TARGET} PRIVATE ${LLGUIDANCE_INCLUDE_DIR})
+     target_link_libraries(${TARGET} PRIVATE llguidance)
+     if (WIN32)
+         target_link_libraries(${TARGET} PRIVATE ws2_32 userenv ntdll bcrypt)

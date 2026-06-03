@@ -43,6 +43,12 @@ vim.filetype.add({
   },
 })
 
+vim.filetype.add({
+  extension = {
+    lark = 'lark'
+  }
+})
+
 vim.diagnostic.config({ virtual_text = true })
 
 -- █  ▄▄▄ ▄▄▄▄  
