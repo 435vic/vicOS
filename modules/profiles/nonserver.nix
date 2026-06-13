@@ -7,6 +7,7 @@
 {
   imports = [
     ./base.nix
+    ./nixos.nix
     ../desktop/desktop.nix
     ../desktop/gaming.nix
     ../desktop/launcher.nix
