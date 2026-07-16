@@ -106,4 +106,5 @@ hl.config {
     }
 }
 
+require("windowrules")
 require("keybinds")

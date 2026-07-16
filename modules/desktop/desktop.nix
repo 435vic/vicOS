@@ -199,7 +199,6 @@ in {
             btop # process manager
             vesktop # discord client
             obs-studio
-            bitwarden-desktop
             ;
         })
         ++ packagedApps ++ themePackages;
