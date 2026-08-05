@@ -1,6 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
-  inherit (lib) types;
+  inherit (lib) types concatStringsSep;
   cfg = config.vicos;
 in
 {
@@ -32,6 +32,28 @@ in
 
     environment.sessionVariables = {
       EDITOR = "nvim";
+    };
+
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs)
+        ripgrep
+        wget
+        jq
+        eza
+        bat
+        gitui
+        gitFull
+        nix-search-cli
+        fzf
+        fd
+        nil
+        nixd
+        nh
+        gum
+        rbw
+        ;
+
+      ghostty-terminfo = pkgs.ghostty.terminfo;
     };
 
     home.configFile."git/config" = {

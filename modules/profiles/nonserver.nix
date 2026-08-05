@@ -50,6 +50,9 @@
   networking.wireless.iwd = {
     enable = true;
     settings = {
+      General = {
+        Country = "MX";
+      };
       Network = {
         EnableIPv6 = true;
       };

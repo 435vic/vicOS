@@ -10,26 +10,6 @@
   programs.direnv.enableFishIntegration = true;
   programs.starship.enable = true;
   programs.zoxide.enable = true;
-  environment.systemPackages = builtins.attrValues {
-    inherit (pkgs)
-      ripgrep
-      wget
-      jq
-      eza
-      bat
-      gitui
-      gitFull
-      nix-search-cli
-      fzf
-      fd
-      nil
-      nixd
-      nh
-      gum
-      ;
-
-    ghostty-terminfo = pkgs.ghostty.terminfo;
-  };
 
   # extremely slow, has to be rebuilt everytime the installed packages list changes, which
   # is almost every rebuild. NixOS now allows it to be generated in the background, yaaay!

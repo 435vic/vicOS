@@ -8,8 +8,5 @@ Host git.boredvico.dev
     IdentityAgent none
     IdentitiesOnly yes
 
-Match User vico
-    IdentityFile ~/.ssh/id_ed25519
-    IdentityAgent none
-    IdentitiesOnly yes
+Include ~/.ssh/config.d/*.conf
 
