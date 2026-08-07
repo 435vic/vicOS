@@ -66,6 +66,21 @@ in
     };
 
     home.configFile."git/ignore".source = config.lib.vicos.stash "config/git/ignore";
+    home.configFile."rbw/config.json" = {
+      enable = cfg.git.email != null;
+      text = lib.generators.toJSON {} {
+        email = "${cfg.git.email}";
+        sso_id = null;
+        base_url = "https://vault.boredvico.dev";
+        identity_url = null;
+        ui_url = null;
+        notifications_url = null;
+        lock_timeout = 3600;
+        sync_interval = 3600;
+        pinentry = "${pkgs.pinentry-tty}/bin/pinentry";
+        client_cert_path = null;
+      };
+    };
     home.configFile."starship.toml".source = config.lib.vicos.stash "config/starship.toml";
     home.configFile."starship-jetpack.toml".source =
       config.lib.vicos.stash "config/starship-jetpack.toml";
