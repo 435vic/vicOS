@@ -39,6 +39,10 @@
     vicos.packages.vvim.impure
   ];
 
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="6061", GROUP="input", MODE="0660"
+  '';
+
   home.configFile."nvim" = {
     source = config.lib.vicos.stash "config/nvim";
     recursive = true;

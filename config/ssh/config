@@ -1,3 +1,5 @@
+Include ~/.ssh/config.d/*.conf
+
 Host github.com
     IdentityFile ~/.ssh/id_ed25519
     IdentityAgent none
@@ -7,6 +9,4 @@ Host git.boredvico.dev
     IdentityFile ~/.ssh/id_ed25519
     IdentityAgent none
     IdentitiesOnly yes
-
-Include ~/.ssh/config.d/*.conf
 
