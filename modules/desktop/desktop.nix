@@ -198,6 +198,7 @@ in {
             brightnessctl # backlight control
             btop # process manager
             vesktop # discord client
+            typst
             obs-studio
             ;
         })
