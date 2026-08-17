@@ -18,6 +18,24 @@ in
         default = null;
       };
     };
+
+    rbw = {
+      enable = lib.mkEnableOption "rbw, a rust bitwarden cli" // {
+        default = true;
+      };
+
+      email = lib.mkOption {
+        type = types.nullOr types.str;
+        description = "email to log in as";
+        default = cfg.git.email;
+      };
+
+      url = lib.mkOption {
+        type = types.nullOr types.str;
+        description = "custom bitwarden domain";
+        default = null;
+      };
+    };
   };
 
   config = {
@@ -67,11 +85,11 @@ in
 
     home.configFile."git/ignore".source = config.lib.vicos.stash "config/git/ignore";
     home.configFile."rbw/config.json" = {
-      enable = cfg.git.email != null;
+      enable = cfg.rbw.email != null;
       text = lib.generators.toJSON {} {
-        email = "${cfg.git.email}";
+        email = cfg.rbw.email;
         sso_id = null;
-        base_url = "https://vault.boredvico.dev";
+        base_url = cfg.rbw.url;
         identity_url = null;
         ui_url = null;
         notifications_url = null;
@@ -85,5 +103,12 @@ in
     home.configFile."starship-jetpack.toml".source =
       config.lib.vicos.stash "config/starship-jetpack.toml";
     home.file.".ssh/config".source = config.lib.vicos.stash "config/ssh/config";
+    home.file.".ssh/config.d/95-ssh-agent.conf" = {
+      enable = cfg.rbw.enable;
+      text = ''
+        Host *
+            IdentityAgent ''${XDG_RUNTIME_DIR}/rbw/ssh-agent-socket
+      '';
+    };
   };
 }
