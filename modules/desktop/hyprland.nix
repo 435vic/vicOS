@@ -192,8 +192,12 @@ in {
     };
 
     programs.waybar.enable = true;
-    systemd.packages = [pkgs.waybar];
+    systemd.packages = [
+      pkgs.waybar
+      pkgs.hyprpolkitagent
+    ];
     systemd.user.services.waybar.wantedBy = ["default.target"];
+    systemd.user.services.hyprpolkitagent.wantedBy = [ "default.target" ];
 
     environment.systemPackages = builtins.attrValues {
       inherit
