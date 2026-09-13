@@ -168,7 +168,6 @@ in {
     };
     services.dbus.packages = [
       pkgs.gnome-keyring
-      pkgs.gcr
     ];
 
     hardware.graphics = {
