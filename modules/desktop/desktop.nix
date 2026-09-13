@@ -199,12 +199,18 @@ in {
             btop # process manager
             vesktop # discord client
             typst
-            obs-studio
             ;
         })
         ++ packagedApps ++ themePackages;
 
       programs.localsend.enable = true;
+
+      programs.obs-studio = {
+        enable = true;
+        plugins = with pkgs.obs-studio-plugins; [
+          looking-glass-obs 
+        ];
+      };
 
       # DARK MODEEEE
       programs.dconf = {

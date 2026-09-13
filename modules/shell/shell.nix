@@ -69,6 +69,8 @@ in
         nh
         gum
         rbw
+        file
+        util-linux
         ;
 
       ghostty-terminfo = pkgs.ghostty.terminfo;
