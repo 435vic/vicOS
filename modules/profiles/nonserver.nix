@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   vicos,
   config,
   ...
@@ -39,9 +40,16 @@
     vicos.packages.vvim.impure
   ];
 
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="6061", GROUP="input", MODE="0660"
-  '';
+  services.udev.packages = [
+    (pkgs.writeTextFile {
+      name = "vicos-hid-udev-rules";
+      destination = "/lib/udev/rules.d/60-vicos-hid.rules";
+      text = ''
+        KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="6061", TAG+="uaccess"
+        KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="d060", TAG+="uaccess"
+      '';
+    })
+  ];
 
   home.configFile."nvim" = {
     source = config.lib.vicos.stash "config/nvim";
