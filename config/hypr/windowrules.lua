@@ -49,6 +49,7 @@ popup_windows({
     { title = "wiremix" },
     { title = "btop" },
     { class = "Bitwarden" },
+    { class = "chrome-nngceckbapebfimnlniiiahkandclblb-Default" }, -- bitwarden chrome extension
     { class = "com.mitchellh.ghostty", title = "rmpc" },
     { class = "dev.boredvico.microslop" },
 })
@@ -101,5 +102,4 @@ window_rule("ephemeral", { tag = "ephemeral" }, {
     float = true,
     center = true,
     opacity = 1,
-    size = "(monitor_w*0.45) (monitor_h*0.45)",
 })
