@@ -194,9 +194,11 @@ in {
     systemd.packages = [
       pkgs.waybar
       pkgs.hyprpolkitagent
+      pkgs.hyprpaper
     ];
     systemd.user.services.waybar.wantedBy = ["graphical-session.target"];
     systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
+    systemd.user.services.hyprpaper.wantedBy = [ "graphical-session.target" ];
 
     environment.systemPackages = builtins.attrValues {
       inherit
