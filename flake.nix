@@ -20,7 +20,7 @@
       vicosCats = import ./nixcats-nvim inputs.nixCats;
       myPkgs =
         pkgs:
-        (import ./packages pkgs)
+        (import ./packages { inherit pkgs; })
         // (vicosCats.mkNvimPackages {
           system = pkgs.stdenv.hostPlatform.system;
           nixpkgs = nixpkgs;
