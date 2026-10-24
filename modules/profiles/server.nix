@@ -6,6 +6,7 @@
     ../shell/fish.nix
     ../shell/tmux.nix
     ../shell/shell.nix
+    ../shell/amp.nix
   ];
 
   environment.systemPackages = [

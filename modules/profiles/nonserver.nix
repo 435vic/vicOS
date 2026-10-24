@@ -18,6 +18,7 @@
     ../shell/shell.nix
     ../shell/tmux.nix
     ../shell/fish.nix
+    ../shell/amp.nix
     ../desktop/fonts.nix
   ];
 
