@@ -92,6 +92,13 @@ in {
       '';
     };
 
+    discoverDepth = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = 2;
+      example = 4;
+      description = "Directory levels below each discovery root to scan for Git checkouts, passed as --discover-depth when discover is enabled.";
+    };
+
     desktop = lib.mkEnableOption "Amp's private virtual desktop sharing";
     remoteControlTerminal = lib.mkEnableOption "terminal access from ampcode.com";
   };
@@ -121,6 +128,7 @@ in {
             then ["--discover-dirs"]
             else lib.concatMap (dir: ["--discover-dirs" dir]) cfg.discoverDirectories
           )
+          ++ lib.optionals cfg.discover ["--discover-depth" (toString cfg.discoverDepth)]
           ++ lib.optional cfg.desktop "--desktop"
           ++ [
             (
