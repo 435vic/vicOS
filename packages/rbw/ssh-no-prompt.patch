@@ -1,0 +1,126 @@
+diff --git a/src/bin/rbw-agent/actions.rs b/src/bin/rbw-agent/actions.rs
+index 9ddd2ad..4208e36 100644
+--- a/src/bin/rbw-agent/actions.rs
++++ b/src/bin/rbw-agent/actions.rs
+@@ -550,7 +550,7 @@ pub async fn sync(
+ 
+ async fn decrypt_cipher(
+     state: std::sync::Arc<tokio::sync::Mutex<crate::state::State>>,
+-    environment: &rbw::protocol::Environment,
++    environment: Option<&rbw::protocol::Environment>,
+     cipherstring: &str,
+     entry_key: Option<&str>,
+     org_id: Option<&str>,
+@@ -585,6 +585,9 @@ async fn decrypt_cipher(
+         .master_password_reprompt
+         .contains(&master_password_reprompt)
+     {
++        let environment = environment.context(
++            "SSH key requires a master-password reprompt; SSH prompting is disabled",
++        )?;
+         let db = load_db().await?;
+ 
+         let Some(kdf) = db.kdf else {
+@@ -680,9 +683,10 @@ pub async fn decrypt(
+     entry_key: Option<&str>,
+     org_id: Option<&str>,
+ ) -> anyhow::Result<()> {
+-    let plaintext =
+-        decrypt_cipher(state, environment, cipherstring, entry_key, org_id)
+-            .await?;
++    let plaintext = decrypt_cipher(
++        state, Some(environment), cipherstring, entry_key, org_id,
++    )
++    .await?;
+     respond_decrypt(sock, plaintext).await?;
+ 
+     Ok(())
+@@ -853,12 +857,14 @@ pub async fn subscribe_to_notifications(
+ pub async fn get_ssh_public_keys(
+     state: std::sync::Arc<tokio::sync::Mutex<crate::state::State>>,
+ ) -> anyhow::Result<Vec<String>> {
+-    let environment = {
++    {
+         let state = state.lock().await;
++        anyhow::ensure!(
++            !state.needs_unlock(),
++            "SSH vault is locked; run `rbw unlock` explicitly",
++        );
+         state.set_timeout();
+-        state.last_environment().clone()
+-    };
+-    unlock_state(state.clone(), &environment).await?;
++    }
+ 
+     let db = load_db().await?;
+     let mut pubkeys = Vec::new();
+@@ -871,7 +877,7 @@ pub async fn get_ssh_public_keys(
+         {
+             let plaintext = decrypt_cipher(
+                 state.clone(),
+-                &environment,
++                None,
+                 encrypted,
+                 entry.key.as_deref(),
+                 entry.org_id.as_deref(),
+@@ -889,12 +895,14 @@ pub async fn find_ssh_private_key(
+     state: std::sync::Arc<tokio::sync::Mutex<crate::state::State>>,
+     request_public_key: ssh_agent_lib::ssh_key::PublicKey,
+ ) -> anyhow::Result<ssh_agent_lib::ssh_key::PrivateKey> {
+-    let environment = {
++    {
+         let state = state.lock().await;
++        anyhow::ensure!(
++            !state.needs_unlock(),
++            "SSH vault is locked; run `rbw unlock` explicitly",
++        );
+         state.set_timeout();
+-        state.last_environment().clone()
+-    };
+-    unlock_state(state.clone(), &environment).await?;
++    }
+ 
+     let request_bytes = request_public_key.to_bytes();
+ 
+@@ -912,7 +920,7 @@ pub async fn find_ssh_private_key(
+             };
+             let public_key_plaintext = decrypt_cipher(
+                 state.clone(),
+-                &environment,
++                None,
+                 public_key_enc,
+                 entry.key.as_deref(),
+                 entry.org_id.as_deref(),
+@@ -933,7 +941,7 @@ pub async fn find_ssh_private_key(
+ 
+                 let private_key_plaintext = decrypt_cipher(
+                     state.clone(),
+-                    &environment,
++                    None,
+                     private_key_enc,
+                     entry.key.as_deref(),
+                     entry.org_id.as_deref(),
+diff --git a/src/bin/rbw-agent/ssh_agent.rs b/src/bin/rbw-agent/ssh_agent.rs
+index 4d0bb50..3132c06 100644
+--- a/src/bin/rbw-agent/ssh_agent.rs
++++ b/src/bin/rbw-agent/ssh_agent.rs
+@@ -37,7 +37,10 @@ impl ssh_agent_lib::agent::Session for SshAgent {
+     > {
+         crate::actions::get_ssh_public_keys(self.state.clone())
+             .await
+-            .map_err(|e| ssh_agent_lib::error::AgentError::Other(e.into()))?
++            .map_err(|e| {
++                log::warn!("SSH identities refused: {e:#}");
++                ssh_agent_lib::error::AgentError::Other(e.into())
++            })?
+             .into_iter()
+             .map(|p| {
+                 p.parse::<ssh_agent_lib::ssh_key::PublicKey>()
+@@ -64,6 +67,7 @@ impl ssh_agent_lib::agent::Session for SshAgent {
+             crate::actions::find_ssh_private_key(self.state.clone(), pubkey)
+                 .await
+                 .map_err(|e| {
++                    log::warn!("SSH signing refused: {e:#}");
+                     ssh_agent_lib::error::AgentError::Other(e.into())
+                 })?;
+ 
