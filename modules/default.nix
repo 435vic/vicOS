@@ -5,6 +5,7 @@
     ./desktop.nix
     ./fish.nix
     ./git.nix
+    ./neovim.nix
     ./prompt.nix
     ./rbw.nix
     ./tmux.nix

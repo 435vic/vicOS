@@ -2,13 +2,19 @@
   description = "vicOS personal environment — incremental foundation";
 
   inputs = {
-    nixpkgs.url = "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1047536.e72e4f299401/nixexprs.tar.xz";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixCats.url = "github:BirdeeHub/nixCats-nvim";
     stash.url = "github:435vic/stash";
     stash.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { nixpkgs, stash, ... }:
+    {
+      nixpkgs,
+      nixCats,
+      stash,
+      ...
+    }:
     let
       systems = [
         "x86_64-linux"
@@ -20,6 +26,7 @@
           stash.nixosModules.default
           ./modules
         ];
+        _module.args.nixCats = nixCats;
       };
     in
     {
@@ -37,6 +44,7 @@
         in
         {
           rbw = pkgs.callPackage ./packages/rbw { };
+          neovim = pkgs.callPackage ./packages/neovim { inherit nixCats; };
         }
       );
 

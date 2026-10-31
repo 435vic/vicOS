@@ -70,20 +70,40 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "nixCats": {
       "locked": {
-        "lastModified": 315532800,
-        "narHash": "sha256-VFlH/0nM6kkWQox9IaTqx2eCT3pmkr8bB7iVZ1bkaLs=",
-        "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1047536.e72e4f299401/nixexprs.tar.xz"
+        "lastModified": 1787720571,
+        "narHash": "sha256-jvoTU61m2p2knJMIvDwWqkhf5CrmKCkiCO0KR3GIryw=",
+        "owner": "BirdeeHub",
+        "repo": "nixCats-nvim",
+        "rev": "8fcebab53bfe800b963e8db5e28b63baa65850d3",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1047536.e72e4f299401/nixexprs.tar.xz"
+        "owner": "BirdeeHub",
+        "repo": "nixCats-nvim",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1793341285,
+        "narHash": "sha256-Y1CiZ4SoBUjLQyQM/pY+rS2dXD3CHLPstF0lmOc73D4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1c89083e451e891152365b799595cf7790a43325",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
+        "nixCats": "nixCats",
         "nixpkgs": "nixpkgs",
         "stash": "stash"
       }
