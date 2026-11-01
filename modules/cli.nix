@@ -6,6 +6,11 @@
 }:
 let
   cfg = config.vicos;
+  wget = pkgs.writeShellScriptBin "wget" ''
+    state_home="''${XDG_STATE_HOME:-$HOME/${cfg.xdg.stateHome}}"
+    (umask 077; ${lib.getExe' pkgs.coreutils "mkdir"} -p -- "$state_home/wget")
+    exec ${lib.getExe pkgs.wget} --hsts-file="$state_home/wget/hsts" "$@"
+  '';
 in
 {
   options.vicos.cli.enable = lib.mkEnableOption "the common personal CLI environment";
@@ -13,6 +18,25 @@ in
   config = lib.mkIf cfg.cli.enable (
     lib.mkMerge [
       {
+        environment.systemPackages = [ wget ];
+        environment.sessionVariables.LESSHISTFILE = "$HOME/${cfg.xdg.stateHome}/less/history";
+        environment.etc."environment.d/70-vicos-cli.conf".text = ''
+          LESSHISTFILE=$HOME/${cfg.xdg.stateHome}/less/history
+        '';
+
+        programs.bash.shellInit = lib.mkAfter ''
+          export HISTFILE="''${XDG_STATE_HOME:-$HOME/${cfg.xdg.stateHome}}/bash/history"
+          (umask 077; ${lib.getExe' pkgs.coreutils "mkdir"} -p -- "''${HISTFILE%/*}")
+        '';
+
+        environment.extraInit = ''
+          (umask 077; ${lib.getExe' pkgs.coreutils "mkdir"} -p -- "''${LESSHISTFILE%/*}")
+        '';
+        systemd.user.tmpfiles.rules = [
+          ''d "%h/${cfg.xdg.stateHome}/bash" :0700 - - -''
+          ''d "%h/${cfg.xdg.stateHome}/less" :0700 - - -''
+        ];
+
         assertions = [
           {
             assertion = cfg.user != null;
@@ -52,7 +76,6 @@ in
           rsync
           tree
           unzip
-          wget
           yq-go
           zip
           config.lib.stash.packages.stash-cli

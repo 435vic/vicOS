@@ -18,7 +18,7 @@ in
   config = lib.mkIf (cfg.cli.enable && cfg.user != null) {
     users.users.${cfg.user}.packages = [ cfg.neovim.package ];
 
-    stash.users.${cfg.user}.files.".config/nvim" = {
+    stash.users.${cfg.user}.files."${cfg.xdg.configHome}/nvim" = {
       source = config.lib.stash.fromStash {
         stash = "vicos";
         path = "config/nvim";

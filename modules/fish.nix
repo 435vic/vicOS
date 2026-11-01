@@ -18,14 +18,14 @@ in
     ];
 
     stash.users.${cfg.user}.files = {
-      ".config/fish" = {
+      "${cfg.xdg.configHome}/fish" = {
         source = config.lib.stash.fromStash {
           stash = "vicos";
           path = "config/fish";
         };
         recursive = true;
       };
-      ".config/direnv/direnvrc".text = ''
+      "${cfg.xdg.configHome}/direnv/direnvrc".text = ''
         source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc
       '';
     };

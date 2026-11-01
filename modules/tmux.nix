@@ -15,11 +15,11 @@ in
     ];
 
     stash.users.${cfg.user}.files = {
-      ".config/tmux/tmux.conf".source = config.lib.stash.fromStash {
+      "${cfg.xdg.configHome}/tmux/tmux.conf".source = config.lib.stash.fromStash {
         stash = "vicos";
         path = "config/tmux/tmux.conf";
       };
-      ".config/sesh/sesh.toml".source = config.lib.stash.fromStash {
+      "${cfg.xdg.configHome}/sesh/sesh.toml".source = config.lib.stash.fromStash {
         stash = "vicos";
         path = "config/sesh/sesh.toml";
       };

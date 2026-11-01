@@ -34,14 +34,23 @@ in
 
   config = lib.mkIf cfg.desktop.enable (
     lib.mkMerge [
-      { vicos.cli.enable = true; }
+      {
+        vicos.cli.enable = true;
+        environment.sessionVariables.XCOMPOSECACHE = "$HOME/${cfg.xdg.cacheHome}/xcompose";
+        environment.etc."environment.d/70-vicos-desktop.conf".text = ''
+          XCOMPOSECACHE=$HOME/${cfg.xdg.cacheHome}/xcompose
+        '';
+        systemd.user.tmpfiles.rules = [
+          ''d "%h/${cfg.xdg.cacheHome}/xcompose" :0700 - - -''
+        ];
+      }
       (lib.mkIf (cfg.user != null) {
         users.users.${cfg.user}.packages = [
           cfg.desktop.apps.terminal.package
           pkgs.xdg-terminal-exec
         ];
 
-        stash.users.${cfg.user}.files.".config/xdg-terminals.list".text =
+        stash.users.${cfg.user}.files."${cfg.xdg.configHome}/xdg-terminals.list".text =
           "${cfg.desktop.apps.terminal.desktop}\n";
       })
     ]

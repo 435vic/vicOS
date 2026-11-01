@@ -9,6 +9,7 @@
     ./prompt.nix
     ./rbw.nix
     ./tmux.nix
+    ./xdg.nix
   ];
 
   options.vicos = {

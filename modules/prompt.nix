@@ -20,9 +20,11 @@ in
   config = lib.mkIf (cfg.cli.enable && cfg.user != null) {
     users.users.${cfg.user}.packages = [ pkgs.starship ];
 
-    stash.users.${cfg.user}.files.".config/starship.toml".source = config.lib.stash.fromStash {
-      stash = "vicos";
-      path = "config/starship/${cfg.prompt}.toml";
-    };
+    stash.users.${cfg.user}.files."${cfg.xdg.configHome}/starship.toml".source =
+      config.lib.stash.fromStash
+        {
+          stash = "vicos";
+          path = "config/starship/${cfg.prompt}.toml";
+        };
   };
 }

@@ -31,7 +31,7 @@ in
         users.users.${cfg.user}.packages = [ rbw ];
         services.dbus.packages = [ pkgs.gcr_3 ];
 
-        stash.users.${cfg.user}.files.".config/rbw/config.json".text = builtins.toJSON {
+        stash.users.${cfg.user}.files."${cfg.xdg.configHome}/rbw/config.json".text = builtins.toJSON {
           inherit (cfg.rbw) email;
           base_url = cfg.rbw.url;
           pinentry = lib.getExe pkgs.pinentry-gnome3;

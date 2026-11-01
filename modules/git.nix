@@ -11,7 +11,7 @@ in
   config = lib.mkIf (cfg.cli.enable && cfg.user != null) {
     users.users.${cfg.user}.packages = [ pkgs.git ];
 
-    stash.users.${cfg.user}.files.".config/git" = {
+    stash.users.${cfg.user}.files."${cfg.xdg.configHome}/git" = {
       source = config.lib.stash.fromStash {
         stash = "vicos";
         path = "config/git";
