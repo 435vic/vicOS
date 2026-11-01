@@ -29,7 +29,7 @@ in
       { vicos.cli.enable = true; }
       (lib.mkIf (cfg.user != null) {
         users.users.${cfg.user}.packages = [ rbw ];
-        services.dbus.packages = [ pkgs.gcr ];
+        services.dbus.packages = [ pkgs.gcr_3 ];
 
         stash.users.${cfg.user}.files.".config/rbw/config.json".text = builtins.toJSON {
           inherit (cfg.rbw) email;
