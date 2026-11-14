@@ -5,7 +5,7 @@
   ...
 }: let
   inherit (lib) mkOption types;
-  inherit (builtins) isFloat isInt removeAttrs;
+  inherit (builtins) isFloat isInt;
   cfg = config.vicos.hyprland;
   desktop = config.vicos.desktop;
 
@@ -128,26 +128,11 @@ in {
         })
         (lib.mkIf (primaryMonitorScale > 1) {
           environmentVariables = {
-            GDK_SCALE = builtins.toString (builtins.ceil primaryMonitorScale);
-            XCURSOR_SIZE = builtins.toString (builtins.ceil primaryMonitorScale * 16);
+            GDK_SCALE = toString (builtins.ceil primaryMonitorScale);
+            XCURSOR_SIZE = toString (builtins.ceil primaryMonitorScale * 16);
           };
         })
       ];
-
-    assertions = [
-      {
-        assertion = builtins.all (monitor: !(monitor ? rawDefinition)) cfg.monitors;
-        message = "vicos.hyprland.monitors.*.rawDefinition has been removed; set Hyprland Lua monitor fields directly instead.";
-      }
-      {
-        assertion = builtins.all (monitor: !(monitor ? selector)) cfg.monitors;
-        message = "vicos.hyprland.monitors.*.selector has been removed; put selectors such as desc:... in output instead.";
-      }
-      {
-        assertion = builtins.all (monitor: !(monitor ? disable)) cfg.monitors;
-        message = "vicos.hyprland.monitors.*.disable has been renamed to disabled to match HL.MonitorSpec.";
-      }
-    ];
 
     environment.sessionVariables = {
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
@@ -161,11 +146,13 @@ in {
     services.gvfs.enable = true;
     services.udisks2.enable = true;
 
-    security.pam.services = {
-      greetd.enableGnomeKeyring = true;
-      greetd-password.enableGnomeKeyring = true;
-      login.enableGnomeKeyring = true;
-    };
+    security.pam.services = lib.genAttrs ["greetd" "greetd-password" "login"] (_: {
+      enableGnomeKeyring = true;
+      # Keep daemon startup, but never pass account passwords to a passwordless
+      # keyring: a password-based login would silently re-encrypt it on save.
+      rules.auth.gnome_keyring.enable = lib.mkForce false;
+      rules.password.gnome_keyring.enable = lib.mkForce false;
+    });
     services.dbus.packages = [
       pkgs.gnome-keyring
     ];
@@ -191,29 +178,26 @@ in {
     };
 
     programs.waybar.enable = true;
-    systemd.packages = [
-      pkgs.waybar
-      pkgs.hyprpolkitagent
-      pkgs.hyprpaper
-    ];
-    systemd.user.services.waybar.wantedBy = ["graphical-session.target"];
-    systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
-    systemd.user.services.hyprpaper.wantedBy = [ "graphical-session.target" ];
+    programs.hyprlock.enable = true;
+
+    systemd = lib.mkMerge (map (pkg: {
+      packages = [ pkgs.${pkg} ];
+      user.services.${pkg}.wantedBy = [ "graphical-session.target" ];
+    }) [
+      "hyprpolkitagent"
+      "hyprpaper"
+    ]);
+
 
     environment.systemPackages = builtins.attrValues {
       inherit
         (pkgs)
-        hyprlock # lock screem
-        hyprpaper # wallpaper manager
         hyprpicker # color picker
         hyprshot # screenshot tool
         hyprcursor # cursor support
         rose-pine-hyprcursor # better default cursor
         ;
     };
-
-    security.pam.services.swaylock = {};
-    security.pam.services.hyprlock = {};
 
     services.displayManager = {
       ly = {

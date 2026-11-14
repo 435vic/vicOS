@@ -35,9 +35,9 @@ local function popup_windows(matches)
     tag_windows("ephemeral", matches)
 end
 
-tag_windows("acrylic", {
-    { class = "com.mitchellh.ghostty" },
-})
+-- tag_windows("acrylic", {
+--     { class = "com.mitchellh.ghostty" },
+-- })
 
 tag_windows("acrylic2", {
     { class = "dev.zed.Zed" },
