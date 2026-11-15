@@ -57,6 +57,7 @@ in
           btop
           curl
           delta
+          dnsutils
           eza
           fd
           file
@@ -72,10 +73,12 @@ in
           nix-search-cli
           nix-tree
           p7zip
+          pciutils
           ripgrep
           rsync
           tree
           unzip
+          usbutils
           yq-go
           zip
           config.lib.stash.packages.stash-cli
