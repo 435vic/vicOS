@@ -2,7 +2,7 @@
 {
   imports = [
     ./cli.nix
-    ./desktop.nix
+    ./desktop
     ./fish.nix
     ./git.nix
     ./neovim.nix
