@@ -30,7 +30,21 @@ in
         environment.systemPackages = [
           pkgs.wl-clipboard
           pkgs.hyprpaper
+          pkgs.rofi
+          pkgs.mako
+          pkgs.libnotify
+          pkgs.pamixer
+          pkgs.brightnessctl
+          pkgs.playerctl
+          pkgs.hyprshot
+          pkgs.wiremix
+          (pkgs.legcord.overrideAttrs (old: {
+            # patchelf 0.15.2 corrupts venmic's .init/.plt when adding RPATHs.
+            nativeBuildInputs = [ pkgs.patchelfUnstable ] ++ old.nativeBuildInputs;
+          }))
         ];
+
+        services.dbus.packages = [ pkgs.mako ];
       }
       (lib.mkIf (cfg.user != null) {
         stash.users.${cfg.user}.files."${cfg.xdg.configHome}/hypr" = {
@@ -44,7 +58,12 @@ in
         systemd.packages = [
           pkgs.hyprpolkitagent
           pkgs.hyprpaper
+          pkgs.mako
         ];
+        systemd.user.services.mako = {
+          unitConfig.ConditionUser = cfg.user;
+          wantedBy = [ "graphical-session.target" ];
+        };
         systemd.user.services.hyprpaper = {
           unitConfig.ConditionUser = cfg.user;
           wantedBy = [ "graphical-session.target" ];

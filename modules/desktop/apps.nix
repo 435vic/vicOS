@@ -35,10 +35,17 @@ in
           package = pkgs.ghostty;
           desktop = "com.mitchellh.ghostty.desktop";
         };
-        browser = {
-          package = pkgs.firefox;
-          desktop = "firefox.desktop";
-        };
+        browser =
+          if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then
+            {
+              package = pkgs.callPackage ../../packages/helium { enableWideVine = true; };
+              desktop = "helium.desktop";
+            }
+          else
+            {
+              package = pkgs.firefox;
+              desktop = "firefox.desktop";
+            };
         editor = {
           package = pkgs.zed-editor;
           desktop = "dev.zed.Zed.desktop";

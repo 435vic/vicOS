@@ -40,11 +40,17 @@
       packages = forAllSystems (
         system:
         let
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
         in
         {
           rbw = pkgs.callPackage ./packages/rbw { };
           neovim = pkgs.callPackage ./packages/neovim { inherit nixCats; };
+        }
+        // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          helium = pkgs.callPackage ./packages/helium { enableWideVine = true; };
         }
       );
 
@@ -57,6 +63,7 @@
             {
               boot.isContainer = true;
               system.stateVersion = "26.05";
+              nixpkgs.config.allowUnfree = true;
               users.users.test.isNormalUser = true;
               vicos.user = "test";
               vicos.desktop.enable = true;
