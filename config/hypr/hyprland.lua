@@ -39,6 +39,14 @@ for _, monitor in ipairs(VARS.monitor.monitors) do
     hl.monitor(monitor)
 end
 
+-- Monitor rules are registered above; create the configured headless outputs
+-- afterwards so Hyprland applies those rules on creation.
+for _, output in ipairs(VARS.monitor.virtual or {}) do
+    if hl.get_monitor(output) == nil then
+        hl.exec_cmd("hyprctl output create headless " .. output)
+    end
+end
+
 hl.workspace_rule {
     workspace = "1",
     default = true,

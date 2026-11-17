@@ -27,6 +27,7 @@
       scale = mkOpt' (types.oneOf [types.int types.float types.str]) "scale" 1;
       disabled = mkOpt' types.bool "disabled" false;
       primary = mkOpt' types.bool "define this monitor as $monitor.primary" false;
+      virtual = mkOpt' types.bool "create this output as a Hyprland headless monitor at startup" false;
     };
   };
 
@@ -102,6 +103,18 @@ in {
 
   config = {
     vicos.desktop.wayland.enable = true;
+
+    assertions = [
+      {
+        assertion = builtins.all (m: !m.virtual || builtins.match "[A-Za-z0-9_-]+" m.output != null) cfg.monitors;
+        message = ''
+          vicos.hyprland.monitors: monitors with virtual = true are created as
+          headless outputs, so output must be a plain name (e.g. "HEADLESS-1"),
+          not a desc:/selector expression.
+        '';
+      }
+    ];
+
     vicos.hyprland = let
       primaryMonitor = lib.findFirst (m: m.primary) {} cfg.monitors;
       primaryMonitorScale =
@@ -224,7 +237,7 @@ in {
 
     home.configFile = let
       toLua = lib.generators.toLua {};
-      monitorSpec = monitor: removeAttrs monitor ["primary" "selector" "rawDefinition" "disable"];
+      monitorSpec = monitor: removeAttrs monitor ["primary" "selector" "rawDefinition" "disable" "virtual"];
     in {
       hypr = {
         source = config.lib.vicos.stash "config/hypr";
@@ -268,6 +281,7 @@ in {
           monitor =
             {
               monitors = map monitorSpec cfg.monitors;
+              virtual = map (m: m.output) (builtins.filter (m: m.virtual) cfg.monitors);
             }
             // lib.optionalAttrs (cfg.primaryMonitor != "") {
               primary = cfg.primaryMonitor;
