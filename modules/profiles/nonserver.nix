@@ -22,20 +22,6 @@
     ../desktop/fonts.nix
   ];
 
-  boot = {
-    plymouth.enable = true;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "boot.shell_on_fail"
-      "udev.log_priority=3"
-      "rd.systemd.show_status=auto"
-    ];
-    consoleLogLevel = 3;
-    initrd.verbose = false;
-    loader.timeout = 0;
-  };
-
   # add the full neovim experience
   environment.systemPackages = [
     vicos.packages.vvim.impure
