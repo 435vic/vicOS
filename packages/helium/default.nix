@@ -35,6 +35,9 @@ appimageTools.wrapAppImage {
   };
 
   passthru = {
+    # wrapAppImage's own src is the extracted tree; expose the AppImage so
+    # nix-update can find the release URL and rewrite version and hash.
+    inherit src;
     appimageContents = contents;
   };
 

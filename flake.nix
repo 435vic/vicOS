@@ -76,6 +76,49 @@
         }
       );
 
+      # Rewrites pins of packages that track upstream releases outside nixpkgs.
+      # Run from the checkout: `nix run .#update [-- nix-update flags]`. Review
+      # the diff yourself; nothing is committed.
+      apps = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          # 1.16 cannot evaluate a dirty local flake on Nix 2.35 (Mic92/nix-update#693).
+          nix-update =
+            if nixpkgs.lib.versionAtLeast pkgs.nix-update.version "1.17.0" then
+              pkgs.nix-update
+            else
+              pkgs.nix-update.overridePythonAttrs (old: rec {
+                version = "1.17.0";
+                src = pkgs.fetchFromGitHub {
+                  owner = "Mic92";
+                  repo = "nix-update";
+                  tag = "v${version}";
+                  hash = "sha256-TCOhUWb53V3nrJRD3JuADly1U9fNi0Z79QMcjhbefHg=";
+                };
+                build-system = [ pkgs.python3Packages.hatchling ];
+                dependencies = (old.dependencies or [ ]) ++ [ pkgs.python3Packages.ast-grep-py ];
+              });
+          update = pkgs.writeShellApplication {
+            name = "vicos-update";
+            runtimeInputs = [ nix-update ];
+            text = ''
+              if [ ! -f packages/helium/default.nix ]; then
+                echo "run this from the root of the vicOS checkout" >&2
+                exit 1
+              fi
+              nix-update --flake helium "$@"
+            '';
+          };
+        in
+        {
+          update = {
+            type = "app";
+            program = nixpkgs.lib.getExe update;
+          };
+        }
+      );
+
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }
