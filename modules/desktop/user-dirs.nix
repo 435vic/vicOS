@@ -22,7 +22,6 @@ in
   config = lib.mkIf (cfg.desktop.enable && cfg.user != null) {
     users.users.${cfg.user}.packages = [ pkgs.xdg-user-dirs ];
 
-    # ':' preserves existing ownership and permissions as well as contents.
     systemd.tmpfiles.rules = map (
       folder: ''d "${user.home}/${folder}" :0700 :${cfg.user} :${user.group} - -''
     ) (builtins.attrValues folders ++ [ "pictures/screenshots" ]);

@@ -77,6 +77,7 @@ in
       {
         services.gvfs.enable = true;
         programs.dconf.enable = true;
+        programs.obs-studio.enable = true;
       }
       (lib.mkIf (cfg.user != null) {
         users.users.${cfg.user}.packages =

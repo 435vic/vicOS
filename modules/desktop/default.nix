@@ -10,6 +10,7 @@ in
 {
   imports = [
     ./apps.nix
+    ./gaming.nix
     ./hyprland.nix
     ./lock.nix
     ./mime.nix
@@ -34,6 +35,13 @@ in
     services.gnome.gnome-keyring.enable = true;
     services.gnome.gcr-ssh-agent.enable = false;
     security.pam.services.ly.enableGnomeKeyring = true;
+    # ly includes the login stack. Keep daemon startup, but never pass account
+    # passwords to a passwordless keyring: a password-based login would
+    # silently re-encrypt it on save.
+    security.pam.services.login.rules = {
+      auth.gnome_keyring.enable = lib.mkForce false;
+      password.gnome_keyring.enable = lib.mkForce false;
+    };
 
     fonts.packages = with pkgs; [
       noto-fonts

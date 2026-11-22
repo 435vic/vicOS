@@ -13,8 +13,6 @@ let
   };
 in
 {
-  # HOME-relative strings work for every account, unlike absolute Nix paths.
-  # These are shared constants, not relocation controls.
   options.vicos.xdg =
     lib.mapAttrs
       (
@@ -34,20 +32,14 @@ in
       };
 
   config = lib.mkIf cfg.cli.enable {
-    # Native NixOS propagation: PAM and shell initialisation. These conventional
-    # defaults are host-wide; never put a particular user's absolute home here.
     environment.sessionVariables = roots;
     environment.localBinInPath = true;
 
-    # environment.d supplies user services, including starts without a shell.
-    # PAM/login/compositor integration and XDG_RUNTIME_DIR remain fleet-owned.
     environment.etc."environment.d/60-vicos-xdg.conf".text = ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "${name}=${value}") roots)}
       PATH=$HOME/.local/bin:''${PATH}
     '';
 
-    # ':' applies the private mode only when creating a directory. Do not
-    # chmod existing user data, clean directories, or migrate legacy paths.
     systemd.user.tmpfiles.rules = map (path: ''d "%h/${path}" :0700 - - -'') [
       cfg.xdg.configHome
       cfg.xdg.cacheHome
