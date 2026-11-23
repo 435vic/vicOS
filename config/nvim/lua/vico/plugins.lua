@@ -1,6 +1,3 @@
-require("rose-pine").setup({ styles = { italic = false } })
-vim.cmd.colorscheme("rose-pine")
-
 require("oil").setup({
     skip_confirm_for_simple_edits = true,
     view_options = { show_hidden = true },
@@ -39,7 +36,7 @@ require("lze").load({
         event = "DeferredUIEnter",
         after = function()
             require("lualine").setup({
-                options = { theme = "rose-pine" },
+                options = { theme = "16color" },
                 sections = {
                     lualine_a = { "mode" },
                     lualine_b = { { "FugitiveHead", icon = "" } },

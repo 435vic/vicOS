@@ -117,11 +117,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793429457,
-        "narHash": "sha256-/ZIQBiujmJdeY6oOZm48aW5kRJldYNsX2m9d11Jspyk=",
+        "lastModified": 1795407300,
+        "narHash": "sha256-VH/Ebi04/tDRpPZz7H8hcafgIFgF/sQsOF7U1UYbXic=",
         "owner": "435vic",
         "repo": "stash",
-        "rev": "858fa0d175561cb2771e6bdb2399de325d04bd35",
+        "rev": "4e4d2c87945d8a6dcb4fa89c3d54acb857f8f08e",
         "type": "github"
       },
       "original": {

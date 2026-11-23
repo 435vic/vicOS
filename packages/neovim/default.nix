@@ -17,7 +17,6 @@ let
 
       startupPlugins.editor = with pkgs.vimPlugins; [
         lze
-        rose-pine
         oil-nvim
         vim-sleuth
         vim-fugitive

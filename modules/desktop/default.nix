@@ -6,6 +6,13 @@
 }:
 let
   cfg = config.vicos;
+  gtkSettings = ''
+    [Settings]
+    gtk-application-prefer-dark-theme=1
+    gtk-theme-name=adw-gtk3-dark
+    gtk-icon-theme-name=Papirus-Dark
+    gtk-cursor-theme-name=Marathon-bold
+  '';
 in
 {
   imports = [
@@ -43,6 +50,31 @@ in
       password.gnome_keyring.enable = lib.mkForce false;
     };
 
+    # Fixed look carried over from main: dark Adwaita for GTK and Qt, Papirus icons
+    # and the Marathon cursor. Hyprland syncs XCURSOR_THEME into gsettings.
+    environment.systemPackages = [
+      pkgs.adw-gtk3
+      pkgs.papirus-icon-theme
+      (pkgs.callPackage ../../packages/marathon-cursor { })
+    ];
+    programs.dconf.profiles.user.databases = [
+      {
+        settings."org/gnome/desktop/interface" = {
+          color-scheme = "prefer-dark";
+          gtk-theme = "adw-gtk3-dark";
+          icon-theme = "Papirus-Dark";
+          cursor-theme = "Marathon-bold";
+        };
+      }
+    ];
+    environment.etc."xdg/gtk-3.0/settings.ini".text = gtkSettings;
+    environment.etc."xdg/gtk-4.0/settings.ini".text = gtkSettings;
+    # Dark Adwaita for Qt 5 and 6 (sets QT_STYLE_OVERRIDE).
+    qt = {
+      enable = true;
+      style = "adwaita-dark";
+    };
+
     fonts.packages = with pkgs; [
       noto-fonts
       noto-fonts-color-emoji
@@ -53,8 +85,10 @@ in
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
       HYPRSHOT_DIR = "$HOME/pictures/screenshots";
+      XCURSOR_THEME = "Marathon-bold";
     };
     environment.etc."environment.d/70-vicos-desktop.conf".text = ''
+      XCURSOR_THEME=Marathon-bold
       XCOMPOSECACHE=$HOME/${cfg.xdg.cacheHome}/xcompose
       NIXOS_OZONE_WL=1
       MOZ_ENABLE_WAYLAND=1

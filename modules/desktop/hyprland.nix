@@ -45,8 +45,15 @@ let
         default = false;
         description = "Create this output as a Hyprland headless monitor at startup.";
       };
+      wallpaper = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        example = "~/wallpapers/moon.jpg";
+        description = "Image hyprpaper shows on this output.";
+      };
     };
   };
+  wallpapers = builtins.filter (m: m.wallpaper != null) cfg.hyprland.monitors;
 
   primaryMonitor = lib.findFirst (m: m.primary) { scale = 1; } cfg.hyprland.monitors;
   primaryScale =
@@ -67,6 +74,8 @@ in
     default = [ ];
     description = "Hyprland monitor definitions. Entries are passed to hl.monitor, so arbitrary HL.MonitorSpec fields may be added besides the documented ones.";
   };
+  options.vicos.desktop.laptop.enable = lib.mkEnableOption "laptop hardware: the brightness keys control the built-in backlight";
+  options.vicos.desktop.ddcBrightness.enable = lib.mkEnableOption "external monitor brightness over DDC/CI with ddcutil";
 
   config = lib.mkIf cfg.desktop.enable (
     lib.mkMerge [
@@ -120,6 +129,13 @@ in
 
         services.dbus.packages = [ pkgs.mako ];
       }
+      (lib.mkIf cfg.desktop.ddcBrightness.enable {
+        hardware.i2c.enable = true;
+        environment.systemPackages = [ pkgs.ddcutil ];
+      })
+      (lib.mkIf (cfg.desktop.ddcBrightness.enable && cfg.user != null) {
+        users.users.${cfg.user}.extraGroups = [ config.hardware.i2c.group ];
+      })
       (lib.mkIf (primaryScale > 1) {
         environment.sessionVariables = scaleVariables;
         environment.etc."environment.d/70-vicos-desktop.conf".text = lib.concatLines (
@@ -144,12 +160,28 @@ in
                 removeAttrs m [
                   "primary"
                   "virtual"
+                  "wallpaper"
                 ]
               ) cfg.hyprland.monitors;
               virtual = map (m: m.output) (builtins.filter (m: m.virtual) cfg.hyprland.monitors);
               primary = primaryMonitor.output or null;
+              laptop = cfg.desktop.laptop.enable;
+              ddc = cfg.desktop.ddcBrightness.enable;
             }
             + "\n";
+
+          "${cfg.xdg.configHome}/hypr/hyprpaper.conf" = lib.mkIf (wallpapers != [ ]) {
+            text = ''
+              splash = false
+            ''
+            + lib.concatMapStrings (m: ''
+              wallpaper {
+                  monitor = ${m.output}
+                  path = ${m.wallpaper}
+                  fit_mode = cover
+              }
+            '') wallpapers;
+          };
 
           "${cfg.xdg.configHome}/quickshell" = {
             source = config.lib.stash.fromStash {
@@ -172,6 +204,9 @@ in
         systemd.user.services.vicinae = {
           unitConfig.ConditionUser = cfg.user;
           wantedBy = [ "graphical-session.target" ];
+          # NixOS otherwise sets PATH to systemd.defaultPath, hiding the session
+          # PATH that uwsm imports, so vicinae could not find apps to launch.
+          path = lib.mkForce [ ];
         };
         systemd.user.services.quickshell = {
           description = "Quickshell desktop shell";

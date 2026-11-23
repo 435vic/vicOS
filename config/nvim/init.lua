@@ -14,7 +14,8 @@ vim.opt.backup = false
 vim.opt.undofile = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
-vim.opt.termguicolors = true
+-- Draw with the terminal's own 16-colour palette instead of a colorscheme.
+vim.opt.termguicolors = false
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
