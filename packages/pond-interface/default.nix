@@ -4,7 +4,9 @@
   fetchFromGitHub,
   cmake,
   ninja,
+  pkg-config,
   qt6,
+  kdePackages,
   wayland,
 }:
 # Compiled QML modules from Pond's interface (github.com/bflycomputer/pond-interface):
@@ -22,34 +24,16 @@ stdenv.mkDerivation {
     hash = "sha256-KiI32YFJHWS+ViRZNOJgjcxsVdeGUxw/LE3kEssSDiE=";
   };
 
-  # vicOS runs iwd and systemd-networkd, not NetworkManager: report Wi-Fi as
-  # disconnected instead of linking KF6 NetworkManagerQt.
-  postPatch = ''
-    sed -i -e '/KF6NetworkManagerQt/d' -e 's/KF6::NetworkManagerQt //' CMakeLists.txt
-    cat > lockscreen/frontend/system/NetworkStatus.h <<'EOF'
-    #pragma once
-    #include <QObject>
-    #include <QtQml/qqmlregistration.h>
-
-    class NetworkStatus : public QObject {
-        Q_OBJECT
-        QML_ELEMENT
-        Q_PROPERTY(bool wifiConnected READ wifiConnected CONSTANT)
-    public:
-        using QObject::QObject;
-        bool wifiConnected() const { return false; }
-    };
-    EOF
-  '';
-
   nativeBuildInputs = [
     cmake
     ninja
+    pkg-config
     qt6.qtshadertools
   ];
   buildInputs = [
     qt6.qtbase
     qt6.qtdeclarative
+    kdePackages.networkmanager-qt
     wayland
   ];
   dontWrapQtApps = true;

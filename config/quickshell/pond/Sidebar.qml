@@ -4,6 +4,7 @@ import Quickshell.Wayland
 import "audio" as Audio
 import "bluetooth" as Bluetooth
 import "settings" as Settings
+import "wifi" as Wifi
 import "calendar" as Calendar
 import "media" as Media
 import "notifications" as Notifications
@@ -20,10 +21,10 @@ PanelWindow {
   readonly property real notificationCardCenterY: mainStack.y + notificationCard.y + 24
 
   readonly property real panelX: Theme.sidebarOuterMargin + cardWidth + Theme.sidebarCardGap
-  readonly property bool panelOpen: audioPanel.opened || bluetoothPanel.opened
-  readonly property var activePanel: audioPanel.opened ? audioPanel : bluetoothPanel.opened ? bluetoothPanel : null
+  readonly property bool panelOpen: wifiPanel.opened || audioPanel.opened || bluetoothPanel.opened
+  readonly property var activePanel: wifiPanel.opened ? wifiPanel : audioPanel.opened ? audioPanel : bluetoothPanel.opened ? bluetoothPanel : null
   property string pendingPanel: ""
-  readonly property var panels: ({audio: audioPanel, bluetooth: bluetoothPanel})
+  readonly property var panels: ({wifi: wifiPanel, audio: audioPanel, bluetooth: bluetoothPanel})
 
   function dismissPanels() {
     panelSwitchDelay.stop();
@@ -98,14 +99,14 @@ PanelWindow {
     id: cardBlur
     regions: [timeCard.blurRegion, workspacesCard.blurRegion, mediaCard.blurRegion,
       notificationCard.blurRegion, controls.blurRegion,
-      audioPanel.blurRegion, bluetoothPanel.blurRegion]
+      wifiPanel.blurRegion, audioPanel.blurRegion, bluetoothPanel.blurRegion]
   }
-  // Always wide enough for the sound and Bluetooth panels; only the input area
-  // shrinks. Upstream resizes the surface as panels open and close, but
-  // Hyprland then shows the previous buffer squeezed into the new size for a
-  // frame.
+  // Always wide enough for the Wi-Fi, sound and Bluetooth panels; only the
+  // input area shrinks. Upstream resizes the surface as panels open and close,
+  // but Hyprland then shows the previous buffer squeezed into the new size for
+  // a frame.
   implicitWidth: Math.ceil(Theme.sidebarOuterMargin + Theme.sidebarCardExpandedWidth
-      + Theme.sidebarCardGap + Math.max(audioPanel.width, bluetoothPanel.width) + 67)
+      + Theme.sidebarCardGap + Math.max(wifiPanel.width, audioPanel.width, bluetoothPanel.width) + 67)
   mask: Region {
     width: root.panelOpen ? root.implicitWidth : Math.ceil(Theme.sidebarOuterMargin + Math.max(root.cardWidth,
         workspacesCard.width, mediaCard.width, controls.width) + 8)
@@ -187,6 +188,14 @@ PanelWindow {
     }
   }
 
+  Wifi.Panel {
+    id: wifiPanel
+    x: root.panelX
+    z: 80
+    anchors.bottom: parent.bottom
+    anchors.bottomMargin: Theme.sidebarOuterMargin
+  }
+
   Audio.Panel {
     id: audioPanel
     x: root.panelX
@@ -214,8 +223,11 @@ PanelWindow {
     BottomControls {
       id: controls
       collapseProgress: root.collapseProgress
+      wifiOpen: wifiPanel.opened
       soundOpen: audioPanel.opened
       settingsOpen: Settings.State.opened && Settings.State.outputName === root.screen.name
+      // Without NetworkManager there is nothing to manage.
+      onWifiClicked: if (Wifi.State.available) root.togglePanel("wifi")
       onSoundClicked: root.togglePanel("audio")
       onSettingsClicked: Settings.State.toggle(root.screen.name)
       onCollapseClicked: root.toggleRequested()

@@ -1,0 +1,80 @@
+pragma ComponentBehavior: Bound
+import QtQuick
+import "." as Wifi
+import ".."
+
+DeviceList {
+  id: root
+  title: "Wifi"
+  viewportHeight: 306
+  devices: Wifi.State.wiredNetworks.concat(Wifi.State.enabled ? Wifi.State.networks : [])
+  headerControl: Component { Toggle {
+    trackAlpha: PanelStyle.drawerToggleAlpha
+    checked: Wifi.State.enabled
+    enabled: root.interactive
+    onToggled: checked => Wifi.State.setWifiEnabled(checked)
+  } }
+  deviceDelegate: Component { NetworkRow {
+    required property var modelData
+    width: PanelStyle.rowWidth
+    network: modelData
+    interactive: root.interactive && !modelData.wired
+    onDisconnectClicked: Wifi.State.disconnect()
+    onDetailsRequested: {
+      if (modelData.connected || modelData.known)
+        root.stackController.push("details", modelData);
+    }
+    onRowClicked: {
+      if (modelData.connected)
+        root.stackController.push("details", modelData);
+      else if (modelData.locked && !modelData.known)
+        root.stackController.push("join", modelData);
+      else
+        root.stackController.connectNetwork(modelData.ssid, "", false);
+    }
+  } }
+  footer: Component { Item {
+    id: addNetworkRow
+    width: PanelStyle.rowWidth
+    height: PanelStyle.rowHeight
+
+    Rectangle {
+      anchors.fill: parent
+      radius: PanelStyle.rowRadius
+      color: addNetworkPointer.containsMouse ? PanelStyle.drawerRowHover
+          : Qt.alpha(PanelStyle.drawerRowHover, 0)
+
+      Behavior on color {
+        ColorAnimation { duration: PanelStyle.controlDuration }
+      }
+    }
+
+    Row {
+      x: 12
+      anchors.verticalCenter: parent.verticalCenter
+      spacing: 12
+      opacity: 0.5
+      Image {
+        width: 20
+        height: 20
+        source: Qt.resolvedUrl("../assets/wifi/add.svg")
+      }
+      Text {
+        anchors.verticalCenter: parent.verticalCenter
+        text: "Add a network"
+        color: Theme.colors.text
+        font.family: Theme.fontFamily
+        font.weight: Font.Medium
+        font.pixelSize: 15
+      }
+    }
+    MouseArea {
+      id: addNetworkPointer
+      anchors.fill: parent
+      enabled: root.interactive
+      hoverEnabled: true
+      cursorShape: Qt.PointingHandCursor
+      onClicked: root.stackController.push("add", null)
+    }
+  } }
+}

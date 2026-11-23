@@ -10,10 +10,12 @@
 let
   cfg = config.vicos;
   pondInterface = pkgs.callPackage ../../packages/pond-interface { };
-  # Commands the shell runs: the Bluetooth pairing agent and audio port names.
+  # Commands the shell runs: the Bluetooth pairing agent, audio port names and
+  # Wi-Fi link details. nmcli comes from the system where NetworkManager runs.
   shellTools = [
     (pkgs.python3.withPackages (ps: [ ps.pygobject3 ]))
     pkgs.pulseaudio
+    pkgs.iw
   ];
   quickshell = pkgs.symlinkJoin {
     name = "quickshell-pond";

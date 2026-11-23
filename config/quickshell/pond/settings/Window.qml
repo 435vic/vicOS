@@ -3,11 +3,13 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import "." as Settings
 import ".." as Shell
+import "../battery" as Battery
 import Quickshell
 import Quickshell.Wayland
 
 // Pond's settings overlay, reduced for vicOS to the Bluetooth card, the
-// session buttons and the tray.
+// session buttons, the power profile selector (on machines with a battery) and
+// the tray.
 PanelWindow {
   id: root
 
@@ -57,7 +59,7 @@ PanelWindow {
   onHeightChanged: cardBlur.changed()
   Region {
     id: cardBlur
-    regions: Array.from(composition.children).concat(tray)
+    regions: Array.from(composition.children).concat(profileSelector, tray)
         .filter(Boolean).map(item => item.blurRegion).filter(Boolean)
   }
 
@@ -158,6 +160,21 @@ PanelWindow {
             && root.revealStep >= root.revealRanks[modelData.slot]
         onClicked: Settings.State.requestSessionAction(modelData.action)
       }
+    }
+  }
+
+  Battery.ProfileSelector {
+    id: profileSelector
+    z: 2
+    anchors.right: parent.right
+    anchors.rightMargin: 10
+    anchors.verticalCenter: parent.verticalCenter
+    enabled: root.cardsOpen && Battery.State.present
+    visible: opacity > 0
+    opacity: enabled ? 1 : 0
+    Keys.onEscapePressed: Settings.State.close()
+    Behavior on opacity {
+      NumberAnimation { duration: Settings.Style.closeDuration; easing.type: Easing.OutCubic }
     }
   }
 
