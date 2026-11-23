@@ -58,10 +58,13 @@ let
   primaryMonitor = lib.findFirst (m: m.primary) { scale = 1; } cfg.hyprland.monitors;
   primaryScale =
     if builtins.isString primaryMonitor.scale then 1 else builtins.ceil primaryMonitor.scale;
-  # Dictation needs only CPU whisper; with nixpkgs rocmSupport it would pull
-  # ~3 GiB of ROCm libraries and miss the binary cache.
+  # Dictation runs whisper on the GPU through Vulkan; with nixpkgs rocmSupport it
+  # would pull ~3 GiB of ROCm libraries and miss the binary cache.
   vicinae = pkgs.vicinae.override {
-    whisper-cpp = pkgs.whisper-cpp.override { rocmSupport = false; };
+    whisper-cpp = pkgs.whisper-cpp.override {
+      rocmSupport = false;
+      vulkanSupport = true;
+    };
   };
   scaleVariables = {
     GDK_SCALE = toString primaryScale;
@@ -100,8 +103,29 @@ in
         };
 
         services.displayManager = {
-          ly.enable = true;
+          ly = {
+            enable = true;
+            settings =
+              let
+                # ly itself only ships example.dur; community animations live in ly-community.
+                blackhole = pkgs.fetchurl {
+                  name = "blackhole.dur";
+                  url = "https://codeberg.org/fairyglade/ly-community/raw/commit/2f22cfaf7d17598c8f60f562d56e16d74b6c99ab/animations/dur/blackhole-smooth-240x67.dur";
+                  hash = "sha256-wo3FzPtngCsg/bRSDTYHQqKnMp4vY+Btm14vakJERBU=";
+                };
+              in
+              {
+                animation = "dur_file";
+                dur_file_path = "${blackhole}";
+                full_color = true;
+                bigclock = "en";
+              };
+          };
           defaultSession = lib.mkDefault "hyprland-uwsm";
+          autoLogin = lib.mkIf (cfg.user != null) {
+            enable = true;
+            user = cfg.user;
+          };
         };
 
         xdg.portal.config.hyprland.default = [
