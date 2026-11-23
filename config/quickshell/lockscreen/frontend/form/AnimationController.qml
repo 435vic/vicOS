@@ -27,8 +27,10 @@ Item {
 
         if (previousPhase !== "succeeded" && animationState.animationPhase === "succeeded")
             successAnimationFinished();
-        if (previousPhase === "errorCenter" && animationState.animationPhase === "idle")
+        if (previousPhase === "errorCenter" && animationState.animationPhase === "idle") {
+            authResultHandled = false;
             errorAnimationFinished();
+        }
     }
 
     function reset() {

@@ -76,7 +76,7 @@ Item {
     Connections {
         target: root.authentication
         function onSucceeded() {
-            if (root.phase !== "authenticating")
+            if (root.phase !== "editing" && root.phase !== "authenticating")
                 return;
             root.phase = "approving";
             root.authentication.pamReady = false;

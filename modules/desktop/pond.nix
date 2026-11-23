@@ -17,16 +17,21 @@ let
     pkgs.pulseaudio
     pkgs.iw
   ];
+  quickshellWrapArgs = [
+    "--prefix QML_IMPORT_PATH : ${pondInterface}/${pkgs.qt6.qtbase.qtQmlPrefix}"
+    "--prefix PATH : ${lib.makeBinPath shellTools}"
+    "--set-default QS_ICON_THEME Papirus-Dark"
+  ]
+  ++ lib.optionals config.services.fprintd.enable [
+    "--set-default POND_FPRINT_PAM_SERVICE pond-lock-fprint"
+  ];
   quickshell = pkgs.symlinkJoin {
     name = "quickshell-pond";
     paths = [ pkgs.quickshell ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       for bin in $out/bin/*; do
-        wrapProgram "$bin" \
-          --prefix QML_IMPORT_PATH : ${pondInterface}/${pkgs.qt6.qtbase.qtQmlPrefix} \
-          --prefix PATH : ${lib.makeBinPath shellTools} \
-          --set-default QS_ICON_THEME Papirus-Dark
+        wrapProgram "$bin" ${lib.concatStringsSep " " quickshellWrapArgs}
       done
     '';
     inherit (pkgs.quickshell) meta;
@@ -85,7 +90,13 @@ in
           path = "config/vicinae/pond.jsonc";
         };
     };
-    security.pam.services.pond-lock = { };
+    # Password and fingerprint run in parallel PAM contexts so either unlocks
+    # immediately without blocking the other.
+    security.pam.services.pond-lock.fprintAuth = false;
+    security.pam.services.pond-lock-fprint = lib.mkIf config.services.fprintd.enable {
+      unixAuth = false;
+      fprintAuth = true;
+    };
 
     # Pond's boot, LUKS prompt, shutdown and restart animations. A quiet boot
     # keeps kernel and udev messages from drawing over the splash.

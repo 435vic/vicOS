@@ -43,6 +43,8 @@ Item {
     }
 
     function authenticationSucceeded() {
+        authenticationPending = true;
+        currentText = "";
         grid.authenticationSucceeded();
     }
 
