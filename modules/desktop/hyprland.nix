@@ -77,8 +77,10 @@ in
     default = [ ];
     description = "Hyprland monitor definitions. Entries are passed to hl.monitor, so arbitrary HL.MonitorSpec fields may be added besides the documented ones.";
   };
-  options.vicos.desktop.laptop.enable = lib.mkEnableOption "laptop hardware: the brightness keys control the built-in backlight";
-  options.vicos.desktop.ddcBrightness.enable = lib.mkEnableOption "external monitor brightness over DDC/CI with ddcutil";
+  options.vicos.desktop.laptop.enable =
+    lib.mkEnableOption "laptop hardware: the brightness keys control the built-in backlight";
+  options.vicos.desktop.ddcBrightness.enable =
+    lib.mkEnableOption "external monitor brightness over DDC/CI with ddcutil";
 
   config = lib.mkIf cfg.desktop.enable (
     lib.mkMerge [
@@ -137,8 +139,6 @@ in
           pkgs.wl-clipboard
           pkgs.hyprpaper
           vicinae
-          pkgs.quickshell
-          pkgs.mako
           pkgs.libnotify
           pkgs.pamixer
           pkgs.brightnessctl
@@ -151,7 +151,6 @@ in
           }))
         ];
 
-        services.dbus.packages = [ pkgs.mako ];
       }
       (lib.mkIf cfg.desktop.ddcBrightness.enable {
         hardware.i2c.enable = true;
@@ -216,13 +215,12 @@ in
           };
         };
 
-        # Battery state for the Quickshell bar.
+        # Battery state for the Pond sidebar.
         services.upower.enable = true;
 
         systemd.packages = [
           pkgs.hyprpolkitagent
           pkgs.hyprpaper
-          pkgs.mako
           vicinae
         ];
         systemd.user.services.vicinae = {
@@ -238,14 +236,13 @@ in
           after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
+          # Pond's shell also serves notifications. Session actions (pond-lock,
+          # uwsm, systemctl) and vicinae come from the session PATH.
+          path = lib.mkForce [ ];
           serviceConfig = {
-            ExecStart = lib.getExe pkgs.quickshell;
+            ExecStart = "${lib.getExe cfg.desktop.pond.quickshell} -c pond";
             Restart = "on-failure";
           };
-        };
-        systemd.user.services.mako = {
-          unitConfig.ConditionUser = cfg.user;
-          wantedBy = [ "graphical-session.target" ];
         };
         systemd.user.services.hyprpaper = {
           unitConfig.ConditionUser = cfg.user;

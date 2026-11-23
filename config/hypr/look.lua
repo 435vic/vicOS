@@ -11,7 +11,9 @@ hl.config({
     decoration = {
         rounding = 10,
         shadow = { enabled = false },
-        blur = { enabled = true },
+        -- A single Kawase pass at a large offset leaves diagonal cross-hatching
+        -- over busy wallpapers; more passes at a smaller offset blur cleanly.
+        blur = { enabled = true, size = 5, passes = 3 },
     },
     animations = { enabled = true },
 })

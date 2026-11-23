@@ -17,13 +17,12 @@ in
   };
 
   config = lib.mkIf (cfg.desktop.enable && cfg.user != null) {
-    programs.hyprlock.enable = true;
     services.hypridle.enable = true;
     systemd.user.services.hypridle.unitConfig.ConditionUser = cfg.user;
 
     stash.users.${cfg.user}.files."${cfg.xdg.configHome}/hypr/hypridle.conf".text = ''
       general {
-          lock_cmd = ${lib.getExe' pkgs.procps "pgrep"} -xu ${lib.escapeShellArg cfg.user} hyprlock || ${lib.getExe config.programs.hyprlock.package}
+          lock_cmd = ${lib.getExe cfg.desktop.pond.lock}
           before_sleep_cmd = ${loginctl} lock-session
           after_sleep_cmd = ${hyprctl} dispatch 'hl.dsp.dpms({action = "on"})'
           inhibit_sleep = 3

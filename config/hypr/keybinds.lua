@@ -88,10 +88,10 @@ end
 -- Media keys also work on the lock screen.
 local media = { locked = true }
 local held = { locked = true, repeating = true }
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pamixer -i 5"), held)
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pamixer -d 5"), held)
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pamixer -t"), media)
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("pamixer --default-source -t"), media)
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("qs -c pond ipc call volume increase"), held)
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("qs -c pond ipc call volume decrease"), held)
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("qs -c pond ipc call volume muteOutput"), media)
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("qs -c pond ipc call volume muteInput"), media)
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), media)
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), media)
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), media)

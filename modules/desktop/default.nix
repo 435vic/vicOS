@@ -20,6 +20,7 @@ in
     ./gaming.nix
     ./hyprland.nix
     ./lock.nix
+    ./pond.nix
     ./mime.nix
     ./user-dirs.nix
   ];

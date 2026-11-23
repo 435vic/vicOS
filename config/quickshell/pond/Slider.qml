@@ -1,0 +1,176 @@
+import QtQuick
+import QtQuick.Effects
+import QtQuick.Templates as T
+
+T.Slider {
+  id: root
+
+  property real externalValue: 0
+  property bool showInlineValue: true
+  property bool muted: false
+  property bool interactive: true
+  property color trackColor: PanelStyle.sliderTrack
+  signal dragStarted
+  signal dragFinished
+  onPressedChanged: pressed ? dragStarted() : dragFinished()
+
+  from: 0; to: 1
+  leftPadding: 1; rightPadding: 1
+  enabled: interactive
+  hoverEnabled: true
+  focusPolicy: Qt.NoFocus
+  handle: Item { width: 0; height: 0 }
+  // Device updates resume driving the handle after the drag ends.
+  Binding on value { value: root.externalValue; when: !root.pressed; restoreMode: Binding.RestoreNone }
+  readonly property real visualValue: position
+  readonly property real handleCenterX: leftPadding + visualPosition * availableWidth
+  readonly property bool handleHovered: hovered
+      && Math.abs(pointer.point.position.x - handleCenterX) <= 13
+      && pointer.point.position.y >= 3 && pointer.point.position.y <= 31
+  readonly property real handleSize: pressed ? 20 : 26
+  readonly property real handleTop: pressed ? 8 : 5
+
+  implicitHeight: 32
+  clip: false
+
+  Item {
+    anchors.fill: parent
+    layer.enabled: root.muted
+    layer.effect: MultiEffect {
+      maskEnabled: true
+      maskInverted: true
+      maskSource: handleMask
+    }
+
+    Rectangle {
+      x: 0
+      y: 12
+      width: parent.width
+      height: 12
+      radius: 6
+      color: root.muted ? "transparent" : root.trackColor
+      border.width: root.muted ? 1 : 0
+      border.color: Qt.rgba(1, 1, 1, 0.2)
+    }
+
+    Rectangle {
+      x: root.muted ? 5 : 1
+      y: root.muted ? 17 : 13
+      width: Math.max(0, root.handleCenterX - x)
+      height: root.muted ? 2 : 10
+      radius: height / 2
+      color: root.muted ? Qt.rgba(1, 1, 1, 0.2) : PanelStyle.sliderFill
+    }
+  }
+
+  Item {
+    id: handleMask
+    anchors.fill: parent
+    visible: false
+    layer.enabled: root.muted
+
+    Rectangle {
+      x: handle.x
+      y: handle.y
+      width: handle.width
+      height: handle.height
+      radius: width / 2
+    }
+  }
+
+  Rectangle {
+    id: handle
+    x: root.handleCenterX - width / 2
+    y: root.handleTop
+    width: root.handleSize
+    height: root.handleSize
+    radius: width / 2
+    color: root.pressed ? PanelStyle.accent
+        : root.muted ? Qt.rgba(1, 1, 1, 0.1) : PanelStyle.sliderFill
+    border.width: 1
+    border.color: root.handleHovered && !root.pressed ? PanelStyle.accent
+        : root.muted ? Qt.rgba(1, 1, 1, 0.5) : PanelStyle.border
+    antialiasing: true
+
+    Behavior on width {
+      NumberAnimation {
+        duration: PanelStyle.controlDuration
+        easing.type: Easing.OutCubic
+      }
+    }
+    Behavior on height {
+      NumberAnimation {
+        duration: PanelStyle.controlDuration
+        easing.type: Easing.OutCubic
+      }
+    }
+
+    Text {
+      anchors.centerIn: parent
+      anchors.verticalCenterOffset: 1
+      visible: root.showInlineValue && !root.muted && !root.handleHovered && !root.pressed
+      text: Math.round(root.visualValue * 100)
+      color: PanelStyle.surface
+      font.family: Theme.fontFamily
+      font.weight: Font.Medium
+      font.pixelSize: 13
+    }
+
+    Image {
+      anchors.centerIn: parent
+      visible: root.muted
+      width: 16
+      height: 16
+      source: Qt.resolvedUrl("assets/volume-mute.svg")
+      sourceSize: Qt.size(width * 2, height * 2)
+    }
+  }
+
+  Item {
+    id: valueBubble
+    z: 3
+    x: root.handleCenterX - 13
+    y: -19
+    width: 26
+    height: 22
+    visible: opacity > 0.001
+    opacity: root.handleHovered || root.pressed ? 1 : 0
+
+    Behavior on opacity {
+      NumberAnimation {
+        duration: PanelStyle.controlDuration
+        easing.type: Easing.OutCubic
+      }
+    }
+
+    Shadow {
+      anchors.fill: parent
+      cornerRadius: 4
+      shadows: PanelStyle.controlShadows
+    }
+
+    Rectangle {
+      anchors.fill: parent
+      radius: 4
+      color: PanelStyle.sliderBubble
+
+      Text {
+        anchors.centerIn: parent
+        text: Math.round(root.visualValue * 100)
+        color: "black"
+        font.family: Theme.fontFamily
+        font.weight: Font.Medium
+        font.pixelSize: 13
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+      }
+    }
+  }
+
+  HoverHandler {
+    id: pointer
+    enabled: root.hoverEnabled
+    cursorShape: root.pressed ? Qt.ClosedHandCursor
+        : root.handleHovered ? Qt.OpenHandCursor : Qt.PointingHandCursor
+  }
+}
