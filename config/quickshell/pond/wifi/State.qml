@@ -29,6 +29,9 @@ Singleton {
   }))
   readonly property bool wifiConnected: enabled && Networking.wifiHardwareEnabled
       && !!adapter && adapter.connected
+  readonly property bool wifiConnecting: enabled && Networking.wifiHardwareEnabled
+      && !!adapter && (phase === "connecting"
+          || adapter.networks.values.some(n => n.state === ConnectionState.Connecting))
   // Unknown connectivity does not mean no internet. NetworkManager's
   // connectivity only covers Wi-Fi, so wired links use networkd's online state.
   readonly property bool internetUnavailable: wiredConnected
@@ -38,11 +41,14 @@ Singleton {
         || Networking.connectivity === NetworkConnectivity.Limited
   readonly property string statusIcon: wiredConnected
       ? (internetUnavailable ? "wifi/ethernet-no-internet.svg" : "wifi/ethernet.svg")
+      : wifiConnecting ? ("wifi/signal-" + _connectingFrame + ".svg")
       : !wifiConnected ? "wifi/disconnected.svg"
-      : internetUnavailable ? "wifi/no-internet.svg" : "wifi.svg"
+      : internetUnavailable ? "wifi/no-internet.svg"
+      : ("wifi/signal-" + connectedBars + ".svg")
   readonly property string device: adapter ? adapter.name : ""
   readonly property string rateDevice: wiredConnected ? wiredLinks[0].Name : device
   readonly property string connectedSsid: networks.find(n => n.connected)?.ssid || ""
+  readonly property int connectedBars: networks.find(n => n.connected)?.bars ?? 3
   readonly property var networks: (adapter ? adapter.networks.values : [])
       .filter(n => n.connected || n.signalStrength > 0)
       .map(n => ({ssid: n.name, signal: n.signalStrength * 100,
@@ -75,6 +81,7 @@ Singleton {
   property bool _passwordFailed: false
   property var _actionQueue: []
   property bool _actionSequenceActive: false
+  property int _connectingFrame: 1
 
   signal actionFinished(string kind, bool success, string message)
 
@@ -422,5 +429,13 @@ Singleton {
     repeat: true
     running: root.samplingRates
     onTriggered: { txCounter.reload(); rxCounter.reload(); }
+  }
+
+  Timer {
+    interval: 350
+    repeat: true
+    running: root.wifiConnecting && !root.wiredConnected
+    onRunningChanged: if (running) root._connectingFrame = 1
+    onTriggered: root._connectingFrame = (root._connectingFrame % 3) + 1
   }
 }

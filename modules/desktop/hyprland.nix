@@ -175,6 +175,12 @@ in
             recursive = true;
           };
 
+          "${cfg.xdg.configHome}/hyprpolkitagent/hyprpolkitagent.conf".source =
+            config.lib.stash.fromStash {
+              stash = "vicos";
+              path = "config/hyprpolkitagent/hyprpolkitagent.conf";
+            };
+
           "${cfg.xdg.configHome}/hypr/nixvars.lua".text =
             "return "
             + lib.generators.toLua { } {

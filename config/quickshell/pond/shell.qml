@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Io
 import "battery" as Battery
 import "calendar" as Calendar
+import "fnpreview" as FnPreview
 import "settings" as Settings
 import "notifications" as Notifications
 
@@ -27,6 +28,13 @@ ShellRoot {
     function close() { Settings.State.close(); }
   }
 
+  IpcHandler {
+    target: "fnPreview"
+    function open() { FnPreview.State.open(); }
+    function close() { FnPreview.State.close(); }
+    function toggle() { FnPreview.State.toggle(); }
+  }
+
   Variants {
     model: Quickshell.screens
     delegate: Scope {
@@ -44,6 +52,7 @@ ShellRoot {
       Battery.Notification { bar: sidebar; above: toast }
       PanelDismissWindow { bar: sidebar }
       Settings.Window { menuScreen: modelData }
+      FnPreview.Window { targetScreen: modelData }
     }
   }
 }

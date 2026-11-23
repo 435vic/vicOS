@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import "audio" as Audio
+import "fnpreview" as FnPreview
 import "wifi" as Wifi
 
 Card {
@@ -24,8 +25,11 @@ Card {
   readonly property bool fullscreenCovered: activeToplevel !== null && activeToplevel.fullscreen
       && QsWindow.window !== null && activeToplevel.screens.some(s => s.name === QsWindow.window.screen.name)
   readonly property bool collapsed: collapseProgress >= 0.56
+  readonly property bool fnPreviewActive: FnPreview.State.active
+      && QsWindow.window !== null && FnPreview.State.showsOnScreen(QsWindow.window.screen)
   readonly property bool besideSidebar: collapsed && !fullscreenCovered
-  readonly property bool collapsedVolumeVisible: (collapsed || fullscreenCovered) && keyboardVolumeVisible && !soundOpen
+  readonly property bool collapsedVolumeVisible: (collapsed || fullscreenCovered || fnPreviewActive)
+      && keyboardVolumeVisible && !soundOpen
   // Wi-Fi metrics and the compact sound control share the same staged exit:
   // fade the content, hold the shell, then collapse its height.
   property bool hoverHeightRetained: false
@@ -55,7 +59,7 @@ Card {
   Component.onCompleted: Wifi.State.setRateConsumer(root, wifiMetricsVisible)
   Component.onDestruction: Wifi.State.setRateConsumer(root, false)
   readonly property bool soundSliderRequested: !soundOpen && !wifiPresentationRequested
-      && collapseProgress <= 0.001
+      && collapseProgress <= 0.001 && !fnPreviewActive
       && (soundHovered || keyboardVolumeVisible)
   readonly property int openExpandedHeight:
       hoverHeightRetained ? 80 : 48
@@ -122,10 +126,15 @@ Card {
     active: root.collapsedVolumeVisible
     PanelWindow {
       id: volumeWindow
+      readonly property real fnLiftBottom: Theme.sidebarOuterMargin + FnPreview.State.barHeight + Theme.sidebarCardGap
       readonly property real cardX: root.besideSidebar ? Theme.sidebarOuterMargin + root.width + 4
+          : !root.fullscreenCovered && root.fnPreviewActive ? Theme.sidebarOuterMargin
           : Math.round((screen.width + Theme.sidebarOuterMargin
               + Theme.sidebarCardCollapsedWidth - Theme.sidebarCardExpandedWidth) / 2)
-      readonly property real cardBottom: root.besideSidebar ? Math.round(Theme.sidebarOuterMargin + root.height - 46 - 36) : 40
+      readonly property real cardBottom: root.besideSidebar
+          ? Math.max(Math.round(Theme.sidebarOuterMargin + root.height - 46 - 36),
+              root.fnPreviewActive ? fnLiftBottom : 0)
+          : root.fnPreviewActive ? fnLiftBottom + (root.fullscreenCovered ? 4 : 0) : 40
       screen: root.QsWindow.window ? root.QsWindow.window.screen : null
       color: "transparent"
       BackgroundEffect.blurRegion: Theme.translucent ? volumeCard.blurRegion : null
@@ -258,8 +267,8 @@ Card {
 
   readonly property var icons: [
       { icon: Wifi.State.statusIcon,
-        width: Wifi.State.statusIcon === "wifi.svg" ? 13.9972 : 14,
-        height: Wifi.State.statusIcon === "wifi.svg" ? 10.2141 : 14 },
+        width: Wifi.State.statusIcon.startsWith("wifi/signal-") ? 13.9972 : 14,
+        height: Wifi.State.statusIcon.startsWith("wifi/signal-") ? 10.2141 : 14 },
       { icon: "sound.svg", width: 14, height: 14 },
       { icon: "settings.svg", width: 13.6667, height: 11.9167 },
       { icon: "", width: 10.1572, height: 12.3327 }

@@ -103,6 +103,16 @@ local ddc_mod = ""
 if nixvars.laptop then
     hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +5%"), held)
     hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), held)
+    hl.bind(
+        "XF86KbdBrightnessUp",
+        hl.dsp.exec_cmd(
+            "sh -c 'b=$(brightnessctl -d \"*::kbd_backlight\" g); "
+                .. "if [ \"$b\" -lt 33 ]; then n=33%; elif [ \"$b\" -lt 66 ]; then n=66%; "
+                .. "elif [ \"$b\" -lt 100 ]; then n=100%; else n=0%; fi; "
+                .. "brightnessctl -q -d \"*::kbd_backlight\" s \"$n\"'"
+        ),
+        media
+    )
     ddc_mod = "SUPER + "
 end
 if nixvars.ddc then

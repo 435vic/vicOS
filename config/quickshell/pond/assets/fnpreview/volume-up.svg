@@ -1,0 +1,5 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.65 2.05C8.32 1.59 9.2 2.09 9.2 2.93V13.07C9.2 13.91 8.32 14.41 7.65 13.95L4.18 11.42C4.15 11.4 4.11 11.39 4.07 11.39H2.45C1.65 11.39 1 10.72 1 9.89V6.11C1 5.28 1.65 4.61 2.45 4.61H4.07C4.11 4.61 4.15 4.6 4.18 4.58L7.65 2.05Z" fill="white"/>
+<rect x="10.75" y="7.25" width="4.5" height="1.5" rx="0.75" fill="white"/>
+<rect x="12.25" y="5.75" width="1.5" height="4.5" rx="0.75" fill="white"/>
+</svg>
