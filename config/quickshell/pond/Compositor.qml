@@ -3,12 +3,42 @@ import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 
-// Hyprland stand-in for Pond's NiriMsg: the focused output, workspace focus
-// and window focus for the sidebar and notifications.
+// Hyprland stand-in for Pond's NiriMsg: the focused output, workspace focus,
+// window focus, and urgent window tracking for the sidebar and notifications.
 Singleton {
   id: root
 
   readonly property string focusedOutputName: Hyprland.focusedMonitor?.name ?? ""
+  property string activeAddress: ""
+  property var urgentAddresses: ({})
+
+  function normalizeAddress(address) {
+    return String(address || "").replace(/^0x/i, "").toLowerCase();
+  }
+
+  function setUrgent(address, urgent) {
+    const key = normalizeAddress(address);
+    if (!key) return;
+    if (urgent && !!urgentAddresses[key]) return;
+    if (!urgent && !urgentAddresses[key]) return;
+    const next = Object.assign({}, urgentAddresses);
+    if (urgent) next[key] = true;
+    else delete next[key];
+    urgentAddresses = next;
+  }
+
+  function isUrgent(address) {
+    const key = normalizeAddress(address);
+    return key !== "" && !!urgentAddresses[key];
+  }
+
+  function hasUrgent(windows) {
+    if (!windows) return false;
+    for (let i = 0; i < windows.length; i++) {
+      if (isUrgent(windows[i]?.address)) return true;
+    }
+    return false;
+  }
 
   function dispatch(lua) { Hyprland.dispatch(lua); }
 
@@ -17,9 +47,11 @@ Singleton {
   }
 
   function focusWindow(address) {
-    const hex = String(address).replace(/^0x/, "");
-    if (/^[0-9a-f]+$/i.test(hex))
+    const hex = normalizeAddress(address);
+    if (/^[0-9a-f]+$/i.test(hex)) {
+      setUrgent(hex, false);
       dispatch("hl.dsp.focus({ window = \"address:0x" + hex + "\" })");
+    }
   }
 
   function appMatches(appId, appName, desktopEntry) {
@@ -54,6 +86,16 @@ Singleton {
   Connections {
     target: Hyprland
     function onRawEvent(event) {
+      if (event.name === "urgent") {
+        const addr = root.normalizeAddress(event.data);
+        if (addr && addr !== root.activeAddress) root.setUrgent(addr, true);
+      } else if (event.name === "activewindowv2") {
+        const addr = root.normalizeAddress(event.data);
+        root.activeAddress = addr;
+        root.setUrgent(addr, false);
+      } else if (event.name === "closewindow") {
+        root.setUrgent(event.data, false);
+      }
       if (["openwindow", "closewindow", "movewindowv2", "windowtitlev2"].includes(event.name))
         Hyprland.refreshToplevels();
     }

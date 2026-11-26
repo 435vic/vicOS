@@ -103,12 +103,14 @@ Singleton {
       required property var notification
       required property string notificationId
       property bool closed: false
+      readonly property bool ephemeral: entry.notification.transient
+          || entry.notification.urgency === NotificationUrgency.Low
 
       function refresh() {
         if (closed) return;
         const data = root.snapshot(notification, notificationId);
         root.activeNotifications = [data, ...root.activeNotifications.filter(n => n.id !== notificationId)];
-        if (!notification.transient) {
+        if (!ephemeral) {
           const updated = [data, ...root.historyNotifications.filter(n => n.id !== notificationId)];
           root.historyNotifications = updated.slice(0, root.historyLimit);
           for (const removed of updated.slice(root.historyLimit)) root.remove(removed);
@@ -120,7 +122,7 @@ Singleton {
         id: popupTimeout
         interval: [3000, 8000, 15000][entry.notification.urgency] || 8000
         onTriggered: {
-          if (entry.notification.transient) root.remove({ id: entry.notificationId });
+          if (entry.ephemeral) root.remove({ id: entry.notificationId });
           else if (root.transientId === entry.notificationId) root.transientId = "";
         }
       }

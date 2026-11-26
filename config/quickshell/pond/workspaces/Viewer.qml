@@ -19,6 +19,7 @@ Shell.Card {
   readonly property real widthProgress: Shell.Theme.collapseWidth(collapseProgress)
   readonly property real heightProgress: Shell.Theme.collapseHeight(collapseProgress)
   readonly property bool collapsed: collapseProgress >= 0.56
+  readonly property color urgentColor: "#FF9F67"
 
   readonly property var workspaces: Hyprland.workspaces.values
       .filter(ws => ws.id > 0 && (!root.screen || ws.monitor?.name === root.screen.name))
@@ -92,6 +93,8 @@ Shell.Card {
           readonly property int columns: Shell.Theme.workspaceGridColumns
           // Past three windows the last slot counts the rest.
           readonly property int overflow: Math.max(0, windows.length - columns + 1)
+          readonly property bool overflowUrgent: overflow > 0
+              && Shell.Compositor.hasUrgent(windows.slice(columns - 1))
 
           width: parent.width
           height: Shell.Theme.workspaceControlSize
@@ -164,14 +167,16 @@ Shell.Card {
                   anchors.fill: parent
                   visible: slot.counts
                   radius: width / 2
-                  color: "transparent"
-                  border.color: Shell.Theme.workspaceIconOutline
-                  border.width: Shell.Theme.sidebarStrokeWidth
+                  color: row.overflowUrgent
+                      ? Qt.rgba(root.urgentColor.r, root.urgentColor.g, root.urgentColor.b, 0.16)
+                      : "transparent"
+                  border.color: row.overflowUrgent ? root.urgentColor : Shell.Theme.workspaceIconOutline
+                  border.width: row.overflowUrgent ? 1.5 : Shell.Theme.sidebarStrokeWidth
                   antialiasing: true
                   Text {
                     anchors.centerIn: parent
                     text: "+" + row.overflow
-                    color: Shell.Theme.sidebarForeground
+                    color: row.overflowUrgent ? root.urgentColor : Shell.Theme.sidebarForeground
                     font.family: Shell.Theme.plexFontFamily
                     font.weight: Font.Medium
                     font.pixelSize: 12
@@ -237,6 +242,7 @@ Shell.Card {
           required property int index
           readonly property bool active: modelData.active
           readonly property var windows: root.windowsOf(modelData)
+          readonly property bool hasUrgent: Shell.Compositor.hasUrgent(windows)
           readonly property int activeHeight: Shell.Theme.workspaceCollapsedHeaderHeight
               + windows.length * Shell.Theme.workspaceCollapsedControlPitch
               - (windows.length > 0 ? Shell.Theme.workspaceCollapsedControlGap : 0) + 4
@@ -277,8 +283,8 @@ Shell.Card {
             y: (41 - blockHeight) / 2 + numberMetrics.capitalHeight - baselineOffset
             width: parent.width
             text: entry.modelData.id < 10 ? "0" + entry.modelData.id : String(entry.modelData.id)
-            color: Shell.Theme.sidebarForeground
-            opacity: entry.active ? 1 : 0.5
+            color: !entry.active && entry.hasUrgent ? root.urgentColor : Shell.Theme.sidebarForeground
+            opacity: entry.active || entry.hasUrgent ? 1 : 0.5
             font.family: Shell.Theme.plexFontFamily
             font.pixelSize: 13
             horizontalAlignment: Text.AlignHCenter
@@ -308,11 +314,17 @@ Shell.Card {
             Repeater {
               model: Math.min(4, entry.windows.length)
               delegate: Rectangle {
-                width: 4
-                height: 4
-                radius: 2
-                color: Shell.Theme.sidebarForeground
-                opacity: 0.6
+                id: dot
+                required property int index
+                readonly property bool urgent: index === 3
+                    ? Shell.Compositor.hasUrgent(entry.windows.slice(3))
+                    : Shell.Compositor.isUrgent(entry.windows[index]?.address)
+                anchors.verticalCenter: parent.verticalCenter
+                width: urgent ? 5 : 4
+                height: width
+                radius: width / 2
+                color: urgent ? root.urgentColor : Shell.Theme.sidebarForeground
+                opacity: urgent ? 1 : 0.6
               }
             }
           }

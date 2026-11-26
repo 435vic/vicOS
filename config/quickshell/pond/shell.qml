@@ -12,7 +12,7 @@ import "notifications" as Notifications
 // Hyprland. hypridle owns idle and pre-sleep locking, hyprpaper the wallpaper.
 ShellRoot {
   id: root
-  property bool expanded: true
+  property bool expanded: false
 
   Shortcuts {}
 

@@ -5,9 +5,19 @@ hl.config({
         layout = "scrolling",
         gaps_in = 3,
         gaps_out = 8,
-        border_size = 0,
+        border_size = 2,
+        ["col.active_border"] = "rgba(8a8a8a99)",
+        ["col.inactive_border"] = "rgba(50505055)",
     },
-    scrolling = { wrap_focus = false, wrap_swapcol = false },
+    scrolling = {
+        column_width = 0.90,
+        explicit_column_widths = "0.333, 0.5, 0.667, 1.0",
+        -- Keep edges flush like Pond's center-focused-column "never"; use
+        -- SUPER + C to center a column on demand.
+        focus_fit_method = 1,
+        wrap_focus = false,
+        wrap_swapcol = false,
+    },
     decoration = {
         rounding = 10,
         shadow = { enabled = false },
