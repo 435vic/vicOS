@@ -145,10 +145,7 @@ in
           pkgs.playerctl
           pkgs.hyprshot
           pkgs.wiremix
-          (pkgs.legcord.overrideAttrs (old: {
-            # patchelf 0.15.2 corrupts venmic's .init/.plt when adding RPATHs.
-            nativeBuildInputs = [ pkgs.patchelfUnstable ] ++ old.nativeBuildInputs;
-          }))
+          (pkgs.callPackage ../../packages/discord-sunbird/discord_sunbird.nix {})
         ];
 
       }
